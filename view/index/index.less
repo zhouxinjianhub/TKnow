@@ -1,0 +1,104 @@
+@charset "utf-8";
+@import "../../common/style/z";
+
+.container-index{
+	.maxBody();
+	.regist{
+		.maxBody(100%,80px);
+		line-height: 46px;
+		.text-r();
+		a{
+			color: #666;
+			.font-s(12px);
+		}
+	}
+	.logo{
+		.text-c();
+		.l-h(84px);
+		img{
+			cursor: pointer;
+		}
+		
+	}
+	.list{
+		width: 690px;
+		.bc();
+		.list-title{
+			.font-s(16px);
+			color: #d1d6e1;
+			.l-h(16px);
+			.rel();
+			.font-fm();
+			&:after{
+				content: "";
+				.d-ib7();
+				.maxBody(88%,1px);
+				.abs();
+				top: 8px;
+				left: 0;
+				background: #d1d6e1;
+				margin-left: 12%;
+			}
+		}
+		ul{
+			width: 100%;
+			margin: 20px 0 50px 0;
+			.clearfix();
+			@width: 210px;
+			@height: 184px;
+			li{
+				.maxBody(@width,@height);
+				.fl();
+				.rel();
+				a{
+					.abs();
+					.maxBody();
+					.font-s(16px);
+					.font-fm();
+					color: #222;
+				}
+				.list-dv{
+					.maxBody(@width,@height+(-34px));
+					.rel();
+					border-radius: 6px;
+					&:after{
+						content: '';
+					    -webkit-transition: all 275ms cubic-bezier(.4,.25,.3,1);
+					    transition: all 275ms cubic-bezier(.4,.25,.3,1);
+					    .pos-box-cc(@width,@height+(-34px));
+					    border-radius: 6px;
+					    box-shadow: 0 5px 20px 0 rgba(0,0,0,.05);
+					}
+					&:hover:after{
+						box-shadow: 0 20px 30px 0 rgba(0,0,0,.4);
+					}
+					&.diyu{
+						background: url('../../images/index/diyu.png') no-repeat center center;
+					}
+					&.hangye{
+						background: url('../../images/index/hangye.png') no-repeat center center;
+					}
+					&.news{
+						background: url('../../images/index/news.png') no-repeat center center;
+					}
+					&.yczs{
+						background: url('../../images/index/yczs.png') no-repeat center center;
+					}
+					&.tianji{
+						background: url('../../images/index/tianji.png') no-repeat center center;
+					}
+					&.app{
+						background: url('../../images/index/app.png') no-repeat center center;
+					}
+				}
+				p{
+					.l-h(34px);
+					.text-c();
+				}
+				&:nth-child(3n-1){
+					margin: 0 30px;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,10 @@
+index  		  		首页模板
+info    	  		数据资讯模板
+login    	  		登录注册模板
+regional 	  		地域123级模板
+trade    	  		行业123级
+exponent_free    	未付费版映潮指数
+exponent_pay      	付费版映潮指数
+user              	我的主页
+search            	搜索页
+about				天玑页
