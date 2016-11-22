@@ -18,7 +18,6 @@ $.extend({
 		$.ajax({
 			url: url,
 			dataType: "script",
-			header:{"sig": $.getUrlParam('sig')},
 			async: async,
 			cache: cache
 		}).done(function(data) {
@@ -103,6 +102,30 @@ $.extend({
 				num.html($.formatPrice(String(parseInt(value)), isShowEnd));
 			}
 		});
+	},
+	// 判断用户是否登录
+	userlogin: function () {
+		let name = '周小建';
+		let url = '/user';
+		var option = {
+			userName: name,
+			url: url
+		}
+		let result = name ? option : false;
+		return false;
+	},
+	// 图片懒加载
+	lazyloadImg: function (url,callback) {
+		var img = new Image();
+    	img.src = url;
+    	img.onload = callback(img);
+	},
+	MathRand: function () {
+		var Num=""; 
+		for ( var i = 0; i < 5; i++ ) { 
+			Num += Math.floor( Math.random()*10 );
+		}
+		return Num;
 	}
 	//线上路径
 	// getCtx: function() {

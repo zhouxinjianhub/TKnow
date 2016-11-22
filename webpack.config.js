@@ -102,7 +102,8 @@ module.exports = {
         // 模块别名定义，方便后续直接引用别名
         alias: {
             'nav': "common/module/nav",
-            'footer': "common/module/footer"
+            'footer': "common/module/footer",
+            'loginState': "view/common/loginState"
         }
     }
 };

@@ -40,6 +40,7 @@ class RegionalComponent extends React.Component {
 			<div className="content">
 				<Nav select_key={1}/>
 				<Regional parent={this.props}/>
+				<Footer/>
 			</div>
 		)
 	}
@@ -51,6 +52,7 @@ class TradeComponent extends React.Component {
 			<div className="content">
 				<Nav select_key={2}/>
 				<Trade parent={this.props}/>
+				<Footer/>
 			</div>
 		)
 	}
@@ -62,6 +64,7 @@ class InfoComponent extends React.Component {
 			<div className="content">
 				<Nav select_key={3}/>
 				<Info parent={this.props}/>
+				<Footer/>
 			</div>
 		)
 	}
@@ -73,6 +76,7 @@ class ExponentFreeComponent extends React.Component {
 			<div className="content">
 				<Nav select_key={4}/>
 				<Exponent_free parent={this.props}/>
+				<Footer/>
 			</div>
 		)
 	}
@@ -84,6 +88,7 @@ class ExponentPayComponent extends React.Component {
 			<div className="content">
 				<Nav select_key={4}/>
 				<Exponent_pay parent={this.props}/>
+				<Footer/>
 			</div>
 		)
 	}
@@ -95,6 +100,7 @@ class AboutComponent extends React.Component {
 			<div className="content">
 				<Nav select_key={5}/>
 				<About parent={this.props}/>
+				<Footer/>
 			</div>
 		)
 	}

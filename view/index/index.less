@@ -1,22 +1,51 @@
 @charset "utf-8";
+@import "../../common/style/css3";
 @import "../../common/style/z";
 
 .container-index{
 	.maxBody();
 	.regist{
 		.maxBody(100%,80px);
-		line-height: 46px;
-		.text-r();
-		a{
-			color: #666;
-			.font-s(12px);
+		.nav-login{
+			@u-h:24px;
+			@color: #45546a;
+			@h-color: #6c798c;
+			@bg-color: #C2C8D2;
+			padding: 0 @u-h;
+			.border-radius(@u-h);
+			.fr();
+			.l-h(@u-h);
+			.rel();
+			.ba-c(@bg-color);
+			.font-s();
+			top: 23px;
+			color: @h-color;
+			a{
+				color: @color;
+				.font-fm();
+				&:hover{
+					text-decoration: underline;
+				}
+			}
+			span{
+				margin: 0 3px;
+			}
+			img{
+				@img-w:40px;
+				@img-h:40px;
+				.maxBody(@img-w,@img-h);
+				.abs();
+				.border-radius(50%);
+				left: -20px;
+				top: -8px;
+			}
 		}
 	}
 	.logo{
 		.text-c();
 		.l-h(84px);
 		img{
-			cursor: pointer;
+			.c-point();
 		}
 		
 	}
@@ -36,7 +65,7 @@
 				.abs();
 				top: 8px;
 				left: 0;
-				background: #d1d6e1;
+				.ba-c(#d1d6e1);
 				margin-left: 12%;
 			}
 		}
@@ -60,36 +89,29 @@
 				.list-dv{
 					.maxBody(@width,@height+(-34px));
 					.rel();
-					border-radius: 6px;
+					.border-radius(6px);
 					&:after{
 						content: '';
-					    -webkit-transition: all 275ms cubic-bezier(.4,.25,.3,1);
-					    transition: all 275ms cubic-bezier(.4,.25,.3,1);
+					    .transition(all 275ms cubic-bezier(.4,.25,.3,1));
 					    .pos-box-cc(@width,@height+(-34px));
-					    border-radius: 6px;
-					    box-shadow: 0 5px 20px 0 rgba(0,0,0,.05);
+					    .border-radius(6px);
+					    .box-shadow(0 5px 20px 0 rgba(0,0,0,.05));
+					    .abs();
+					    .z-index(9);
 					}
 					&:hover:after{
-						box-shadow: 0 20px 30px 0 rgba(0,0,0,.4);
+						.box-shadow(0 20px 30px 0 rgba(0,0,0,.4));
 					}
-					&.diyu{
-						background: url('../../images/index/diyu.png') no-repeat center center;
-					}
-					&.hangye{
-						background: url('../../images/index/hangye.png') no-repeat center center;
-					}
-					&.news{
-						background: url('../../images/index/news.png') no-repeat center center;
-					}
-					&.yczs{
-						background: url('../../images/index/yczs.png') no-repeat center center;
-					}
-					&.tianji{
-						background: url('../../images/index/tianji.png') no-repeat center center;
-					}
-					&.app{
-						background: url('../../images/index/app.png') no-repeat center center;
-					}
+					// img{
+					// 	width: 100%;
+					// 	position: relative;
+					// 	z-index: -1;
+					// 	transition: all 275ms cubic-bezier(.4,.25,.3,1);
+					// }
+					// &:hover img{
+					// 	.scale(1.2,1.2);
+					// }
+
 				}
 				p{
 					.l-h(34px);

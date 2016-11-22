@@ -44,7 +44,7 @@ class Footer extends React.Component {
 						</li>
 					</ul>
 				</div>
-				<div className="copyright">蜀ICP备12008686号   Copyright © 2015 - 2016 yingchaozhishu.com  All Rights Reserved</div>
+				<div className="copyright">蜀ICP备12008686号&nbsp;Copyright&copy;&nbsp;2015-2016&nbsp;yingchaozhishu.com&nbsp;All&nbsp;Rights&nbsp;Reserved</div>
 			</div>
 		)
 	}

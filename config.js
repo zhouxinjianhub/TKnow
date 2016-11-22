@@ -1,0 +1,1 @@
+window.devUrl = "localhost:8000/";

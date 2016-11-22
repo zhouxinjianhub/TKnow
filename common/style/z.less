@@ -44,6 +44,9 @@
   a,label {blr:~'expression(this.onFocus=this.blur())'}
   a,label {outline:none;}
 }
+.c-point(){
+  cursor: pointer;
+}
 //浮动
 .fl(@f:left;){
     float: @f;
@@ -94,6 +97,9 @@
 .bc(){
   margin-left: auto;
   margin-right: auto;
+}
+.border(@color:#000,@w:1px,@s:solid){
+  border: @w @s @color;
 }
 .bc-d(@w:500px){
   width: @w;
@@ -155,7 +161,6 @@
 .d-n(){
   display: none;
 }
-
 // display:flex兼容
 // 子元素-平均分栏
 .flex(@flex:1) {
@@ -310,6 +315,9 @@
 }
 
 //background
+.ba-c(@color:#000){
+  background: @color;
+}
 .bg(@url)
 {
   background: url(@url) 0 0 repeat;
