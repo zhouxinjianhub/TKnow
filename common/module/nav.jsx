@@ -19,28 +19,28 @@ class Nav extends React.Component {
 	render() {
 		return (
 			<div className="nav">
-				<div className="nav-bg"></div>
-				<div className="nav-logo">
-					<Link to={{ pathname: "/"}} >
-						<img src="../../images/logo-white.png" ref="logo" title="映潮科技"/>
-					</Link>
+				<div className="nav-box">
+					<div className="nav-logo">
+						<Link to={{ pathname: "/"}} >
+							<img src="../../images/logo-white.png" ref="logo" title="映潮科技"/>
+						</Link>
+					</div>
+					<ul>
+						<li className={this.props.select_key == 1 ? "active" : ""}><Link to={{ pathname: "/regional"}} >地域</Link></li>
+						<li className={this.props.select_key == 2 ? "active" : ""}><Link to={{ pathname: "/trade"}} >行业</Link></li>
+						<li className={this.props.select_key == 3 ? "active" : ""}><Link to={{ pathname: "/info"}} >资讯</Link></li>
+						<li className={this.props.select_key == 4 ? "active" : ""}><Link to={{ pathname: "/exponent"}} >映潮指数</Link></li>
+						<li className={this.props.select_key == 5 ? "active" : ""}><Link to={{ pathname: "/about"}} >天玑</Link></li>
+					</ul>
+					{(() => {
+						let userObj = $.userlogin();
+						let result = userObj ? true : false;
+						switch ( result ) {
+							case true: return <Islogin userName={ userObj.userName }/>;
+							default:   return <Nologin />;
+						}
+					})()}
 				</div>
-				<ul>
-					<li className={this.props.select_key == 1 ? "active" : ""}><Link to={{ pathname: "/regional"}} >地域</Link></li>
-					<li className={this.props.select_key == 2 ? "active" : ""}><Link to={{ pathname: "/trade"}} >行业</Link></li>
-					<li className={this.props.select_key == 3 ? "active" : ""}><Link to={{ pathname: "/info"}} >资讯</Link></li>
-					<li className={this.props.select_key == 4 ? "active" : ""}><Link to={{ pathname: "/exponent"}} >映潮指数</Link></li>
-					<li className={this.props.select_key == 5 ? "active" : ""}><Link to={{ pathname: "/about"}} >天玑</Link></li>
-				</ul>
-				{(() => {
-					let userObj = $.userlogin();
-					let result = userObj ? true : false;
-					switch ( result ) {
-						case true: return <Islogin userName={ userObj.userName }/>;
-						default:   return <Nologin />;
-					}
-				})()}
-				
 			</div>
 		)
 	}

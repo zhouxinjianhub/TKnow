@@ -1,11 +1,13 @@
 
 import React from 'react';
-import echarts from "echarts";
 
 class RegionalBar extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	state = {
+		btnCurrent: 's'
+	};
 	renderBar(){
 		var xAxisData = [];
 		var data = [];
@@ -16,9 +18,9 @@ class RegionalBar extends React.Component {
 		let option = {
 			grid: [
 		        {
-		        	x: '4%',
+		        	x: '3%',
 		        	y: '12%',
-		        	width: '92%',
+		        	width: '94%',
 		        	height: '74%'
 		        }
 		    ],
@@ -75,6 +77,19 @@ class RegionalBar extends React.Component {
 		};
 		this.myChart.setOption(option);
 	}
+	changeBar(key,e){
+		// console.log(e.target);
+		// console.log(e.target.value);
+		// console.log(key);
+		if ( key == this.state.btnCurrent ) {
+			return false;
+		};
+		this.setState({
+			btnCurrent: key
+		},()=>{
+			this.renderBar();
+		})
+	}
 	componentDidMount() {
 		// 基于准备好的dom，初始化echarts实例
         this.myChart = echarts.init(document.getElementById('bar'));
@@ -83,9 +98,11 @@ class RegionalBar extends React.Component {
 	render() {
 		return (
 			<div className="regional-bar">
-			   <p className="title">地域行业分布</p>
-			   <div className="change-open">实务型服务型</div>
-			   <div className="bar" id="bar"></div>
+			    <div className="bar-checked">
+			   		<input type="button" className={ this.state.btnCurrent === 's' ? "current" : "" } value="实务型" onClick={this.changeBar.bind(this,'s')}/>
+			   		<input type="button" className={ this.state.btnCurrent === 'f' ? "current" : "" } value="服务型" onClick={this.changeBar.bind(this,'f')}/>
+			   	</div>
+			    <div className="bar" id="bar"></div>
 			</div>
 		)
 	}

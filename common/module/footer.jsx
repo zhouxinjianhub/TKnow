@@ -38,8 +38,8 @@ class Footer extends React.Component {
 							<p>版权信息</p>
 							<p className="small-font">天知道 所展示数据内容版权归映潮科技所有，任何商业用途均需联系本公司。如未经授权用作他处，本公司将保留追究法律责任的权利。</p>
 							<div className="third-href">
-								<Link to={{ pathname: "/"}} >QQ</Link>
-								<Link to={{ pathname: "/"}} >wechart</Link>
+								<i className="wechart"></i>
+								<i className="weibo"></i>
 							</div>
 						</li>
 					</ul>

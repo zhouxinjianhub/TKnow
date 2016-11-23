@@ -3,7 +3,7 @@
 
 .footer{
 	@bg-color: #45546a;
-	.abs();
+	.rel();
 	.ba-c(@bg-color);
 	width: 100%;
 	margin-top: 50px;
@@ -17,7 +17,7 @@
 			overflow: hidden;
 			li{
 				@li-width: 240px;
-				width: @li-width;
+				.maxBody(@li-width,@c-height);
 				margin-right: 30px;
 				.fl();
 				p{
@@ -37,12 +37,27 @@
 					.font-fm();
 					color: #fff;
 					margin-top: 22px;
+					&:hover{
+						text-decoration: underline;
+					}
 				}
 				.third-href{
 					border-top: 1px solid #374355;
 					margin-top: 30px;
-					a{
+					i{
+						.maxBody(40px,40px);
 						.d-ib();
+						background: url('../../images/footer.png') no-repeat;
+						background-size: 80px auto;
+						.rel();
+						top: 30px;
+					}
+					.wechart{
+						background-position: 0 0;
+					}
+					.weibo{
+						background-position: -40px 0;
+						left: 10px;
 					}
 				}
 				&:last-child{

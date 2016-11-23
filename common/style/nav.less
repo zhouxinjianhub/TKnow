@@ -6,16 +6,13 @@
 @72height:72px;
 @bgColor:#45546a;
 .nav{
-	.maxBody(@width,@72height);
-	.bc();
-	.nav-bg{
-		.abs();
-		.border(#172a46);
-		.b-sizing();
-		.ba-c(@bgColor);
-		.maxBody(100%,@72height);
-		left: 0;
-		.z-index(-1);
+	.maxBody();
+	.border(#172a46);
+	.b-sizing();
+	.ba-c(@bgColor);
+	.nav-box{
+		.maxBody(@width,@72height);
+		.bc();
 	}
 	.nav-logo{
 		@logoWidth:265px;
@@ -60,7 +57,7 @@
 				.abs();
 				.z-index(999);
 				.triangle-t(@tr-w,#edeff4);
-				bottom: 0;
+				bottom: -1px;
 				left: 50%;
 				margin-left: -@tr-w;
 			}

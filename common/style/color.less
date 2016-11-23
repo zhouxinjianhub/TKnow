@@ -1,0 +1,53 @@
+@charset "utf-8";
+@import "../../common/style/css3";
+
+// 上到下
+.blue-gradient(){
+	@startColor: #46d2fb;
+	@endColor: #49befc;
+	.linear-gradient(@startColor,@endColor);
+}
+
+.qing-gradient(){
+	@startColor: #a168ff;
+	@endColor: #5883ff;
+	.linear-gradient(@startColor,@endColor);
+}
+
+.green-gradient(){
+	@startColor: #95cb5f;
+	@endColor: #41b37e;
+	.linear-gradient(@startColor,@endColor);
+}
+
+.yellow-gradient(){
+	@startColor: #fec630;
+	@endColor: #ff8f2b;
+	.linear-gradient(@startColor,@endColor);
+}
+
+
+// 左到右
+.blue-gradient-x(){
+	@endColor: #46d2fb;
+	@startColor: #49befc;
+	.linear-gradient-x(@startColor,@endColor);
+}
+
+.qing-gradient-x(){
+	@endColor: #a168ff;
+	@startColor: #5883ff;
+	.linear-gradient-x(@startColor,@endColor);
+}
+
+.green-gradient-x(){
+	@endColor: #95cb5f;
+	@startColor: #41b37e;
+	.linear-gradient-x(@startColor,@endColor);
+}
+
+.yellow-gradient-x(){
+	@endColor: #fec630;
+	@startColor: #ff8f2b;
+	.linear-gradient-x(@startColor,@endColor);
+}

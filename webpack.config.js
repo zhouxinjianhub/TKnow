@@ -15,7 +15,7 @@ module.exports = {
     // devtool: "source-map", // 便于调试
     entry: {
         main: "./common/module/"+fileNamed+".js",
-        common: ["react", "react-dom", 'react-router',"echarts"]
+        common: ["react", "react-dom", 'react-router']
     },
     output: {
         publicPath: "../../build/",
@@ -42,7 +42,7 @@ module.exports = {
                 loader: "style-loader!css-loader!autoprefixer-loader"
             },
             {
-                test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?name=[hash].[ext]'
+                test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?limit=3000&name=[hash].[ext]'
             },
             {
                 test: /\.(png|jpg)$/,
