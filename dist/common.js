@@ -18,8 +18,8 @@ $.extend({
 		$.ajax({
 			url: url,
 			dataType: "script",
-			async: async,
-			cache: cache
+			async: async || false,
+			cache: cache || false
 		}).done(function(data) {
 			if (callback && typeof(callback) === 'function') {
 				callback(data);
@@ -137,6 +137,8 @@ $.extend({
 	// 	return rootpath;
 	// }
 });
+
+$.onloadJavascript('../config.js');
 
 (function(window) {
     var theUA = window.navigator.userAgent.toLowerCase();

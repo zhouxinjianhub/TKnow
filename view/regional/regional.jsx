@@ -5,6 +5,7 @@ import Nav from "./controller";
 import Pie from "./pie";
 import Bar from "./bar";
 import List from "./list";
+import Comment from "../common/comment";
 
 import "./regional.less";
 
@@ -24,6 +25,7 @@ class ContainerRegional extends React.Component {
 			   <Pie />
 			   <Bar />
 			   <List />
+			   <Comment module="info"/>
 			</div>
 		)
 	}

@@ -1,0 +1,143 @@
+@charset "utf-8";
+@import "../../common/style/z";
+@import "../../common/style/css3";
+@import "../../common/style/color";
+
+
+@bgColor: #fff;
+@borderShadow: 0 5px 20px rgba(0,0,0,.05);
+.publicMoudle(){
+	.b-sizing();
+	.box-shadow(@borderShadow);
+	background: @bgColor;
+	border-radius: 6px;
+	margin-top: 30px;
+}
+.comment-container{
+	.publicMoudle();
+	padding: 25px;
+	.comment-header{
+		.font-s(16px);
+		color: #4b4b4b;
+		.l-h(16px);
+		margin-bottom: 30px;
+	}
+	.comment-textArea{
+		.maxBody(100%,207px);
+		.rel();
+		textarea{
+			.maxBody(100%,137px);
+			border: 1px solid #bbb;
+			.border-radius(6px);
+			.b-sizing();
+			.font-s(14px);
+			padding: 10px 14px;
+			color: #222;
+		}
+		input[type="button"]{
+			.abs();
+			right: 0;
+			bottom: 25px;
+			padding: 5px 20px;
+			.border-radius(20px);
+			border: 1px solid #49befc;
+			color: #49befc;
+			.font-s(16px);
+			.font-fm();
+			.c-point();
+		}
+	}
+	.comment-default{
+		.font-s();
+		.l-h(12px);
+		margin: 10px 5px;
+		color: #bbb;
+	}
+	ul{
+		.clearfix();
+		&.comment-list{
+			li{
+				margin-bottom: 20px;
+				.left{
+					.fl();
+					.maxBody(40px,40px);
+					overflow:hidden;
+				    position:relative;
+				    .border-radius(6px);
+				    img {
+					    .maxBody(40px,40px);
+					}
+				}
+				.right{
+					margin-left: 60px;
+					border-bottom: 1px solid #bbb; 
+					.userName{
+						.font-s(16px);
+						color: #4b4b4b;
+						.l-h(16px);
+						margin-bottom: 10px;
+						.lou{
+							float: right;
+							.font-s();
+						}
+					}
+					.sendTimes{
+						.font-s();
+						.l-h(12px);
+						color: #bbb;
+						margin-bottom: 12px;
+					}
+					.userContent{
+						.font-s();
+						color: #4b4b4b;
+						margin-bottom: 12px;
+					}
+				}
+			}
+			
+		}
+	}
+	.comment-split{
+		margin-left: 60px;
+		.disabled{
+			display: none;
+		}
+		.current{
+			.maxBody(24px,24px);
+			border: 1px solid #49befc;
+			background: #49befc;
+			color: #fff;
+			.font-s(14px);
+			.d-ib();
+			.text-c();
+			.l-h(24px);
+			border-radius: 50%;
+			margin: 0 5px;
+		}
+		.pageNumber{
+			.maxBody(24px,24px);
+			border: 1px solid #49befc;
+			color: #49befc;
+			.font-s(14px);
+			.d-ib();
+			.text-c();
+			.l-h(24px);
+			border-radius: 50%;
+			margin: 0 5px;
+		}
+		.dian{
+			margin: 0 5px;
+			color: #49befc;
+		}
+		.buttons{
+			padding: 2px 15px;
+			.border-radius(15px);
+			border: 1px solid #49befc;
+			color: #49befc;
+			.font-s(14px);
+			.font-fm();
+			.c-point();
+			margin: 0 5px;
+		}
+	}
+}

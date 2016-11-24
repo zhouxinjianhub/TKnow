@@ -10,18 +10,20 @@
 .publicMoudle(){
 	.b-sizing();
 	background: @bgColor;
+	.box-shadow(@borderShadow);
 	border-radius: 6px;
+	margin-top: 30px;
 }
 .container-regional{
 	width: @bodyWidth;
 	.bc();
 	.regional-nav{
 		.maxBody(100%,50px);
-		margin-top: 30px;
 		.publicMoudle();
 		.font-s(16px);
 		.font-fm();
 		color: #4b4b4b;
+		margin-top: 60px;
 		.select-module{
 			@navWidth: 213px;
 			@navHeight: 50px;
@@ -85,7 +87,6 @@
 		}
 	}
 	.regional-pie{
-		margin-top: 30px;
 		width: 100%;
 		.publicMoudle();
 		.clearfix();
@@ -130,7 +131,6 @@
 	}
 	.regional-bar{
 		.maxBody(100%,530px);
-		margin-top: 30px;
 		.publicMoudle();
 		.bar-checked{
 			.maxBody(100%,80px);
@@ -152,6 +152,82 @@
 		.bar{
 			.maxBody(100%,450px);
 		}
-		
+	}
+	.regional-list{
+		.maxBody(100%,550px);
+		.publicMoudle();
+		padding: 80px 25px 40px 25px;
+		.rel();
+		.regional-list-header{
+			.abs();
+			.font-s(16px);
+			top: 20px;
+			left: 25px;
+			color: #4b4b4b;
+		}
+		.swiper-slide{
+			border: 1px solid #eee;
+			border-radius: 6px;
+			.title{
+				border-top-left-radius: 6px;
+				border-top-right-radius: 6px;
+				.l-h(50px);
+				.text-c();
+				.font-fm();
+				.font-s(16px);
+				color: #fff;
+			}
+			ul{
+				.maxBody(100%,380px);
+				li{
+					.l-h(76px);
+					.text-c();
+					color: #4b4b4b;
+					.font-s(16px);
+					i{
+						.d-ib();
+						.maxBody(30px,30px);
+						.border-radius(50%);
+						border: 1px solid #4b4b4b;
+						.text-c();
+						.l-h(30px);
+						margin-right: 10px;
+						font-style:normal;
+					}
+				}
+			}
+		}
+		.type1{
+			.blue-gradient-x();
+		}
+		.type2{
+			.qing-gradient-x();
+		}
+		.type3{
+			.green-gradient-x();
+		}
+		.type4{
+			.yellow-gradient-x();
+		}
+		.swiper-button{
+			background: url('../../images/regional/ico.png') no-repeat;
+		    position: absolute;
+		    top: 50%;
+		    width: 56px;
+		    height: 110px;
+		    margin-top: -55px;
+		    z-index: 10;
+		    cursor: pointer;
+		    &.next{
+		    	right: 0;
+		    	background-position: -56px 0;
+		    }
+		    &.prev{
+		    	left: 0;
+		    }
+		    &.swiper-button-disabled{
+		    	opacity: .35;
+		    }
+		}
 	}
 }
