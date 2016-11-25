@@ -25,7 +25,7 @@ class ContainerRegional extends React.Component {
 			   <Pie />
 			   <Bar />
 			   <List />
-			   <Comment module="info"/>
+			   <Comment module="info" option={{'page': 1,'pageSize': 10,'informationId': 1}}/>
 			</div>
 		)
 	}

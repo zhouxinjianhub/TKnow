@@ -3,7 +3,8 @@
 @import "../../common/style/z";
 
 .container-index{
-	.maxBody();
+	.maxBody(1050px,100%);
+	.bc();
 	.regist{
 		.maxBody(100%,80px);
 		.nav-login{
@@ -102,6 +103,21 @@
 					}
 					&:hover:after{
 						.box-shadow(0 20px 30px 0 rgba(0,0,0,.4));
+					}
+					&:hover .stopMC{
+						.d-flex-h()
+					}
+					.stopMC{
+						.abs();
+						.z-index(99);
+						.maxBody();
+						.rgba(0,0,0,.5);
+						.border-radius(6px);
+						color: #fff;
+						.text-c();
+						.d-n();
+						.flex-hc();
+						.flex-vc();
 					}
 					// img{
 					// 	width: 100%;

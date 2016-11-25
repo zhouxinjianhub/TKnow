@@ -14,50 +14,15 @@ let result;//决定加载的模块
 class ContainerInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		
-		
 	}
-	componentDidMount() {
-		// let query = this.props.location;
-		// pageType= this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
-		// console.log(pageType);
-		
-		pageType= this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
-		console.log(pageType);
-		if(pageType == "info"){
-			$(".titlebar").remove();
-		}
-	}
-	componentWillReceiveProps(){
-		// pageType= this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
-		console.log(pageType);
-		if(pageType == "info"){
-			$(".titlebar").remove();
-		}else if(pageType == "list"){
-			$(".titlebar").append();
-		}else if(pageType == "detail"){
-		}
-	}
-
-	/*aaa(){
-		console.log('aaa');
-	}*/
-
-	getData(){
-		// return data=['1','2'];
-		let data;
-		that.setState({
-            data:['1','2']
-        });
-	}
+	
 	check(){
 		pageType= this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
 		console.log(pageType);
-		// console.log(this.state.data);
 		if(pageType == "info"){
-			this.result = [<Carousel />,<List/>];
+			this.result = [<Carousel />,<List parent={this.props.parent}/>];
 		}else if(pageType == "list"){
-			this.result = ['',<List/>];
+			this.result = ['',<List parent={this.props.parent}/>];
 		}else if(pageType == "detail"){
 			this.result = ['',<Detail/>]
 		}

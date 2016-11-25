@@ -74,7 +74,8 @@ class ContainerIndex extends React.Component {
 					pathurl: '/',
 					imgurl:'../../images/black.gif',
 					lazyurl: '../../images/index/app.png',
-					name:'手机APP'
+					name:'手机APP',
+					stop: '即将上线<br/>敬请期待'
 				}]
 			}
 		}];
@@ -87,6 +88,7 @@ class ContainerIndex extends React.Component {
         		data[i].info.map((obj,key) => {
 	                childHtml.push(<li><Link to = { obj.pathurl } >
 										<div className="list-dv">
+											{ obj.stop && <div className="stopMC" dangerouslySetInnerHTML={{__html: obj.stop}}/> || '' }
 											<img src = { obj.imgurl } data-url = { obj.lazyurl } key = { i } ref = { 'lazy' + $.MathRand() }/>
 										</div>
 										<p>{ obj.name }</p>

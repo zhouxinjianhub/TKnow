@@ -1,15 +1,27 @@
 
 import React from 'react';
 import { Link, hashHistory } from 'react-router';
-// import List from './list.jsx' // 资讯分类
+
+let pageType;
+let result;//决定加载的模块
 /**
  * @name  TitlebarComponent 标题组件
  */
 class TitlebarComponent extends React.Component{
+	constructor(props) {
+		super(props);
+		this.head = [];
+
+	}
+	title(data){
+		let title = data[0] ? data[0] : []
+		this.head = title.tagName ? title.tagName : "全部资讯";
+	}
 	render(){
+		this.title(this.props.data);
 		return(
 			<div className="titlebar">
-				<p><span>「</span><span>旅游</span><span>」</span>&nbsp;<label>相关的文章</label></p>
+				<p><span>「</span><span>{this.head}</span><span>」</span>&nbsp;<label>相关的文章</label></p>
 			</div>
 		)
 	}
@@ -24,7 +36,6 @@ class ListComponent extends React.Component{
 	render(){
 		// 渲染列表数据
 		let listArray = this.props.data ? this.props.data : [];
-		console.log(listArray);
 		return(
 			<div className="left">
 				<ul>
@@ -48,7 +59,7 @@ class ListComponent extends React.Component{
 			        }
 				</ul>
 				<div className="buttom">
-					<input type="submit"  value="+加载更多"></input>
+					<input  onClick={this.props.getMoredata} type="submit"  value="+加载更多"></input>
 				</div>
       		</div>
 		)
@@ -62,54 +73,80 @@ class RankingComponent extends React.Component{
 	constructor(props) {
 		super(props);
 		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
-		this.totalPage = 0;
+		// this.totalPage =[];
+		this.arr = [true,false,false];
+		// this.tabList = [];
 	}
     state = {
 		data: []
 	};
 	componentDidMount() {
-		var that = this;
-		that._getDatas();
+		const that = this;
+		that._getTabDatas();
 		require.ensure([], require => {
-			require ("./css/tab.css");
+			// require ("./css/tab.css");
 			require('./js/tab.js');
 		}, 'list')
 	}
-	_getDatas() {//加载tab选项卡数据方法
+	_getTabDatas(type) {//加载tab选项卡数据方法
         const that = this;
         let setData = {
-            // "areaId": areaId ? areaId : '',
-            // dataType:'json',
-            type:1,
+            dataType:'json',
+            type:type ? type : 0,
             needAll:true
         };
-        $.GetAjax('http://192.168.1.221:8888/api/v1/information/getTopList', setData, 'GET', true, function(data , state) {
+        $.GetAjax($.httpxhr+'/api/v1/information/getTopList', setData, 'GET', true, function(data , state) {
         // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
-            // data:data
            if (state && data.code == 1) {
                 that.setState({
                     data:data
                 });
             } else if(!state) {
                  setTimeout(function() {//数据没有请求成功，就一直请求
-                    that._getDatas();
+                    that._getTabDatas();
                     console.log('主人，刚才服务器出了一下小差');
                 }, 2000);
-            } else {
-                // $.noDataFunc();
             }
         });
     }
+    checkData(type){
+    	const that = this;
+		if(that.arr[type] == false){
+			that.arr[type] = true;
+			that._getTabDatas(type);
+		}else{
+			return false;
+		}
+    }
 	render() {
+		const that = this;
+		let render= this.state.data;
+		let renderObj = render.data;
+		let index = 0;
+		let li = [];
+		let tabList = [];
+		for ( let i in renderObj ){
+			index++;
+			if(index<10){
+				index = "0"+index;
+			}
+			li.push(<li>
+		            	<Link to={{ pathname: "/info/detail"}} >
+							<label>-{index}-</label>
+							<p>{ renderObj[i].title }</p>
+						</Link>
+					</li>)
+			tabList.push(<div className="tabList"><ul>{ li }</ul></div>);
+		};
         return (
             <div className="ranking">
   				<div className="wrap" id="wrap">
   					<div className="header">
 						<h3 className="title">排行榜</h3>
-			            <ul className="tabClick">
-			                <li className="week active">周</li><span>|</span>
-			                <li className="mon">月</li><span>|</span>
-			                <li className="year">年</li>
+			            <ul className="tabClick"  >
+			                <li onmousedown={this.checkData(0)} className="week active">周</li><span>|</span>
+			                <li onmousedown={this.checkData(1)} className="mon">月</li><span>|</span>
+			                <li onmousedown={this.checkData(2)} className="year">年</li>
 			            </ul>
   					</div>
   					<hr className="wraphr"/>
@@ -118,7 +155,9 @@ class RankingComponent extends React.Component{
 		                </div>
 		            </div>
 		            <div className="tabCon">
-		            	<TabListComponent  data={this.state.data ? this.state.data : []} getDatas={this._getDatas} />
+		            	<div className="tabBox">
+							{tabList}
+				        </div>
 		            </div>
 		        </div>
 	        </div>
@@ -126,37 +165,6 @@ class RankingComponent extends React.Component{
     }
 }
 
-class TabListComponent extends React.Component{
-	state = {
-		data: []
-	};
-    constructor(props) {
-		super(props);
-		this.listData = props;
-	}
-    componentWillReceiveProps(nextProps){//在组件接收到一个新的prop时被调用
-       this.listData = nextProps ? nextProps : '';
-        // console.log("1");
-        // console.log( this.listData);
-        // if(!data.length>0||state.ready){
-        //     return false;
-        // }
-    }
-	render(){
-		return(
-			<div className="tabBox">
-                <div className="tabList">
-                	<ul>
-                		<li>-<label>01</label>-人工智能应用内容内容</li>
-                		<li>-<label>01</label>-人工智能应用内容内容</li>
-                		<li>-<label>01</label>-人工智能应用内容内容</li>
-                	</ul>
-                </div>
-
-            </div>
-		)
-	}
-}
 /**
  * @name TypeComponent 分类标签组件
  */
@@ -168,7 +176,7 @@ class TypeComponent extends React.Component{
 		data: []
 	};
 	componentDidMount() {
-		var that = this;
+		const that = this;
 		that._getTypeData();
 	}
 	_getTypeData() {
@@ -176,7 +184,7 @@ class TypeComponent extends React.Component{
         let setData = {
             dataType:'json',
         };
-        $.GetAjax('http://192.168.1.221:8888/api/v1/information/getCategory', setData, 'GET', true, function(data , state) {
+        $.GetAjax($.httpxhr+'/api/v1/information/getCategory', setData, 'GET', true, function(data , state) {
         // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
                 that.setState({
@@ -222,7 +230,7 @@ class PopularComponent extends React.Component{
 		data: []
 	};
 	componentDidMount() {
-		var that = this;
+		const that = this;
 		that._getHottagData();
 	}
 	_getHottagData() {
@@ -230,7 +238,7 @@ class PopularComponent extends React.Component{
         let setData = {
             dataType:'json',
         };
-        $.GetAjax('http://192.168.1.221:8888/api/v1/information/getHotTags', setData, 'GET', true, function(data , state) {
+        $.GetAjax($.httpxhr+'/api/v1/information/getHotTags', setData, 'GET', true, function(data , state) {
         // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
                 that.setState({
@@ -270,23 +278,28 @@ class ContainerList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.PageErs = 10; //每页总个数
-        this.FetchNum = 10; //每页总个数，每次请求的总页数
+        this.FetchNum = 5; //每次请求的总页数
         this.data = []; //设置初始data状态，填充空数据，避免报错问题
         this.arrayGroup = []; //拉取数据回来进行分组的转换数组
+        this.nextPagerNum = 1; //当前请求的页数（现在按照每页50条数据拉取，分5组）
+        this.totalPager = [];
+
 	}
 	state = {
+		pageNum: 1, //当前用户所在页
 		data: []
 	};
     componentDidMount() {
-		var that = this;
+		const that = this;
 		that._getListDatas();
+		
 	}
     _getListDatas(nums, tagId, page) {
         const that = this;
-        let session = sessionStorage.getItem('InfoList' + nums); //判断当前类型是否有用户的缓存数据
+        let session = sessionStorage.getItem('InfoList' + nums); //判断当前页是否有用户的缓存数据
         const PageErs = this.PageErs; //每页总个数
         const FetchNum = this.FetchNum;
-        const pageSize = 100; //请求每页数据
+        const pageSize = 50; //请求每页数据
         if (!session) {
         	let page = 1;
             let setData = {
@@ -295,8 +308,7 @@ class ContainerList extends React.Component {
                 "pageSize": pageSize,
                 "tagId":tagId ? tagId : ''
             };
-            console.log(page);
-            $.GetAjax('http://192.168.1.221:8888/api/v1/information/page', setData, 'GET', true, function(data, state) {
+            $.GetAjax($.httpxhr+'/api/v1/information/page', setData, 'GET', true, function(data, state) {
             // $.GetAjax('/TJ-province/public/data/sumsAndList.json', setData, 'GET', true, function(data, state) {
                 if (state && data.code == 1) {
                     var data = data.data;
@@ -304,18 +316,26 @@ class ContainerList extends React.Component {
                     for (let i = 0; i < data.data.length / PageErs; i++) {
                         let attr = []; //该数组用于缓存当前页循环的数据信息（最多存15条数据），赋给缓存session
                         for (let k = i * PageErs; k < i * PageErs + PageErs; k++) {
-                        	console.log(data.data[k]);
-                            attr.push( data.data ? data.data[k] : '');
+                        	if(data.data[k]){
+                    		 attr.push( data.data ? data.data[k] : '');
+                    		}else{
+                    			continue;
+                    		}
+                           
                         }
                         // 当前页赋值
                         that.arrayGroup[i + (page * FetchNum - FetchNum)] = attr;
                         // 缓存每一页和总页数
                         sessionStorage.setItem('InfoList' + (page * FetchNum - FetchNum + 1 + i), JSON.stringify(that.arrayGroup[i + (page * FetchNum - FetchNum)]));
+                        sessionStorage.setItem('InfoTotalPager',Math.ceil(data.total/PageErs));
+
                         // 初始化数据渲染
                         if (i == 0 && page == 1) {
                             let pagedata = that.arrayGroup[i + (page * FetchNum - FetchNum)];
+                            that.totalPage = Math.ceil(data.total/PageErs);
                             that.setState({
                             	data: pagedata,
+                            	totalPager: that.totalPage,
                                 status: true,
                             });
 
@@ -329,24 +349,60 @@ class ContainerList extends React.Component {
                         console.log('主人，刚才服务器出了一下小差');
                     }, 2000);
                 } else {
-                    $.noDataFunc();
+                    // $.noDataFunc();
                 }
             });
         } else {
 
             // 用缓存数据更新view达到高效的用户体验
             session = JSON.parse(session); //将字符串转化为数组数据
+            that.totalPage = Math.ceil(sessionStorage.getItem('InfoTotalPager'));
             that.setState({
             	data: session,
+            	totalPager: that.totalPage,
                 status: true,
             });
         }
     }
+    getMoredata(event ,totalPager){
+    	console.log(totalPager);
+    	// console.log(11);
+    	// console.log(this.state.totalPager);
+		// event.preventDefault();
+        totalPager = totalPager ? totalPager : 1; //总页数
+
+        if (this.state.pageNum >= totalPager) { //超过总页数退出
+            return false;
+        } else {
+            this.state.pageNum++; //每次点击加载更多数据进行累计
+            //判断是否发送请求数据，如果即将加载的数据是缓存最后一页，则去请求数据
+            if (this.state.pageNum == this.nextPagerNum * this.FetchNum - 5) { 
+                // 判断缓存中是否存在该数据，如果没有则添加上
+                sessionStorage.getItem('InfoList' + (this.nextPagerNum * this.FetchNum + 1)) ? '' : this._getListDatas(this.nextPagerNum * this.FetchNum + 1, this.nextPagerNum + 1);
+                this.nextPagerNum++;
+            }
+            // 当前页数数据
+            this._getListDatas(this.state.pageNum );
+            // $.cookie('PAGE',this.state.pageNum);
+        }
+    }
+    check(){
+		pageType = this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
+	}
 	render() {
-		// console.log(this.state.data);
+		this.check();
+		// console.log(this.state.totalPager);
 		return (
 			<div className="information">
-				<TitlebarComponent data={this.state.data ? this.state.data : []} getDatas={this._getListDatas} />
+
+				{(() => {
+					if(pageType=="info"){
+						return false;
+					}else{
+						return <TitlebarComponent data={this.state.data ? this.state.data : []} getDatas={this._getListDatas} />;
+					}
+				})()}
+				
 				<div className="top">
 					<div className="topL"></div>
 					<img src="../../../images/info/2.png" alt=""/>
@@ -354,7 +410,7 @@ class ContainerList extends React.Component {
 				</div>
 				<div className="content">
 
-					<ListComponent data={this.state.data ? this.state.data : []}/>
+					<ListComponent getMoredata = {this.getMoredata(event,this.state.totalPager)} data={this.state.data ? this.state.data : []}/>
 
 		      		<div className="right">
 
@@ -363,7 +419,6 @@ class ContainerList extends React.Component {
 		      			<PopularComponent/>
 		      			
 		      		</div>
-		      		<div class="clearfloat"></div>
 				</div>
 	      		<div className="bottom">
 					<div className="topL"></div>

@@ -13,19 +13,15 @@ class CarouselComponent extends React.Component{
 		this.data = [];
 	}
 	componentDidMount() {
-		require.ensure([], require => {
-			require ("../../dist/swiper.min.css");
-			let Swiper = require('../../dist/swiper.min.js');
-			this.swiper = new Swiper('.swiper-container', {
-		        pagination: '.swiper-pagination',
-		        paginationClickable: true,
-		        spaceBetween: 30,
-		        autoplay : 100000,//自动切换的时间间隔（单位ms）
-		        grabCursor : true,
-		        direction: 'vertical',
-		        mousewheelControl: true
-		    });
-		}, 'info')
+		new Swiper('.swiper-container', {
+	        pagination: '.swiper-pagination',
+	        paginationClickable: true,
+	        spaceBetween: 30,
+	        autoplay : 100000,//自动切换的时间间隔（单位ms）
+	        grabCursor : true,
+	        direction: 'vertical',
+	        mousewheelControl: true
+	    });
 	}
 	componentWillReceiveProps(nextProps){//在组件接收到一个新的prop时被调用
          this.data = nextProps ? nextProps.data.data.data : '';
@@ -88,7 +84,7 @@ class ContainerCarousel extends React.Component {
 		data: []
 	};
 	componentDidMount() {
-		var that = this;
+		const that = this;
 		that._getDatas();
 	}
 	_getDatas() {//加载tab选项卡数据方法
@@ -98,7 +94,7 @@ class ContainerCarousel extends React.Component {
             type:1,
             needAll:true
         };
-        $.GetAjax('http://192.168.1.221:8888/api/v1/information/page', setData, 'GET', true, function(data , state) {
+        $.GetAjax($.httpxhr+'/api/v1/information/page', setData, 'GET', true, function(data , state) {
         // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
                 that.setState({

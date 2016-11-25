@@ -12,15 +12,14 @@
 		var url = url || '',
 			type = type || 'GET',
 			data = data || '',
-			async = async || false,
+			async = async || true,
 			json = void 0;
 
 		$.ajax({
 			//	请求配置
-			url: url,
+			url: $.httpxhr+url,
 			type: type,
 			data: data,
-			header:{"sig": $.getUrlParam('sig')},
 			async: async
 
 		}).done(function(data) {

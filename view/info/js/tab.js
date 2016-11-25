@@ -29,6 +29,8 @@
         for(var i = 0 ;i<tabLi.length; i++ ){
             tabLi[i].start = i;
             tabLi[i].onclick = function(){
+
+
                 var star = this.start;
                 for(var i = 0 ;i<tabLi.length; i++ ){
                     tabLi[i].className='';

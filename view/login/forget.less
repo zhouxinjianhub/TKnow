@@ -2,13 +2,13 @@
 @import "../../common/style/z";
 .container-login {
     background: #edeff5;
+    height: 800px;
     /* background: red; */
 }
 
 .container-login .login-page {
     width: 510px;
     margin: auto;
-
 }
 
 .container-login .img_head {
@@ -28,14 +28,6 @@
     line-height: 50px;
 }
 
-.container-login .login_form_head {
-    width: 510px;
-    height: 50px;
-    border-radius: 5px 5px 0 0;
-    margin-top: 30px;
-    background: linear-gradient(to right, #49befc, #46d2fb);
-}
-
 .container-login .form {
     position: relative;
     z-index: 1;
@@ -45,24 +37,27 @@
     padding-top: 30px;
     padding-left: 60px;
     padding-right: 60px;
-    padding-bottom: 180px;
+    padding-bottom: 150px;
     text-align: center;
     border-radius: 0 0 6px 6px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.container-login .form input {
-    height: 36px;
-    width: 100%;
-   
+.container-login .login_form_head {
+    width: 510px;
+    height: 50px;
+    border-radius: 5px 5px 0 0;
+    margin-top: 30px;
+    background: linear-gradient(to right, #49befc, #46d2fb);
 }
 
-.login_input {
+.container-login .form input {
     font-family: 微软雅黑;
-    outline: 0;   
-    background: #ffffff;  
+    outline: 0;
+    height: 36px;
+    background: #ffffff;
+    width: 100%;
     border: 0;
-    margin-top: 10px;
     border-style: solid;
     border-width: 1px;
     padding-left: 20px;
@@ -72,39 +67,52 @@
     font-size: 16px;
 }
 
-.container-login .msg_error {
-    font-family: 微软雅黑;
-    float: left;
-    color: #fb4f4f;
-    height: 20px;
-    padding-top: 4px;
-    padding-left: 4px;
-    font-size: 12px
-}
-
 .container-login .form button {
-    width: 100%;
-    height: 36px;
-    margin-top: 16px;  
-}
-
-.login_btn
-{
-   font-family: 微软雅黑;
+    font-family: 微软雅黑;
     border-style: solid;
     border-width: 1px;
     border-color: #49befc;
-    background: #ffffff;  
+    background: #ffffff;
+    width: 100%;
+    height: 36px;
     color: #49befc;
-    border-radius: 5px;
-    font-size: 16px; 
+    border-radius: 5px;   
+    font-size: 16px;
 }
 
-.login_btn:hover,
-.login_btn:active,
-.login_btn:focus {
-    color: #ffffff;
-    background: #49befc;
+.container-login .form button:hover,
+.container-login .form button:active,
+.container-login .form button:focus {
+     color: #ffffff;
+      background: #49befc;   
+}
+
+.container-login .login_weixin {
+    width: 150px;
+    height: 50px;
+    background-image: url(../../images/login/wec-nor.jpg);
+    float: right;
+    margin-right: 30px;
+}
+
+.container-login .login_weixin:hover,
+.container-login .login_weixin:active,
+.container-login .login_weixin:focus {
+    background-image: url(../../images/login/wec-hov.jpg);
+}
+
+.container-login .login_qq {
+    width: 150px;
+    height: 50px;
+    background-image: url(../../images/login/qq-nor.jpg);
+    float: left;
+    margin-left: 30px;
+}
+
+.container-login .login_qq:hover,
+.container-login .login_qq:active,
+.container-login .login_qq:focus {
+    background-image: url(../../images/login/qq-hov.jpg);
 }
 
 .container-login .register {
@@ -130,34 +138,11 @@
     color: #edeff4;
 }
 
-.container-login .login_weixin {
-    width: 150px;
-    height: 50px;
-    background-image: url(../../images/login/wec-nor.jpg);
-    float: right;
-    margin-right: 30px;
-    margin-top: 30px;
-}
-
-.container-login .login_weixin:hover,
-.container-login .login_weixin:active,
-.container-login .login_weixin:focus {
-    background-image: url(../../images/login/wec-hov.jpg);
-}
-
-.container-login .login_qq {
-    width: 150px;
-    height: 50px;
-    background-image: url(../../images/login/qq-nor.jpg);
+.container-login .msg_error {
+    font-family: 微软雅黑;
     float: left;
-    margin-left: 30px;
-    margin-top: 30px;
-}
-
-.container-login .login_qq:hover,
-.container-login .login_qq:active,
-.container-login .login_qq:focus {
-    background-image: url(../../images/login/qq-hov.jpg);
+    color: #fb4f4f;
+    font-size: 12px
 }
 
 .container-login .shake_effect {

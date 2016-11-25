@@ -10,6 +10,8 @@ import '../style/common.less';
 
 import Index from "../../view/index/index";			// 首页
 import Login from "../../view/login/login";			// 登录
+import Register from "../../view/login/register";	//注册
+import Forget from "../../view/login/forget";	//忘记密码
 import Regional from "../../view/regional/regional";// 地域
 import Trade from "../../view/trade/trade";			// 行业
 import Info from "../../view/info/info";			// 咨讯
@@ -111,9 +113,11 @@ ReactDOM.render(
 	<Router history={hashHistory}>
 		<Route path="/index" component={ IndexComponent }/>
 		<Route path="/login" component={ Login }/>
-		<Route path="/regional(/:name)" component={ RegionalComponent }/>
+		<Route path="/register" component={ Register }/>
+		<Route path="/forget" component={ Forget }/>
+		<Route path="/regional" component={ RegionalComponent }/>
 		<Route path="/trade" component={ TradeComponent }/>
-		<Route path="/info" component={ InfoComponent }/>
+		<Route path="/info(/:pagetype)" component={ InfoComponent }/>
 
 		<Route path="/exponent_free" component={ ExponentFreeComponent }/>
 		<Route path="/exponent_pay" component={ ExponentPayComponent }/>

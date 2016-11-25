@@ -66,15 +66,15 @@ module.exports = {
         
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                except: ['$super', '$', 'exports', 'require']
-                //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
-            },
-            compress: {
-                warnings: false //去除警告
-            }
-        }), // 压缩
+        // new webpack.optimize.UglifyJsPlugin({
+        //     mangle: {
+        //         except: ['$super', '$', 'exports', 'require']
+        //         //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
+        //     },
+        //     compress: {
+        //         warnings: false //去除警告
+        //     }
+        // }), // 压缩
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production")
