@@ -75,7 +75,11 @@ class RegionalBar extends React.Component {
 		        }
 		    }]
 		};
-		this.myChart.setOption(option);
+		this.myChart.showLoading();
+		setTimeout(()=>{
+			this.myChart.hideLoading();
+			this.myChart.setOption(option);
+		},3000);
 	}
 	changeBar(key,e){
 		// console.log(e.target);

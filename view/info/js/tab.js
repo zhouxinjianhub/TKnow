@@ -14,14 +14,13 @@
         var tar = 0;
         var endX = 0;
         var dist = 0;
-        
+
         tabBox.style.overflow='hidden';
         tabBox.style.position='relative';
         tabBox.style.width=330*tabList.length+"px";
         for(var i = 0 ;i<tabLi.length; i++ ){
               tabList[i] ? tabList[i].style.width="330px" : "330px";
               tabList[i] ? tabList[i].style.height="330px" : "330px";
-              // tabList[i].style.float='left';
               tabList[i] ? tabList[i].style.verticalAlign='top' :'top' ;
               tabList[i] ? tabList[i].style.display='table-cell': 'table-cell';
         }
@@ -29,16 +28,14 @@
         for(var i = 0 ;i<tabLi.length; i++ ){
             tabLi[i].start = i;
             tabLi[i].onclick = function(){
-
-
                 var star = this.start;
                 for(var i = 0 ;i<tabLi.length; i++ ){
                     tabLi[i].className='';
                 };
                 tabLi[star].className='active';
-                init.lineAnme(lineDiv,windowWidth/tabLi.length*star)
-                init.translate(tabBox,windowWidth,star);
-                endX= -star*windowWidth;
+                // init.lineAnme(lineDiv,windowWidth/tabLi.length*star)
+                // init.translate(tabBox,windowWidth,star);
+                // endX= -star*windowWidth;
             }
         }
         
@@ -106,10 +103,11 @@
     var init={
         //内容切换
         translate:function(obj,windowWidth,star){
-            obj.style.webkitTransform='translate3d('+-star*330+'px,0,0)';
-            obj.style.transform='translate3d('+-star*330+',0,0)px';
-            obj.style.webkitTransition='all 0.3s ease-in-out';
-            obj.style.transition='all 0.3s ease-in-out';
+            console.log(obj.style.opacity );
+            // obj.style.webkitTransform='translate3d('+-star*330+'px,0,0)';
+            // obj.style.transform='translate3d('+-star*330+',0,0)px';
+            obj.style.webkitTransition='opacity ease-out 0.8s 0.9s';
+            obj.style.transition='opacity ease-out 0.8s 0.9s';
         },
         touchs:function(obj,windowWidth,tar,distance,endX){
             obj.style.webkitTransform='translate3d('+(distance+endX)+'px,0,0)';

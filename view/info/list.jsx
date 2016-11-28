@@ -10,18 +10,15 @@ let result;//决定加载的模块
 class TitlebarComponent extends React.Component{
 	constructor(props) {
 		super(props);
-		this.head = [];
-
-	}
-	title(data){
-		let title = data[0] ? data[0] : []
-		this.head = title.tagName ? title.tagName : "全部资讯";
 	}
 	render(){
-		this.title(this.props.data);
+		let title = this.props.data ? this.props.data.name : '全部资讯';
+		if(title == undefined){
+			title = "全部资讯";
+		}
 		return(
 			<div className="titlebar">
-				<p><span>「</span><span>{this.head}</span><span>」</span>&nbsp;<label>相关的文章</label></p>
+				<p><span>「</span><span>{title}</span><span>」</span>&nbsp;<label>相关的文章</label></p>
 			</div>
 		)
 	}
@@ -36,10 +33,10 @@ class ListComponent extends React.Component{
 	render(){
 		// 渲染列表数据
 		let listArray = this.props.data ? this.props.data : [];
+		// console.info(listArray);
 		return(
-			<div className="left">
 				<ul>
-					{this.dom}
+					 
 					{
 		        		listArray.map((data,k) => {
 					        return	<li>
@@ -58,10 +55,7 @@ class ListComponent extends React.Component{
 			        	})
 			        }
 				</ul>
-				<div className="buttom">
-					<input  onClick={this.props.getMoredata} type="submit"  value="+加载更多"></input>
-				</div>
-      		</div>
+			
 		)
 	}
 }
@@ -74,7 +68,7 @@ class RankingComponent extends React.Component{
 		super(props);
 		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
 		// this.totalPage =[];
-		this.arr = [true,false,false];
+		// this.arr = [true,false,false];
 		// this.tabList = [];
 	}
     state = {
@@ -95,12 +89,17 @@ class RankingComponent extends React.Component{
             type:type ? type : 0,
             needAll:true
         };
-        $.GetAjax($.httpxhr+'/api/v1/information/getTopList', setData, 'GET', true, function(data , state) {
-        // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
-           if (state && data.code == 1) {
+
+        $(".tabList").removeClass("tabList-active");
+
+        $.GetAjax('/v1/information/getTopList', setData, 'GET', true, function(data , state) {
+        // $.GetAjax('http://192.168.1.101:8090/view/info/data/getTopList.json', setData,'GET', true, function(data ,state) {
+            if (state && data.code == 1) {
                 that.setState({
                     data:data
                 });
+		    	$(".tabList").addClass("tabList-active");
+			
             } else if(!state) {
                  setTimeout(function() {//数据没有请求成功，就一直请求
                     that._getTabDatas();
@@ -109,44 +108,39 @@ class RankingComponent extends React.Component{
             }
         });
     }
-    checkData(type){
-    	const that = this;
-		if(that.arr[type] == false){
-			that.arr[type] = true;
-			that._getTabDatas(type);
-		}else{
-			return false;
-		}
+  //   checkData(type){
+  //   	const that = this;
+		// if(that.arr[type] == false){
+		// 	that.arr[type] = true;
+		// 	that._getTabDatas(type);
+		// }else{
+		// 	return false;
+		// }
+  //   }
+    clickFun(e){
+    	if(e.target){
+    		if(e.target.id){
+    			var t=e.target.id.substr(4);
+    			if(t){
+    				this._getTabDatas(t);
+    			}
+    		}
+    	}
     }
 	render() {
+		console.log("渲染1次");
 		const that = this;
-		let render= this.state.data;
-		let renderObj = render.data;
-		let index = 0;
-		let li = [];
-		let tabList = [];
-		for ( let i in renderObj ){
-			index++;
-			if(index<10){
-				index = "0"+index;
-			}
-			li.push(<li>
-		            	<Link to={{ pathname: "/info/detail"}} >
-							<label>-{index}-</label>
-							<p>{ renderObj[i].title }</p>
-						</Link>
-					</li>)
-			tabList.push(<div className="tabList"><ul>{ li }</ul></div>);
-		};
+		let datas= this.state.data.data?this.state.data.data:[];
+	
         return (
             <div className="ranking">
   				<div className="wrap" id="wrap">
   					<div className="header">
 						<h3 className="title">排行榜</h3>
 			            <ul className="tabClick"  >
-			                <li onmousedown={this.checkData(0)} className="week active">周</li><span>|</span>
-			                <li onmousedown={this.checkData(1)} className="mon">月</li><span>|</span>
-			                <li onmousedown={this.checkData(2)} className="year">年</li>
+			                <li id='type0' onClick={this.clickFun.bind(this) }  className="week active">周</li><span>|</span>
+			                <li id='type1' onClick={this.clickFun.bind(this) }  className="mon">月</li><span>|</span>
+			                <li id='type2' onClick={this.clickFun.bind(this) }  className="year">年</li>
 			            </ul>
   					</div>
   					<hr className="wraphr"/>
@@ -156,7 +150,25 @@ class RankingComponent extends React.Component{
 		            </div>
 		            <div className="tabCon">
 		            	<div className="tabBox">
-							{tabList}
+		            	<div className="tabList">
+		            	<ul>
+		            	{/*<img className = "loadingimg" src="../../../images/info/spin.gif" alt=""/>*/}
+		            	{
+		            		datas.map((data,i)=>{
+		            			i=i+1;
+		            			if(i<10){
+		            				i="0"+i;
+		            			}
+		            			return <li>
+		            				<Link to={{ pathname: "/info/detail"}} >
+										<label className={"label"+i}>-{i}-</label>
+										<p>{ data.title }</p>
+									</Link>
+							     	</li>
+						        })
+						}
+						</ul>
+						</div>
 				        </div>
 		            </div>
 		        </div>
@@ -179,13 +191,17 @@ class TypeComponent extends React.Component{
 		const that = this;
 		that._getTypeData();
 	}
+	readySome(e){
+		var data={type:2,id:e.id,name:e.name};
+		this.props.rkn(data);
+	}
 	_getTypeData() {
         const that = this;
         let setData = {
             dataType:'json',
         };
-        $.GetAjax($.httpxhr+'/api/v1/information/getCategory', setData, 'GET', true, function(data , state) {
-        // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
+        $.GetAjax('/v1/information/getCategory', setData, 'GET', true, function(data , state) {
+        // $.GetAjax('http://192.168.1.101:8090/view/info/data/getCategory.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
                 that.setState({
                     data:data
@@ -209,8 +225,14 @@ class TypeComponent extends React.Component{
   				<hr/>
   				{
 					arr.map((data,k) => {
-		        		return  <Link to={{ pathname: '/info/list' }} >
-				        			<p>{data.name}</p>
+						let e = {
+							"name":data.name,
+							"id":data.id
+						}
+						return  <Link to={{ pathname: '/info/list?categoryId'}} >
+		        		     		<button  onClick={this.readySome.bind(this,e)} >
+					        			<p>{data.name}</p>
+					        		</button>
 				        		</Link>
 		        	})
 				}
@@ -233,14 +255,19 @@ class PopularComponent extends React.Component{
 		const that = this;
 		that._getHottagData();
 	}
+	readySome(e){
+		var data={type:1,id:e.id,name:e.name};
+		this.props.rkn(data);
+	}
 	_getHottagData() {
         const that = this;
         let setData = {
             dataType:'json',
         };
-        $.GetAjax($.httpxhr+'/api/v1/information/getHotTags', setData, 'GET', true, function(data , state) {
-        // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
+        $.GetAjax('/v1/information/getHotTags', setData, 'GET', true, function(data , state) {
+        // $.GetAjax('http://192.168.1.101:8090/view/info/data/getHotTags.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
+           	
                 that.setState({
                     data:data
                 });
@@ -264,8 +291,14 @@ class PopularComponent extends React.Component{
 
 				{
 					arr.map((data,k) => {
-		        		return  <Link to={{ pathname: '/info/list' }} >
-				        			<p>{data.name}</p>
+						let e = {
+							"name":data.name,
+							"id":data.id
+						}
+		        		return  <Link to={{ pathname: '/info/list?tagId'}} >
+		        		     		<button  onClick={this.readySome.bind(this,e)} >
+					        			<p>{data.name}</p>
+					        		</button>
 				        		</Link>
 		        	})
 				}
@@ -277,121 +310,88 @@ class PopularComponent extends React.Component{
 class ContainerList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.PageErs = 10; //每页总个数
-        this.FetchNum = 5; //每次请求的总页数
-        this.data = []; //设置初始data状态，填充空数据，避免报错问题
-        this.arrayGroup = []; //拉取数据回来进行分组的转换数组
-        this.nextPagerNum = 1; //当前请求的页数（现在按照每页50条数据拉取，分5组）
-        this.totalPager = [];
-
+        // this.data = []; //设置初始data状态，填充空数据，避免报错问题
+        this.totalPage = 1;
+        this.page = 0;
+        this.Somes=[];
+        this.tagId=[];//如果类型为分类，就加上tagId
+        this.categoryId=[];//如果类型为热门标签，就加上categoryId
+        this.title = [];
 	}
 	state = {
-		pageNum: 1, //当前用户所在页
-		data: []
+		data:[],
+		status: false //当前组件的状态，当为true时更新组件
 	};
     componentDidMount() {
 		const that = this;
 		that._getListDatas();
-		
 	}
-    _getListDatas(nums, tagId, page) {
-        const that = this;
-        let session = sessionStorage.getItem('InfoList' + nums); //判断当前页是否有用户的缓存数据
-        const PageErs = this.PageErs; //每页总个数
-        const FetchNum = this.FetchNum;
-        const pageSize = 50; //请求每页数据
-        if (!session) {
-        	let page = 1;
-            let setData = {
-            	"type":2,
-                "page": page ? page : 1,
-                "pageSize": pageSize,
-                "tagId":tagId ? tagId : ''
-            };
-            $.GetAjax($.httpxhr+'/api/v1/information/page', setData, 'GET', true, function(data, state) {
-            // $.GetAjax('/TJ-province/public/data/sumsAndList.json', setData, 'GET', true, function(data, state) {
-                if (state && data.code == 1) {
-                    var data = data.data;
-                    // 进行数据组装
-                    for (let i = 0; i < data.data.length / PageErs; i++) {
-                        let attr = []; //该数组用于缓存当前页循环的数据信息（最多存15条数据），赋给缓存session
-                        for (let k = i * PageErs; k < i * PageErs + PageErs; k++) {
-                        	if(data.data[k]){
-                    		 attr.push( data.data ? data.data[k] : '');
-                    		}else{
-                    			continue;
-                    		}
-                           
-                        }
-                        // 当前页赋值
-                        that.arrayGroup[i + (page * FetchNum - FetchNum)] = attr;
-                        // 缓存每一页和总页数
-                        sessionStorage.setItem('InfoList' + (page * FetchNum - FetchNum + 1 + i), JSON.stringify(that.arrayGroup[i + (page * FetchNum - FetchNum)]));
-                        sessionStorage.setItem('InfoTotalPager',Math.ceil(data.total/PageErs));
-
-                        // 初始化数据渲染
-                        if (i == 0 && page == 1) {
-                            let pagedata = that.arrayGroup[i + (page * FetchNum - FetchNum)];
-                            that.totalPage = Math.ceil(data.total/PageErs);
-                            that.setState({
-                            	data: pagedata,
-                            	totalPager: that.totalPage,
-                                status: true,
-                            });
-
-                        }
-
-                    }
-
-                } else if (!state) {
-                    setTimeout(function() {
-                        that._getListDatas(nums, tagId, page);
-                        console.log('主人，刚才服务器出了一下小差');
-                    }, 2000);
-                } else {
-                    // $.noDataFunc();
-                }
-            });
-        } else {
-
-            // 用缓存数据更新view达到高效的用户体验
-            session = JSON.parse(session); //将字符串转化为数组数据
-            that.totalPage = Math.ceil(sessionStorage.getItem('InfoTotalPager'));
-            that.setState({
-            	data: session,
-            	totalPager: that.totalPage,
-                status: true,
-            });
-        }
-    }
-    getMoredata(event ,totalPager){
-    	console.log(totalPager);
-    	// console.log(11);
-    	// console.log(this.state.totalPager);
-		// event.preventDefault();
-        totalPager = totalPager ? totalPager : 1; //总页数
-
-        if (this.state.pageNum >= totalPager) { //超过总页数退出
-            return false;
-        } else {
-            this.state.pageNum++; //每次点击加载更多数据进行累计
-            //判断是否发送请求数据，如果即将加载的数据是缓存最后一页，则去请求数据
-            if (this.state.pageNum == this.nextPagerNum * this.FetchNum - 5) { 
-                // 判断缓存中是否存在该数据，如果没有则添加上
-                sessionStorage.getItem('InfoList' + (this.nextPagerNum * this.FetchNum + 1)) ? '' : this._getListDatas(this.nextPagerNum * this.FetchNum + 1, this.nextPagerNum + 1);
-                this.nextPagerNum++;
-            }
-            // 当前页数数据
-            this._getListDatas(this.state.pageNum );
-            // $.cookie('PAGE',this.state.pageNum);
-        }
+    getMoredatas(data){
+    	this._getListDatas(data);
     }
     check(){
 		pageType = this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
 	}
+    _getListDatas(data) {
+        const that = this;
+        that.page++;
+        var setData = {
+        	"type":2,
+            "page": that.page,
+            "pageSize": 10,
+            "tagId":that.tagId?that.tagId : '',
+            "categoryId":that.categoryId? that.categoryId : '' ,
+        };
+        if(data){
+        	if(data.type){
+        		if(data.type==1){//如果类型为分类，就加上tagId
+        			//设置本次请求数据参数
+        			setData["tagId"]=data.id;
+        			setData["categoryId"] = '';
+        			setData["page"] = 1;
+        			//对参数进行重置，加载更多数据时使用新设置的参数值
+					that.Somes=[];
+        			that.tagId = data.id;
+        			that.categoryId = '';
+        			that.page = 1;
+        			that.title = data;
+        			
+        		}else if(data.type==2){//如果类型为热门标签，就加上categoryId
+        			//设置本次请求数据参数
+					setData["categoryId"]=data.id;
+					setData["tagId"] = '';
+					setData["page"] = 1;
+					//对参数进行重置，加载更多数据时使用新设置的参数值
+					that.categoryId = data.id;
+					that.Somes=[];
+					that.tagId = '';
+					that.page = 1;
+					that.title = data;
+        		}
+        	}
+        }
+        
+        $.GetAjax('/v1/information/page', setData, 'GET', true, function(data, state) {
+        // $.GetAjax('http://192.168.1.101:8090/view/info/data/page.json', setData, 'GET', true, function(data, state) {
+            if (state && data.code == 1) {
+               that.Somes.push(data.data.data);
+               that.setState({
+	               	data:that.Somes,
+	               	status:true
+               });
+            } else if(!state) {
+                 setTimeout(function() {//数据没有请求成功，就一直请求
+                    // that._getHottagData();
+                    that._getListDatas();
+                    console.log('主人，刚才服务器出了一下小差');
+                }, 2000);
+            } else {
+                // $.noDataFunc();
+            }
+        });
+    }
 	render() {
-		this.check();
-		// console.log(this.state.totalPager);
+		let some1=this.state.data?this.state.data:[];
 		return (
 			<div className="information">
 
@@ -399,7 +399,7 @@ class ContainerList extends React.Component {
 					if(pageType=="info"){
 						return false;
 					}else{
-						return <TitlebarComponent data={this.state.data ? this.state.data : []} getDatas={this._getListDatas} />;
+						return <TitlebarComponent data={this.title}  />;
 					}
 				})()}
 				
@@ -409,14 +409,22 @@ class ContainerList extends React.Component {
 					<div className="topR"></div>
 				</div>
 				<div className="content">
-
-					<ListComponent getMoredata = {this.getMoredata(event,this.state.totalPager)} data={this.state.data ? this.state.data : []}/>
+					<div className="left">
+						 {
+				        	some1.map((data1,k) => {
+				        		 return <ListComponent     data={data1?  data1 : []}/>
+					   			 })
+				        }
+			           <div className="buttom"  >
+							<button onClick={this.getMoredatas.bind(this)} >+&nbsp;加载更多</button>
+						</div>
+					</div>
+              
 
 		      		<div className="right">
-
 		      			<RankingComponent/>
-		      			<TypeComponent/>
-		      			<PopularComponent/>
+		      			<TypeComponent rkn={this.getMoredatas.bind(this)}/>
+		      			<PopularComponent rkn={this.getMoredatas.bind(this)}/>
 		      			
 		      		</div>
 				</div>

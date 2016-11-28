@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "../../common/style/z";
+@import "../../common/style/css3";
 
 .footer{
 	@bg-color: #45546a;
@@ -9,69 +10,67 @@
 	margin-top: 50px;
 	left: 0;
 	.f-cont{
-		@c-width: 1050px;
-		@c-height: 256px;
-		.maxBody(@c-width,@c-height);
-		.bc();
 		ul{
-			overflow: hidden;
+			.bc();
+			.rel();
+			width: 1050px;
 			li{
-				@li-width: 240px;
-				.maxBody(@li-width,@c-height);
-				margin-right: 30px;
-				.fl();
-				p{
-					.font-s(18px);
-					margin-top: 30px;
-					color: #fff;
-					.font-fm();
-					.font-wb();
-					&.small-font{
-						.font-s();
-						margin-top: 22px;
-					}
-				}
-				a{
-					.d-b();
-					.font-s(16px);
-					.font-fm();
-					color: #fff;
-					margin-top: 22px;
-					&:hover{
-						text-decoration: underline;
-					}
-				}
-				.third-href{
-					border-top: 1px solid #374355;
-					margin-top: 30px;
-					i{
-						.maxBody(40px,40px);
-						.d-ib();
-						background: url('../../images/footer.png') no-repeat;
-						background-size: 80px auto;
-						.rel();
-						top: 30px;
-					}
-					.wechart{
-						background-position: 0 0;
-					}
-					.weibo{
-						background-position: -40px 0;
-						left: 10px;
-					}
+				padding: 40px 0;
+			}
+			a{
+				.d-ib();
+				.font-fm();
+				.font-s(18px);
+				.l-h(18px);
+				color: #fff;
+				border-right: 2px solid #fff;
+				.b-sizing();
+				padding: 0 30px;
+				&:hover{
+					text-decoration: underline;
 				}
 				&:last-child{
-					margin: 0;
+					border: none;
+				}
+			}
+			.third-href{
+				.fr();
+				.abs();
+				top: 32px;
+				right: 0;
+				i{
+					.maxBody(40px,40px);
+					.d-ib();
+					background: url("../../images/footer.png") no-repeat;
+					background-size: 80px auto;
+					.c-point();
+					.border-radius(3px);
+				}
+				.wechart{
+					margin-right: 10px;
+				}
+				.weibo{
+					background-position: -40px 0;
 				}
 			}
 		}
+		
 	}
 	.copyright{
-		.maxBody(100%,30px);
-		.tc();
-		.l-h(30px);
-		.font-s(13px);
+		width: 100%;
 		.ba-c(#172a46);
-		color: #435269;
+		padding: 10px 0;
+		p{
+			width: 1050px;
+			.font-s(14px);
+			.l-h(14px);
+			margin: 10px 0;
+			.font-fm();
+			.bc();
+			color: #45546a;
+			.rel();
+			left: 30px;
+		}
+		
 	}
 }

@@ -1,17 +1,18 @@
 @charset "utf-8";
 @import "../../common/style/z";
-.container-login {
+.container-forget {
     background: #edeff5;
     height: 800px;
     /* background: red; */
 }
 
-.container-login .login-page {
+.container-forget .forget-page {
     width: 510px;
     margin: auto;
 }
 
-.container-login .img_head {
+
+.container-forget .img_head {
     width: 127px;
     height: 54px;
     margin: auto;
@@ -19,7 +20,7 @@
     background-image: url(../../images/login/LOGO.png);
 }
 
-.container-login .login_head_msg {
+.container-forget .forget_head_msg {
     font-family: 微软雅黑;
     font-weight: bold;
     color: #ffffff;
@@ -28,7 +29,39 @@
     line-height: 50px;
 }
 
-.container-login .form {
+
+.container-forget .forget_form_head {
+    width: 510px;
+    height: 50px;
+    border-radius: 5px 5px 0 0;
+    margin-top: 30px;
+    background: linear-gradient(to right, #49befc, #46d2fb);
+}
+
+.container-forget  input {
+    height: 36px;
+    width: 100%;
+   
+}
+
+.container-forget  button {
+    width: 100%;
+    height: 36px;
+    margin-top: 16px;  
+}
+
+.container-forget .msg_error {
+    font-family: 微软雅黑;
+    float: left;
+    color: #fb4f4f;
+    height: 20px;
+    padding-top: 4px;
+    padding-left: 4px;
+    font-size: 12px;
+    opacity: 0;
+
+}
+.container-forget .form {
     position: relative;
     z-index: 1;
     background: #FFFFFF;
@@ -37,168 +70,43 @@
     padding-top: 30px;
     padding-left: 60px;
     padding-right: 60px;
-    padding-bottom: 150px;
+    padding-bottom: 180px;
     text-align: center;
     border-radius: 0 0 6px 6px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.container-login .login_form_head {
-    width: 510px;
-    height: 50px;
-    border-radius: 5px 5px 0 0;
-    margin-top: 30px;
-    background: linear-gradient(to right, #49befc, #46d2fb);
+// .container-forget .forget_step_one {
+//     float: left;
+
+// }
+
+.container-forget .forget_step_two {
+     // float: right;
+    display: none;
+
 }
 
-.container-login .form input {
-    font-family: 微软雅黑;
-    outline: 0;
-    height: 36px;
-    background: #ffffff;
-    width: 100%;
-    border: 0;
-    border-style: solid;
-    border-width: 1px;
-    padding-left: 20px;
-    border-color: #d2d2d2;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 16px;
+.container-forget .forget_step_three {
+     display: none;
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 510px;
+    margin: 0 auto 100px;
+    padding-top: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-bottom: 180px;
+    text-align: center;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.container-login .form button {
-    font-family: 微软雅黑;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #49befc;
-    background: #ffffff;
-    width: 100%;
-    height: 36px;
-    color: #49befc;
-    border-radius: 5px;   
-    font-size: 16px;
-}
 
-.container-login .form button:hover,
-.container-login .form button:active,
-.container-login .form button:focus {
-     color: #ffffff;
-      background: #49befc;   
-}
-
-.container-login .login_weixin {
-    width: 150px;
-    height: 50px;
-    background-image: url(../../images/login/wec-nor.jpg);
-    float: right;
-    margin-right: 30px;
-}
-
-.container-login .login_weixin:hover,
-.container-login .login_weixin:active,
-.container-login .login_weixin:focus {
-    background-image: url(../../images/login/wec-hov.jpg);
-}
-
-.container-login .login_qq {
-    width: 150px;
-    height: 50px;
-    background-image: url(../../images/login/qq-nor.jpg);
-    float: left;
-    margin-left: 30px;
-}
-
-.container-login .login_qq:hover,
-.container-login .login_qq:active,
-.container-login .login_qq:focus {
-    background-image: url(../../images/login/qq-hov.jpg);
-}
-
-.container-login .register {
-    font-size: 14px;
-    margin-top: 20px;
-    float: left;
-    color: #49befc;
-    text-decoration: none;
-}
-
-.container-login .forget {
-    font-size: 14px;
-    margin-top: 20px;
-    float: right;
-    color: #49befc;
-    text-decoration: none;
-}
-
-.container-login .text_login_other {
-    font-family: 微软雅黑;
-    margin-top: 74px;
-    font-size: 16px;
-    color: #edeff4;
-}
-
-.container-login .msg_error {
-    font-family: 微软雅黑;
-    float: left;
-    color: #fb4f4f;
-    font-size: 12px
-}
-
-.container-login .shake_effect {
-    -webkit-animation-name: shake;
-    animation-name: shake;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-}
-
-@-webkit-keyframes shake {
-    from,
-    to {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-    }
-    10%,
-    30%,
-    50%,
-    70%,
-    90% {
-        -webkit-transform: translate3d(-10px, 0, 0);
-        transform: translate3d(-10px, 0, 0);
-    }
-    20%,
-    40%,
-    60%,
-    80% {
-        -webkit-transform: translate3d(10px, 0, 0);
-        transform: translate3d(10px, 0, 0);
-    }
-}
-
-@keyframes shake {
-    from,
-    to {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-    }
-    10%,
-    30%,
-    50%,
-    70%,
-    90% {
-        -webkit-transform: translate3d(-10px, 0, 0);
-        transform: translate3d(-10px, 0, 0);
-    }
-    20%,
-    40%,
-    60%,
-    80% {
-        -webkit-transform: translate3d(10px, 0, 0);
-        transform: translate3d(10px, 0, 0);
-    }
-}
-
-.container-login p .center {
-    color: #fff;
-    font-family: "Microsoft YaHei";
+.container-forget .reset_success{
+    width: 91px;
+    height: 91px;
+    margin: auto;   
+    background-image: url(../../images/login/ic-check.jpg);
 }

@@ -18,7 +18,7 @@ class ContainerInfo extends React.Component {
 	
 	check(){
 		pageType= this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
-		console.log(pageType);
+		// console.log(pageType);
 		if(pageType == "info"){
 			this.result = [<Carousel />,<List parent={this.props.parent}/>];
 		}else if(pageType == "list"){
@@ -31,11 +31,13 @@ class ContainerInfo extends React.Component {
 		this.check();
 		return (
 			<div className="container-info">
+
 				{this.result[0]}
+
 		      	<div className="con">
+		      	
 		      		{this.result[1] }
 				        
-			        {/*<Route path="/Information" onlyActiveOnIndex component={Information}/>*/}
 		      	</div>
 			</div>
 		)

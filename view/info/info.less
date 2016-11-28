@@ -1,9 +1,8 @@
 @charset "utf-8";
 @import "../../common/style/z";
-
 .container-info {
     width: 1100px;
-    margin:auto;
+    margin: auto;
     margin-top: 60px;
     margin-bottom: 100px;
     .font-fm();
@@ -52,8 +51,8 @@
                     }
                 }
             }
-            .swiper-pagination{
-                .swiper-pagination-bullet-active{
+            .swiper-pagination {
+                .swiper-pagination-bullet-active {
                     opacity: 1;
                     background: #fff;
                 }
@@ -161,8 +160,8 @@
             .content {
                 .maxBody(1100px, auto);
                 .b-sizing();
-                height:auto!important; 
-				overflow: auto;
+                height: auto!important;
+                overflow: auto;
                 min-height: 780px !important;
                 clear: both;
                 background: #fff;
@@ -186,7 +185,7 @@
                             padding-bottom: 10px;
                             float: left;
                             clear: both;
-                            .inlinea{
+                            .inlinea {
                                 display: inline-block;
                                 width: 100%;
                                 text-decoration: none;
@@ -235,8 +234,8 @@
                         .pos (r);
                         .tc();
                         float: left;
-                        clear:both;
-                        input {
+                        clear: both;
+                        button {
                             .maxBody(170px, 37px);
                             .tc();
                             .font-s(16px);
@@ -246,6 +245,8 @@
                             border-radius: 26px;
                             margin-top: 20px;
                             border: 2px solid #49bffc;
+                            background: rgba(255, 255, 255, 0);
+                            outline: none;
                         }
                     }
                 }
@@ -257,7 +258,7 @@
                     padding-left: 15px;
                     padding-right: 30px;
                     float: right;
-                    clear:both;
+                    clear: both;
                     right: 0;
                     .ranking {
                         .maxBody(100%, 400px);
@@ -267,23 +268,48 @@
                             box-sizing: border-box;
                             font-family: "Microsoft Yahei ui", "微软雅黑";
                         }
-                        
                         .header {
                             display: inline;
                             line-height: 2.5;
                         }
-                        
                         ul,
                         li {
-                            list-style: none
+                            list-style: none;
                         }
-                        
+                        .tabList-active{
+                           animation:myfirst 1.5s;
+                           -moz-animation:myfirst 1.5s; //Firefox
+                           -webkit-animation:myfirst 1.5s; //Safari and Chrome
+                           -o-animation:myfirst 1.5s; //Opera
+                       }
+                       @keyframes myfirst
+                       {
+                       from {   opacity: 0;}
+                       to {    opacity: 1;}
+                       }
+                       
+                       @-moz-keyframes myfirst /*  Firefox  */
+                       {
+                       from {   opacity: 0;}
+                       to {    opacity: 1;}
+                       }
+                       
+                       @-webkit-keyframes myfirst /* Safari and Chrome */
+                       {
+                       from {   opacity: 0;}
+                       to {    opacity: 1;}
+                       }
+                       
+                       @-o-keyframes myfirst /* Opera */
+                       {
+                       from {   opacity: 0;}
+                       to {    opacity: 1;}
+                       } 
                         .tabClick {
                             width: 30%;
                             float: right;
                             overflow: hidden
                         }
-                        
                         .tabClick li {
                             width: 25%;
                             float: left;
@@ -292,7 +318,6 @@
                             font-size: 16px;
                             cursor: pointer;
                         }
-                        
                         .tabClick span {
                             // width: 25%;
                             float: left;
@@ -300,22 +325,19 @@
                             color: #bbbbbb;
                             font-size: 16px;
                         }
-                        
                         .tabClick li.active {
                             color: #49befc;
                             transition: 0.1s;
                             font-weight: bold
                         }
-                        
                         .tabCon {
                             width: 330px;
                             overflow: hidden
                         }
-                        
                         .tabBox {
-                            position: relative
+                            position: relative;
+                            // opacity: 0;
                         }
-                        
                         .tabList {
                             word-break: break-all;
                             width: 330px;
@@ -325,7 +347,6 @@
                             font-size: 16px;
                             color: #4b4b4b;
                         }
-                        
                         .tabList a {
                             font-size: 16px;
                             width: 330px;
@@ -334,7 +355,6 @@
                             text-overflow: ellipsis;
                             line-height: 1.5;
                         }
-                        
                         .lineBorder {
                             height: 2px;
                             overflow: hidden;
@@ -342,35 +362,31 @@
                             background: #f3f3f3;
                             display: none;
                         }
-                        
                         .lineDiv {
                             background: #099;
                             height: 2px;
                             width: 25%;
                         }
-                        
                         .wrap .title {
                             float: left;
                             font-size: 18px;
                         }
-                        
                         .wraphr {
                             width: 100%;
                         }
-                        
                         .tabList>ul {
                             display: inline-block;
-                            padding:0;
-                            margin:0;
+                            padding: 0;
+                            margin: 0;
+                            
                         }
-                        
                         .tabList>ul>li>a {
                             display: inline-block;
                         }
-                        
-                        .tabList>ul>li>a label{
+                        .tabList>ul>li>a label {
                             width: 40px;
                             float: left;
+                            color:#bbbbbb;
                         }
                         .tabList>ul>li>a p {
                             display: inline;
@@ -381,6 +397,11 @@
                             overflow: hidden;
                             margin: 0;
                         }
+                         .tabList>ul>li>a .label01,
+                         .tabList>ul>li>a .label02,
+                         .tabList>ul>li>a .label03{
+                            color:#4b4b4b;
+                        }
                     }
                     hr {
                         border: 1px solid #e5e5e5;
@@ -389,54 +410,75 @@
                     }
                     .type {
                         margin-top: 60px;
-                        p {
-                            font-size: 16px;
-                            color: #4b4b4b;
-                            line-height: 2;
-                        }
                         .title {
                             font-size: 18px;
                             color: #222222;
+                        }
+                        a{
+                            filter:chroma(color=#000000);
+                            button {
+                                border: none;
+                                background: none;
+                                outline: none;
+                                p {
+                                    cursor: pointer;
+                                    font-size: 16px;
+                                    color: #4b4b4b;
+                                    line-height: 2;
+                                }
+                            }
                         }
                     }
                     .Popular {
                         margin-top: 60px;
-                        p {
-                            // .maxBody(150px,50px);
-                            .tc();
-                            .font-s(14px);
-                            .b-sizing();
-                            cursor: pointer;
-                            color: #49befc;
-                            border-radius: 20px;
-                            margin-top: 20px;
-                            margin-right: 20px;
-                            border: 2px solid #49befc;
-                            padding: 7px 14px 7px 14px;
-                            float: left;
-                        }
                         .title {
                             font-size: 18px;
                             color: #222222;
                         }
+                        a{
+                             filter:chroma(color=#000000);
+                              button {
+                                border: none;
+                                background: none;
+                                outline: none;
+                                p {
+                                    // .maxBody(150px,50px);
+                                    .tc();
+                                    .font-s(14px);
+                                    .b-sizing();
+                                    cursor: pointer;
+                                    color: #49befc;
+                                    border-radius: 20px;
+                                    margin-top: 20px;
+                                    margin-right: 20px;
+                                    border: 2px solid #49befc;
+                                    padding: 7px 14px 7px 14px;
+                                    float: left;
+                                }
+                            }
+                        }
                     }
                 }
-                .clearfloat{
-                	visibility: hidden; 
-				    display: block; 
-				    font-size: 0; 
-				    content: "."; 
-				    clear: both; 
-				    height: 0; 
-                	clear:both;height:0;font-size: 1px;line-height: 0px;
+                .clearfloat {
+                    visibility: hidden;
+                    display: block;
+                    font-size: 0;
+                    content: ".";
+                    clear: both;
+                    height: 0;
+                    clear: both;
+                    height: 0;
+                    font-size: 1px;
+                    line-height: 0px;
                 }
             }
         }
     }
-    .con:after{
-    	clear: both;     /*清除左右两边浮动。*/
-    	visibility: hidden; 
-    	.maxBody(100%, auto);
+    .con:after {
+        clear: both;
+        /*清除左右两边浮动。*/
+        visibility: hidden;
+        .maxBody(100%, auto);
         .pos (r);
         .b-sizing();
     }

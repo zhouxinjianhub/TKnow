@@ -17,34 +17,23 @@ class Footer extends React.Component {
 				<div className="f-cont">
 					<ul>
 						<li>
-							<p>关于映潮</p>
-							<Link to={{ pathname: "/"}} >公司官网</Link>
+							<Link to={{ pathname: "/"}} >服务声明</Link>
+							<Link to={{ pathname: "/"}} >关于我们</Link>
 							<Link to={{ pathname: "/"}} >联系我们</Link>
 							<Link to={{ pathname: "/"}} >意见反馈</Link>
+							<Link to={{ pathname: "/"}} >常见问题</Link>
 						</li>
-						<li>
-							<p>数据服务</p>
-							<Link to={{ pathname: "/"}} >地域</Link>
-							<Link to={{ pathname: "/"}} >行业</Link>
-							<Link to={{ pathname: "/"}} >资讯</Link>
-						</li>
-						<li>
-							<p>数据产品</p>
-							<Link to={{ pathname: "/"}} >映潮指数</Link>
-							<Link to={{ pathname: "/"}} >天玑</Link>
-							<Link to={{ pathname: "/"}} >天知道APP</Link>
-						</li>
-						<li>
-							<p>版权信息</p>
-							<p className="small-font">天知道 所展示数据内容版权归映潮科技所有，任何商业用途均需联系本公司。如未经授权用作他处，本公司将保留追究法律责任的权利。</p>
-							<div className="third-href">
-								<i className="wechart"></i>
-								<i className="weibo"></i>
-							</div>
-						</li>
+						<div className="third-href">
+							<i className="wechart"></i>
+							<i className="weibo"></i>
+						</div>
 					</ul>
+
 				</div>
-				<div className="copyright">蜀ICP备12008686号&nbsp;Copyright&copy;&nbsp;2015-2016&nbsp;yingchaozhishu.com&nbsp;All&nbsp;Rights&nbsp;Reserved</div>
+				<div className="copyright">
+					<p>Copyright&copy;&nbsp;&nbsp;2015-2016&nbsp;&nbsp;yingchaozhishu.com&nbsp;&nbsp;All&nbsp;&nbsp;Rights&nbsp;&nbsp;Reserved&nbsp;&nbsp;&nbsp;&nbsp;蜀ICP备12008686号-1</p>
+					<p>地址：成都市高新区吉泰五路88号香年广场T2-3312&nbsp;&nbsp;&nbsp;&nbsp;邮编：610000&nbsp;&nbsp;&nbsp;&nbsp;电话：028-83117030&nbsp;&nbsp;&nbsp;&nbsp;传真：028-83117030&nbsp;&nbsp;&nbsp;&nbsp;邮箱: service@yingchaozhishu.com</p>
+				</div>
 			</div>
 		)
 	}

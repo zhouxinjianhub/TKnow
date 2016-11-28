@@ -11,7 +11,7 @@
 	.b-sizing();
 	background: @bgColor;
 	.box-shadow(@borderShadow);
-	border-radius: 6px;
+	.border-radius(6px);
 	margin-top: 30px;
 }
 .container-regional{
@@ -40,6 +40,73 @@
 				.abs();
 				right: 21px;
 				top: 0;
+			}
+			.nav-list-module{
+				.abs();
+				.z-index(99);
+				margin-left: -25px;
+				.clearfix();
+				.b-sizing();
+				.box-shadow(@borderShadow);
+				.border-radius(6px);
+				.d-n();
+				div{
+					background: #fff;
+					.d-ib();
+					height: 320px;
+					border-left: 1px solid #D7DBE5;
+					.b-sizing();
+					&.check-1{
+						border: 0;
+						width: 213px;
+						span{
+							padding: 0 66px 0 25px;
+						}
+					}
+					&.check-2{
+						.abs();
+						left: 212px;
+						top: 0;
+						width: 117px;
+						span{
+							padding: 0 40px 0 25px;
+						}
+					}
+					&.check-3{
+						.abs();
+						left: 329px;
+						top: 0;
+						width: 352px;
+						span{
+							width: 117px;
+							height: 80px;
+							.text-c();
+						}
+					}
+					
+					span{
+						@spanHeight: 80px;
+						.d-ib();
+						width: 100%;
+						.l-h(@spanHeight);
+						.b-sizing();
+						i{
+							.font-s(20px);
+							.abs();
+							right: 21px;
+							top: 0;
+							color: transparent;
+						}
+						&.current{
+							.blue-gradient();
+							color: #fff;
+							.rel();
+							i{
+								color: #fff;
+							}
+						}
+					}
+				}
 			}
 		}
 		.map-module{
@@ -98,8 +165,46 @@
 			.b-sizing();
 			.pie-canvas{
 				.maxBody(100%,380px);
+				.rel();
 				.pie1,.pie2{
 					.maxBody(325px,380px);
+				}
+				.pie-legend{
+					.abs();
+					right: 0;
+					top: 0;
+					.maxBody(145px,380px);
+					.d-flex-v();
+					li{
+						.flex();
+						.d-flex-h();
+						.flex-vc();
+						.legend-left{
+							.d-ib();
+							.maxBody(16px,16px);
+							.yellow-gradient();
+						}
+						.legend-right{
+							.d-ib();
+							.fl();
+							p{
+								.d-b();
+								margin-left: 10px;
+								.font-fm();
+								&:first-child{
+									.font-s(14px);
+								}
+								&:last-child{
+									.font-s(16px);
+									.font-wb();
+									.fontsmall{
+										.font-s(12px);
+										.font-wn();
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 			.pie-title{

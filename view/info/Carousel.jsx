@@ -94,8 +94,8 @@ class ContainerCarousel extends React.Component {
             type:1,
             needAll:true
         };
-        $.GetAjax($.httpxhr+'/api/v1/information/page', setData, 'GET', true, function(data , state) {
-        // $.GetAjax('/view/info/data/getAreaScale.json', setData,'GET', true, function(data ,state) {
+        $.GetAjax('/v1/information/page', setData, 'GET', true, function(data , state) {
+        // $.GetAjax('http://192.168.1.101:8090/view/info/data/page.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
                 that.setState({
                     data:data
