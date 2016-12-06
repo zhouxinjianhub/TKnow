@@ -1,0 +1,141 @@
+@charset "utf-8";
+@import "../../common/style/css3";
+@import "../../common/style/z";
+
+@bgColor: #F8F8F8;
+@borderShadow: 0 5px 20px rgba(0,0,0,.05);
+.publicMoudle(){
+	.b-sizing();
+	background: @bgColor;
+	.box-shadow(@borderShadow);
+	.border-radius(6px);
+}
+.container-aboutme{
+	@allWidth: 1050px;
+	@navWidth: 150px;
+	.maxBody(@allWidth,100%);
+	.bc();
+	.clearfix();
+	.publicMoudle();
+	.aboutme-nav{
+		width: @navWidth;
+		.fl();
+		ul{
+			li{
+				.l-h(80px);
+				.rel();
+				a{
+					.d-ib();
+					.maxBody(@navWidth,100%);
+					padding-left: 20px;
+					.b-sizing();
+					.font-s(14px);
+					color: #4b4b4b;
+				}
+				&:first-child{
+					border-top-left-radius: 6px;
+				}
+				&:last-child{
+					border-bottom-left-radius: 6px;
+				}
+				&:hover{
+					background: #45546a;
+					a{
+						color: #fff;
+					}
+				}
+				&.current{
+					background: #45546a;
+					a{
+						color: #fff;
+					}
+				}
+				.iconfont{
+					.font-s(14px);
+					.abs();
+					right: 21px;
+					top: 0;
+					color: @bgColor;
+				}
+			}
+		}
+	}
+	.aboutme-content{
+		width: @allWidth - @navWidth;
+		margin-left: @navWidth;
+		min-height: 520px;
+		background: #fff;
+		.box-shadow(@borderShadow);
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		.b-sizing();
+		padding: 20px 30px; 
+		strong,p{
+			.d-b();
+			.font-s(14px);
+			margin-bottom: 10px;
+			color: #4b4b4b;
+		}
+		.red{
+			color: red;
+		}
+		a{
+			color: red;
+		}
+	}
+	.aboutme-feedback{
+		width: @allWidth - @navWidth;
+		margin-left: @navWidth;
+		min-height: 520px;
+		background: #fff;
+		.box-shadow(@borderShadow);
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		.b-sizing();
+		padding: 20px 30px;
+		.aboutme-input{
+			color: #555;
+			b{
+				.fl();
+				.l-h(30px);
+				.font-s(15px);
+			}
+			.inputer{
+				.d-b();
+				.border-radius(6px);
+				.b-sizing();
+				.font-s(14px);
+				padding: 5px 10px;
+				border: 1px solid #ccc;
+				margin-left: 10%;
+				margin-bottom: 20px;
+			}
+			textarea{
+				.maxBody(90%,320px);
+			}
+			input[type="text"]{
+				width: 40%;
+				.l-h(30px);
+			}
+		}
+		.texter{
+			.font-s(10px);
+			margin-left: 10%;
+		}
+		.aboutme-submit{
+			width: 40%;
+			.l-h(30px);
+			border: 1px solid #49befc;
+			margin-left: 10%;
+			margin-top: 30px;
+			color: #49befc;
+			.border-radius(6px);
+			.b-sizing();
+			&:hover{
+				color: #fff;
+				background: #49befc;
+				.c-point();
+			}
+		}
+	}
+}

@@ -20,6 +20,7 @@
 			url: $.httpxhr+url,
 			type: type,
 			data: data,
+			header:{"token": $.cookie('token')},
 			async: async
 
 		}).done(function(data) {

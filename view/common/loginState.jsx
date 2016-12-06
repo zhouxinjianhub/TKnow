@@ -11,7 +11,7 @@ class Nologin extends React.Component {
 			<div className="nav-login">
 				<Link to={{ pathname: "/login"}} >登录</Link>
 				<span>/</span>
-				<Link to={{ pathname: "/login"}} >注册</Link>
+				<Link to={{ pathname: "/register"}} >注册</Link>
 			</div>
 		)
 	}
@@ -24,7 +24,7 @@ class Islogin extends React.Component {
 	render() {
 		return (
 			<div className="nav-login">
-				<Link to={{ pathname: "/login"}} >{this.props.userName}</Link>
+				<Link to={{ pathname: this.props.user.url}} >{this.props.user.account}</Link>
 				<img src="../../images/user.jpg" />
 			</div>
 		)

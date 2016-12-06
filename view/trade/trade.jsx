@@ -1,18 +1,26 @@
 
 import React from 'react';
-import "./trade.less";
+import ReactDOM from 'react-dom';
+import { Link ,hashHistory} from 'react-router';
+
+import TradeIndex from './tradeIndex';
+import TradeDetail from './tradeDetail';
 
 class ContainerTrade extends React.Component {
 	constructor(props) {
-		super(props);
-	}
-	componentDidMount() {
-
+		super(props);		
 	}
 	render() {
+		let tradeName = this.props.parent.params.tradeName;
 		return (
 			<div className="container-trade">
-			   trade
+				{(()=>{
+					switch( tradeName ){
+						case "tradeIndex"   : return <TradeIndex/>
+						case "tradeDetail"  : return <TradeDetail/>
+						default : 	     return <TradeIndex/>
+					}
+				})()}
 			</div>
 		)
 	}

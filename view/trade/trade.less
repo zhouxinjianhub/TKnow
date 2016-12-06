@@ -1,0 +1,114 @@
+@charset "utf-8";
+@import "../../common/style/css3";
+@import "../../common/style/z";
+
+@bgColor: #F8F8F8;
+@borderShadow: 0 5px 20px rgba(0,0,0,.05);
+.publicMoudle(){
+    .b-sizing();
+    background: @bgColor;
+    .box-shadow(@borderShadow);
+    .border-radius(6px);
+}
+ .container-trade-index {
+    background: #edeff5;
+    .main {
+       
+        min-height: 560px;
+        width: 1100px;
+        margin: auto;
+    }
+
+    .content {
+        .publicMoudle();
+        float: left;
+        height: 560px;
+        width: 805px;
+        background-color: #f8f8f8;
+    }
+
+    .content_left {
+        float: left;
+        height: 560px;
+        width: 175px;
+        background-color: #f8f8f8;
+        overflow: auto;
+        .tab {
+            font-family: 微软雅黑;
+            color: #49befc;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 175px;
+            text-align: center;
+            border-width: 0px;
+            height: 80px; 
+            outline: none;  
+        }
+
+        .tab:hover,
+        .tab:active,
+        .tab:focus {
+                color: #ffffff;
+                background: linear-gradient(to right, #49befc, #46d2fb);
+            }
+        .iconfont{
+            .font-s(14px);
+            .abs();
+            right: 21px;
+            top: 0;
+            color: @bgColor;
+        }
+    }
+
+    
+
+    .content_right {
+        .publicMoudle();
+        float: left;
+        height: 560px;
+        width: 630px;
+        background-color: #ffffff;
+        overflow: auto;
+    }
+
+    .hot {
+        .publicMoudle();
+        float: left;
+        height: 560px;
+        width: 265px;
+        position: relative;
+        left: 30px;
+        background-color: #ffffff;
+    }
+
+    .label {
+        font-family: 微软雅黑;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #49befc;
+        background: #ffffff;
+        color: #49befc;
+        border-radius: 15px;
+        font-size: 14px;
+        height: 30px;
+        width: 100px;
+        margin-left: 15px;
+        margin-top: 20px;
+        outline:none
+    }
+
+    .label:hover,
+    .label:active,
+    .label:focus {
+        color: #ffffff;
+        background: #49befc;
+    }
+}
+
+//  .content {
+//     background: #edeff5;
+//     height: 400px;
+//     width: 400px;
+//     background-color: red;
+// }

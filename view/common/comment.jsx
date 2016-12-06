@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 import "./comment.less";
 import "../../dist/page.js";
+import Login from "../login/login";
 import { Link } from 'react-router';
 
 
@@ -11,7 +12,6 @@ class CommentComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.totalNum = 2000;
-		this.isGetAjax = true;
 	}
 	state = {
 		data: []
@@ -20,13 +20,16 @@ class CommentComponent extends React.Component {
 		this.option = this.props.option;
 	    this._getDatas(this.option);
 	}
+	componentWillReceiveProps(nextProps){
+		this.option = nextProps.option;
+	    this._getDatas(this.option);
+	}
 	renderPager(total,page) {
 		const self = this;
 		$(".comment-split").createPage({
 	        pageCount:total,
 	        current:page,
 	        backFn:function(p){
-	        	console.log(p);
 	        	self.option.page = p;
 	            self._getDatas(self.option);
 	        }
@@ -42,6 +45,12 @@ class CommentComponent extends React.Component {
 		ReactDOM.findDOMNode(this.refs.residue).innerText = this.totalNum-valueLength;
 	}
 	addInformationController(e){
+		let isLogin = $.userlogin();
+		if ( !isLogin ) {
+			this.openMsk();
+			return false;
+		}
+		e.target.value = "正在提交";
 		const moduleType = this.props.module || false;
 		let url = void 0;
 		let option = {};
@@ -55,11 +64,19 @@ class CommentComponent extends React.Component {
 					informationId: this.option.informationId
 				}
 			})();break;
+			case "region": (()=>{
+				url = "/v1/area/inner/addAreaComment";
+				option = {
+					comment: values,
+					areaId: this.option.areaId
+				}
+			})();break;
 			default: break;
 		};
 		
 		if ( values.length == 0 ) {
 			alert('评论内容不能为空');
+			e.target.value = "发表";
 			ReactDOM.findDOMNode(this.refs.addinfo).value = "";
 			return false;
 		};
@@ -82,25 +99,42 @@ class CommentComponent extends React.Component {
 		let option = config || {};
 		switch (moduleType){
 			case "info":url = "/v1/information/commentList";break;
+			case "region":url = "/v1/area/commentList";break;
 			default: break;
 		};
 		if ( !moduleType ) {return false;};
 		$.GetAjax(url,option,'GET',false,(data,state)=>{
 			if ( state && data.code == 1 ) {
-				this.isGetAjax ? this.renderPager(data['data'].totalPage,data['data'].page) : '';
-				this.isGetAjax = false;
+				this.renderPager(data['data'].totalPage,data['data'].page);
 				this.setState({
 					data: data
 				});
+			}else{
+				this.setState({
+					data: []
+				});
 			}
 		});
+	}
+	focusCheck(e) {
+		e.target.style.borderColor = '#49befc';
+	}
+	blurCheck(e) {
+		e.target.style.borderColor = '#ccc';
+	}
+	closeMsk(state,e) {
+		ReactDOM.findDOMNode(this.refs.openmsk).style.display = "none";
+		state && history.go(0) || "";
+	}
+	openMsk(e) {
+		ReactDOM.findDOMNode(this.refs.openmsk).style.display = "block";
 	}
 	render() {
 		return (
 			<div className="comment-container">
 				<p className="comment-header">评论({this.state.data['data']&&this.state.data['data'].total || 0})</p>
 				<div className="comment-textArea">
-					<textarea placeholder="发表几句评论吧..." onKeyUp={this.checktextarea.bind(this)} ref="addinfo"></textarea>
+					<textarea placeholder="发表几句评论吧..." onChange={this.checktextarea.bind(this)} ref="addinfo" onFocus={this.focusCheck.bind(this)} onBlur={this.blurCheck.bind(this)}></textarea>
 					<p className="comment-default">还可以输入<span ref="residue">{ this.totalNum }</span>个字符</p>
 					<input type="button" value="发表" onClick={this.addInformationController.bind(this)}/>
 				</div>
@@ -134,6 +168,10 @@ class CommentComponent extends React.Component {
 					})()}
 				</ul>
 				<div className="comment-split"></div>
+				<div className="login-alert" ref="openmsk">
+					<div className="msk" onClick = { this.closeMsk.bind(this,false) }></div>
+					<Login source="other" closeMsk={ this.closeMsk.bind(this) }/>
+				</div>
 			</div>
 		)
 	}

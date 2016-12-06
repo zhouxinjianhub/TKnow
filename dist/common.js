@@ -60,7 +60,7 @@ $.extend({
 			result = count;
 		}
 
-		return isShowEnd ? result + "<span class='short-size-span'>元</span>" : result;
+		return result;
 	},
 	// 位数不够补0
 	addZero:function (number) {
@@ -103,16 +103,29 @@ $.extend({
 			}
 		});
 	},
+	isMobile: function () {
+		var windowWidth = $(window).width();
+		var scales = windowWidth/1100;
+		if ( $('body').hasClass('mobileBody') ) {
+			$('#main > .content > div').css({
+				width: '1100px',
+				webkitTransform: 'scale('+scales+')',
+				webkitTransformOrigin: '0 0 0',
+				position: 'absolute',
+				top: '0'
+			})
+		}
+	},
 	// 判断用户是否登录
 	userlogin: function () {
-		let name = '周小建';
-		let url = '/user';
-		var option = {
-			userName: name,
-			url: url
+		let config = {
+			account: $.cookie('account') || false,
+			url: '/user',
+			nickname: $.cookie('nickname') || false,
+			sig: $.cookie('token') || false
 		}
-		let result = name ? option : false;
-		return false;
+		let result = config.sig ? config : false;
+		return result;
 	},
 	// 图片懒加载
 	lazyloadImg: function (url,callback) {
@@ -120,9 +133,9 @@ $.extend({
     	img.src = url;
     	img.onload = callback(img);
 	},
-	MathRand: function () {
+	MathRand: function (sum=5) {
 		var Num=""; 
-		for ( var i = 0; i < 5; i++ ) { 
+		for ( var i = 0; i < sum ; i++ ) { 
 			Num += Math.floor( Math.random()*10 );
 		}
 		return Num;
@@ -138,7 +151,7 @@ $.extend({
 			now = new Date(),
 			now_new = Date.parse(now.toDateString());  //typescript转换写法
 
-		var milliseconds = now_new - timespan,timeSpanStr = void 0;
+		var milliseconds = now - dateTime,timeSpanStr = void 0;
 
 		if (milliseconds <= 1000 * 60 * 1) {
 			timeSpanStr = '刚刚';
@@ -157,6 +170,7 @@ $.extend({
 		} else {
 			timeSpanStr = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 		}
+
 		return timeSpanStr;
 	}
 	//线上路径
@@ -174,17 +188,32 @@ $.onloadJavascript('../config.js');
 
 (function(window) {
     var theUA = window.navigator.userAgent.toLowerCase();
-    if ((theUA.match(/msie\s\d+/) && theUA.match(/msie\s\d+/)[0]) || (theUA.match(/trident\s?\d+/) && theUA.match(/trident\s?\d+/)[0])) {
-        var ieVersion = theUA.match(/msie\s\d+/)[0].match(/\d+/)[0] || theUA.match(/trident\s?\d+/)[0];
-        if (ieVersion <= 9) {
-            var str = "<p style='color:#555;font-size:24px;line-height:20px;font-family:微软雅黑;text-align:left;margin:0 auto;width:400px;'>是时候升级你的浏览器了</p>";
-            var str2 = "<p style='color:#555;font-size:12px;font-family:微软雅黑;text-align:left;margin:auto;width:400px;'>为了获得更好的用户体验，推荐使用:<a href='https://www.baidu.com/s?ie=UTF-8&wd=%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8' target='_blank' style='color:red'>谷歌</a>,"
-            + "<a href='https://www.baidu.com/s?ie=UTF-8&wd=%E7%81%AB%E7%8B%90%E6%B5%8F%E8%A7%88%E5%99%A8' target='_blank' style='color:red'>火狐</a>,"
-            + "<a href='https://www.baidu.com/s?ie=UTF-8&wd=%E7%8C%8E%E8%B1%B9%E6%B5%8F%E8%A7%88%E5%99%A8' target='_blank' style='color:red'>猎豹</a>,或者双核浏览器的<span style='color:red'>极速模式</span></p>";
-            document.writeln("<pre style='background-color:#efeff5; height:100%;border:0;position:fixed;top:0;left:0;width:100%;z-index:9999'>" + 
-            "<h2 style='padding-top:20%;margin:0'><strong>" + str + "<br/></strong></h2><p>" + 
-            str2 + "</p></pre>");
-            document.execCommand("Stop");
-        };
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+    var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+    var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+    var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+    var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+
+    if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+        $('body').addClass('mobileBody');
+    } else {
+        if ((theUA.match(/msie\s\d+/) && theUA.match(/msie\s\d+/)[0]) || (theUA.match(/trident\s?\d+/) && theUA.match(/trident\s?\d+/)[0])) {
+	        var ieVersion = theUA.match(/msie\s\d+/)[0].match(/\d+/)[0] || theUA.match(/trident\s?\d+/)[0];
+	        if (ieVersion <= 9) {
+	            var str = "<p style='color:#555;font-size:24px;line-height:20px;font-family:微软雅黑;text-align:left;margin:0 auto;width:400px;'>是时候升级你的浏览器了</p>";
+	            var str2 = "<p style='color:#555;font-size:12px;font-family:微软雅黑;text-align:left;margin:auto;width:400px;'>为了获得更好的用户体验，推荐使用:<a href='https://www.baidu.com/s?ie=UTF-8&wd=%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8' target='_blank' style='color:red'>谷歌</a>,"
+	            + "<a href='https://www.baidu.com/s?ie=UTF-8&wd=%E7%81%AB%E7%8B%90%E6%B5%8F%E8%A7%88%E5%99%A8' target='_blank' style='color:red'>火狐</a>,"
+	            + "<a href='https://www.baidu.com/s?ie=UTF-8&wd=%E7%8C%8E%E8%B1%B9%E6%B5%8F%E8%A7%88%E5%99%A8' target='_blank' style='color:red'>猎豹</a>,或者双核浏览器的<span style='color:red'>极速模式</span></p>";
+	            document.writeln("<pre style='background-color:#efeff5; height:100%;border:0;position:fixed;top:0;left:0;width:100%;z-index:9999'>" + 
+	            "<h2 style='padding-top:20%;margin:0'><strong>" + str + "<br/></strong></h2><p>" + 
+	            str2 + "</p></pre>");
+	            document.execCommand("Stop");
+	        };
+	    }
     }
+    
 })(window);

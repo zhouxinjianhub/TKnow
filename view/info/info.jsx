@@ -18,13 +18,12 @@ class ContainerInfo extends React.Component {
 	
 	check(){
 		pageType= this.props.parent.params.pagetype ? this.props.parent.params.pagetype : "info";
-		// console.log(pageType);
 		if(pageType == "info"){
 			this.result = [<Carousel />,<List parent={this.props.parent}/>];
 		}else if(pageType == "list"){
 			this.result = ['',<List parent={this.props.parent}/>];
 		}else if(pageType == "detail"){
-			this.result = ['',<Detail/>]
+			this.result = ['',<Detail parent={this.props.parent}/>]
 		}
 	}
 	render() {
@@ -33,12 +32,7 @@ class ContainerInfo extends React.Component {
 			<div className="container-info">
 
 				{this.result[0]}
-
-		      	<div className="con">
-		      	
-		      		{this.result[1] }
-				        
-		      	</div>
+				{this.result[1] }
 			</div>
 		)
 	}

@@ -210,10 +210,16 @@
                                         margin-top: 7px;
                                         color: #bbbbbb;
                                     }
+                                    .summary{
+                                        height:65px;
+                                    }
                                     .title {
                                         font-weight: bold;
                                         color: #222222;
                                         font-size: 18px;
+                                    }
+                                    .title:hover{
+                                        text-decoration: underline;
                                     }
                                     p {
                                         color: #4b4b4b;
@@ -261,6 +267,7 @@
                     clear: both;
                     right: 0;
                     .ranking {
+                        margin-top: 10px;
                         .maxBody(100%, 400px);
                         .wrap {
                             width: 100%;
@@ -269,8 +276,8 @@
                             font-family: "Microsoft Yahei ui", "微软雅黑";
                         }
                         .header {
-                            display: inline;
-                            line-height: 2.5;
+                            width: 100%;
+                            display: inline-block;
                         }
                         ul,
                         li {
@@ -308,7 +315,8 @@
                         .tabClick {
                             width: 30%;
                             float: right;
-                            overflow: hidden
+                            line-height: 1.7;
+                            overflow: hidden;
                         }
                         .tabClick li {
                             width: 25%;
@@ -328,7 +336,9 @@
                         .tabClick li.active {
                             color: #49befc;
                             transition: 0.1s;
-                            font-weight: bold
+                            font-weight: bold;
+                            padding-bottom: 0px;
+                            border-bottom: 1px solid #49befc;
                         }
                         .tabCon {
                             width: 330px;
@@ -370,6 +380,7 @@
                         .wrap .title {
                             float: left;
                             font-size: 18px;
+                            line-height: 1.7;
                         }
                         .wraphr {
                             width: 100%;
@@ -397,6 +408,10 @@
                             overflow: hidden;
                             margin: 0;
                         }
+                        .tabList>ul>li>a p:hover{
+                            color:#47acf2;
+                            text-decoration: underline;
+                        }
                          .tabList>ul>li>a .label01,
                          .tabList>ul>li>a .label02,
                          .tabList>ul>li>a .label03{
@@ -416,6 +431,7 @@
                         }
                         a{
                             filter:chroma(color=#000000);
+                            display: block;
                             button {
                                 border: none;
                                 background: none;
@@ -481,5 +497,50 @@
         .maxBody(100%, auto);
         .pos (r);
         .b-sizing();
+    }
+    .detail{
+         .maxBody(100%, auto);
+        .pos (r);
+        .b-sizing();
+        clear: both;
+        .con{
+            background: #fff;
+            border-radius: 6px;
+            .title{
+                 .maxBody(100%, auto);
+                p{
+                    .font-s(26px);
+                    color:#4b4b4b;
+                    .tc();
+                    padding: 30px;
+                }
+            }
+            .viceText{
+                .maxBody(100%, auto);
+                display: inline-block;
+                .vice{
+                    .maxBody(50%, auto);
+                    float: right;
+                    display: inline-block;
+                    p{
+                        text-align: right;
+                        .font-s(14px);
+                    }
+                    img{
+                        .fr();
+                    }
+                }
+            }
+            .content{
+                 .maxBody(100%, auto);
+                 .b-sizing();
+                 div{
+                    .maxBody(100%, auto);
+                    padding: 30px;
+                    .b-sizing();
+                 }
+            } 
+        }
+       
     }
 }

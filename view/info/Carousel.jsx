@@ -24,7 +24,9 @@ class CarouselComponent extends React.Component{
 	    });
 	}
 	componentWillReceiveProps(nextProps){//在组件接收到一个新的prop时被调用
-         this.data = nextProps ? nextProps.data.data.data : '';
+		let list = nextProps ? nextProps : [];
+		let listdata = list.data.data ? list.data.data : [];
+		this.data = listdata.data ? listdata.data : [];
     }
 	render(){
 		return (
@@ -59,10 +61,12 @@ class AdvertComponent extends React.Component{
 		this.picUrl;
 	}
 	componentWillReceiveProps(nextProps){//在组件接收到一个新的prop时被调用
-         this.data = nextProps ? nextProps.data.data.data : '';
-         this.pathname= this.data[0].url;
-		 this.title = this.data[0].title;
-		 this.picUrl = this.data[0].picUrl;
+		let list = nextProps ? nextProps : [];
+		let listdata = list.data.data ? list.data.data : [];
+		this.data = listdata.data ? listdata.data : [];
+         this.pathname= this.data[0] ? this.data[0].url : '';
+		 this.title = this.data[0] ? this.data[0].title : '';
+		 this.picUrl = this.data[0] ? this.data[0].picUrl : '';
     }
 	render(){
 		return(
@@ -100,18 +104,12 @@ class ContainerCarousel extends React.Component {
                 that.setState({
                     data:data
                 });
-            } else if(!state) {
-                 setTimeout(function() {//数据没有请求成功，就一直请求
-                    that._getDatas();
-                    console.log('主人，刚才服务器出了一下小差');
-                }, 2000);
-            } else {
-                // $.noDataFunc();
+            } else{
+            	console.log("请求数据失败");
             }
         });
     }
 	render() {
-		// console.log(this.state.data);
 		return (
 			<div className="Carousel">
 				<CarouselComponent data={this.state.data ? this.state.data : []} getDatas={this._getDatas}/>

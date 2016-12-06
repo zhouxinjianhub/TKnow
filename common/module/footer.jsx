@@ -9,7 +9,7 @@ class Footer extends React.Component {
 		super(props);
 	}
 	componentDidMount() {
-		console.log('底部加载完成');
+		$.isMobile();
 	}
 	render() {
 		return (
@@ -17,11 +17,11 @@ class Footer extends React.Component {
 				<div className="f-cont">
 					<ul>
 						<li>
-							<Link to={{ pathname: "/"}} >服务声明</Link>
-							<Link to={{ pathname: "/"}} >关于我们</Link>
-							<Link to={{ pathname: "/"}} >联系我们</Link>
-							<Link to={{ pathname: "/"}} >意见反馈</Link>
-							<Link to={{ pathname: "/"}} >常见问题</Link>
+							<Link to={{ pathname: "/aboutme/server"}} >服务声明</Link>
+							<Link to={{ pathname: "/aboutme/about"}} >关于我们</Link>
+							<Link to={{ pathname: "/aboutme/callme"}} >联系我们</Link>
+							<Link to={{ pathname: "/aboutme/feedback"}} >意见反馈</Link>
+							<Link to={{ pathname: "/aboutme/problem"}} >常见问题</Link>
 						</li>
 						<div className="third-href">
 							<i className="wechart"></i>

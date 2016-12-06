@@ -4,17 +4,47 @@ import React from 'react';
 class RegionalBar extends React.Component {
 	constructor(props) {
 		super(props);
+		this.isBar = true;
+		this.bardata = false;
 	}
 	state = {
 		btnCurrent: 's'
 	};
+	getBarDatas(type){
+		// 9 实物型
+		// 10 服务型
+		let id = type && (type == "s" ? "9" : "10") || "9";
+		let config = {
+			id: id,
+			timeId: this.props.timeId,
+			areaId: this.props.areaId
+		}
+		$.GetAjax('/v1/area/getIndustryDistribute', config, 'Get', true, (data,state)=>{
+            if (state && data.code == 1) {
+            	this.isBar = true;
+            	this.bardata = data.data;
+            	this.renderBar();
+            	this.setState({
+            		status: true
+            	});
+            } else {
+            	this.isBar = false;
+            	this.setState({
+            		status: false
+            	});
+            }
+        });
+	}
 	renderBar(){
 		var xAxisData = [];
 		var data = [];
-		for (var i = 1; i < 16; i++) {
-		    xAxisData.push('5月' + i + '日');
-		    data.push(Math.round(Math.random() * 500) + 200);
+		for (var i = 0; i < this.bardata.length; i++) {
+			if ( this.bardata[i] ) {
+				xAxisData.push(this.bardata[i].categoryName);
+		    	data.push(this.bardata[i].indexValue);
+			}
 		}
+		let colors = this.state.btnCurrent == 's' ? ['#fec630','#ff8f2b'] : ['#95cb5f','#41b371'];
 		let option = {
 			grid: [
 		        {
@@ -24,15 +54,13 @@ class RegionalBar extends React.Component {
 		        	height: '74%'
 		        }
 		    ],
-		    legend: {
-		        data:['xxxxx'],
-		        right: '5%'
-		    },
+		    tooltip: {},
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
 		            textStyle: {
-		                color: 'red'
+		                color: '#4b4b4b',
+		                fontSize: '14px'
 		            }
 		        },
 				axisLine:{
@@ -57,49 +85,68 @@ class RegionalBar extends React.Component {
 		    },
 		    series: [{
 		        type: 'bar',
-		        name: 'xxxxx',
+		        name: '',
 		        data: data,
 		        barWidth: 40,
+		        barMinHeight: 10,
 		        itemStyle: {
 		            normal: {
-		              label: {
-		                    show: true,
+		                label: {
+		                    show: false,
 		                    position: 'top',
 		                    formatter: '{c}\n'
 		                },
 		                barBorderRadius:10,
-		                color: '#03a9f4',
+		                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+								  offset: 0, color: colors[0]
+								}, {
+								  offset: 1, color: colors[1]
+								}], false),
 		                shadowColor: 'rgba(0, 0, 0, .5)',
 		                shadowBlur: 20
 		            }
 		        }
 		    }]
 		};
-		this.myChart.showLoading();
+		
 		setTimeout(()=>{
 			this.myChart.hideLoading();
 			this.myChart.setOption(option);
-		},3000);
+		},560);
+		
 	}
 	changeBar(key,e){
-		// console.log(e.target);
-		// console.log(e.target.value);
-		// console.log(key);
 		if ( key == this.state.btnCurrent ) {
 			return false;
 		};
+		this.myChart.showLoading('default',{
+			text: ''
+		});
 		this.setState({
 			btnCurrent: key
 		},()=>{
-			this.renderBar();
+			this.getBarDatas(key);
 		})
 	}
 	componentDidMount() {
-		// 基于准备好的dom，初始化echarts实例
+    	// 基于准备好的dom，初始化echarts实例
         this.myChart = echarts.init(document.getElementById('bar'));
-		this.renderBar();
+		this.myChart.showLoading('default',{
+			text: ''
+		});
+		this.getBarDatas();
+	}
+	componentWillReceiveProps(nextProps){
+		this.myChart.showLoading('default',{
+			text: ''
+		});
+		this.props = nextProps;
+		this.getBarDatas();
 	}
 	render() {
+		if ( this.isBar == false ) {
+			return null;
+		}
 		return (
 			<div className="regional-bar">
 			    <div className="bar-checked">

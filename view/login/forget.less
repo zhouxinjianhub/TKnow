@@ -29,12 +29,35 @@
     line-height: 50px;
 }
 
+.container-forget .login {
+    font-family: 微软雅黑;   
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -7px;    
+}
+
+.container-forget .back {
+    font-family: 微软雅黑;   
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    margin-top: -7px;    
+}
+
 
 .container-forget .forget_form_head {
     width: 510px;
     height: 50px;
     border-radius: 5px 5px 0 0;
     margin-top: 30px;
+     position: relative;
     background: linear-gradient(to right, #49befc, #46d2fb);
 }
 
@@ -44,6 +67,24 @@
    
 }
 
+.container-forget  .div_num {    
+    width: 100%;   
+   
+}
+
+.container-forget  #num {    
+    width: 180px;
+    float: left;
+   
+}
+
+.container-forget  #get_num {    
+    width: 150px;
+    float: left;
+    margin-top: 10px; 
+    margin-left: 30px;  
+}
+
 .container-forget  button {
     width: 100%;
     height: 36px;
@@ -51,17 +92,19 @@
 }
 
 .container-forget .msg_error {
-    font-family: 微软雅黑;
-    float: left;
+    font-family: 微软雅黑;   
     color: #fb4f4f;
     height: 20px;
     padding-top: 4px;
     padding-left: 4px;
     font-size: 12px;
     opacity: 0;
+    clear: both;
+    text-align: left;
 
 }
 .container-forget .form {
+
     position: relative;
     z-index: 1;
     background: #FFFFFF;
@@ -70,16 +113,16 @@
     padding-top: 30px;
     padding-left: 60px;
     padding-right: 60px;
-    padding-bottom: 180px;
+    padding-bottom: 100px;
     text-align: center;
     border-radius: 0 0 6px 6px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-// .container-forget .forget_step_one {
-//     float: left;
+.container-forget .forget_step_one {
+    // display: none;
 
-// }
+}
 
 .container-forget .forget_step_two {
      // float: right;
@@ -87,26 +130,72 @@
 
 }
 
+.container-forget img {
+    width: 159px;
+    height: 46px;
+    margin: auto;
+    margin-top: 21px;   
+    margin-bottom: 30px; 
+
+}
+
+
+
 .container-forget .forget_step_three {
-     display: none;
+    display: none;
     position: relative;
     z-index: 1;
     background: #FFFFFF;
-    max-width: 510px;
-    margin: 0 auto 100px;
-    padding-top: 30px;
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-bottom: 180px;
+    max-width: 570px;
+    margin: auto;
+    margin-top: 40px;
+    padding-top: 88px;  
+    width: 570px;
+    padding-bottom: 100px;
     text-align: center;
-    border-radius: 0 0 6px 6px;
+    border-radius: 6px 6px 6px 6px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+
+.forget_step_three .reset{
+    font-family: 微软雅黑;
+    margin-top: 40px;
+    font-size: 20px;
+    color: #4b4b4b;  
+
+
+}
+.forget_step_three h1{
+   margin-top: 20px;
+   font-family: 微软雅黑;
+   font-weight: bold;
+   font-size: 26px;
+   color: #4b4b4b;
+   margin-bottom: 21px;
+
 }
 
 
 .container-forget .reset_success{
     width: 91px;
     height: 91px;
-    margin: auto;   
+    margin-top: 21px;   
     background-image: url(../../images/login/ic-check.jpg);
+    margin: auto
+}
+
+.forget_step_three .jump{
+    float: left;
+    font-family: 微软雅黑;
+    margin-top: 30px;
+    color: #4b4b4b;
+    font-size: 16px;
+}
+.forget_step_three .jumpnow {
+    float: left;
+    color: #49befc;
+    font-family: 微软雅黑;
+    margin-top: 30px;
+    font-size: 16px;
 }

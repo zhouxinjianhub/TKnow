@@ -9,6 +9,9 @@
 		},
 		//填充html
 		fillHtml:function(obj,args){
+			if ( args.pageCount == "1" ) {
+				return false;
+			}
 			return (function(){
 				obj.empty();
 				//上一页
@@ -54,10 +57,12 @@
 					obj.remove('.nextPage');
 					obj.append('<span class="disabled">下一页</span>');
 				}
+
 			})();
 		},
 		//绑定事件
 		bindEvent:function(obj,args){
+			obj.off();
 			return (function(){
 				obj.on("click","a.pageNumber",function(){
 					var current = parseInt($(this).text());

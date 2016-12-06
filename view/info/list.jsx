@@ -30,23 +30,51 @@ class ListComponent extends React.Component{
 	constructor(props) {
 		super(props);
 	}
+	getTime(time){
+		// 将时间戳(以s为单位)换成时间格式字符串
+		let timestamp = time;
+		let newDate = new Date();
+		newDate.setTime(timestamp * 1000);
+
+		Date.prototype.format = function(format) {
+	       let date = {
+	              "M+": this.getMonth() + 1,
+	              "d+": this.getDate(),
+	              "h+": this.getHours(),
+	              "m+": this.getMinutes(),
+	              "s+": this.getSeconds(),
+	              "q+": Math.floor((this.getMonth() + 3) / 3),
+	              "S+": this.getMilliseconds()
+	       };
+	       if (/(y+)/i.test(format)) {
+	              format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+	       }
+	       for (let k in date) {
+	              if (new RegExp("(" + k + ")").test(format)) {
+	                     format = format.replace(RegExp.$1, RegExp.$1.length == 1
+	                            ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+	              }
+	       }
+	       return format;
+		}
+		return newDate.format('yyyy-MM-dd');
+	}
 	render(){
 		// 渲染列表数据
 		let listArray = this.props.data ? this.props.data : [];
-		// console.info(listArray);
 		return(
 				<ul>
 					 
 					{
 		        		listArray.map((data,k) => {
 					        return	<li>
-										<Link className="inlinea" to={{ pathname: "/info/detail"}} >
+										<Link className="inlinea" to={{ pathname: "/info/detail",query:{id:data.id} }} >
 											<div >
 												<img src={data?data.picUrl : ''} alt=""/>
 												<div>
 													<p className="title">{data? data.title : ""}</p>
-													<p>{data? data.summary : ''}</p>
-													<p className="time"><label htmlFor="">{data? data.created : ""}</label></p>
+													<p className="summary">{data? data.summary : ''}</p>
+													<p className="time"><label htmlFor="">{data? this.getTime(data.created) : ""}</label></p>
 												</div>
 											</div>
 										</Link>
@@ -67,9 +95,6 @@ class RankingComponent extends React.Component{
 	constructor(props) {
 		super(props);
 		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
-		// this.totalPage =[];
-		// this.arr = [true,false,false];
-		// this.tabList = [];
 	}
     state = {
 		data: []
@@ -77,17 +102,14 @@ class RankingComponent extends React.Component{
 	componentDidMount() {
 		const that = this;
 		that._getTabDatas();
-		require.ensure([], require => {
-			// require ("./css/tab.css");
-			require('./js/tab.js');
-		}, 'list')
 	}
 	_getTabDatas(type) {//加载tab选项卡数据方法
         const that = this;
         let setData = {
             dataType:'json',
             type:type ? type : 0,
-            needAll:true
+            "page": 1,
+            "pageSize": 10,
         };
 
         $(".tabList").removeClass("tabList-active");
@@ -99,36 +121,19 @@ class RankingComponent extends React.Component{
                     data:data
                 });
 		    	$(".tabList").addClass("tabList-active");
-			
-            } else if(!state) {
-                 setTimeout(function() {//数据没有请求成功，就一直请求
-                    that._getTabDatas();
-                    console.log('主人，刚才服务器出了一下小差');
-                }, 2000);
+            }else{
+            	that.setState({
+                    data: []
+                });
             }
         });
     }
-  //   checkData(type){
-  //   	const that = this;
-		// if(that.arr[type] == false){
-		// 	that.arr[type] = true;
-		// 	that._getTabDatas(type);
-		// }else{
-		// 	return false;
-		// }
-  //   }
     clickFun(e){
-    	if(e.target){
-    		if(e.target.id){
-    			var t=e.target.id.substr(4);
-    			if(t){
-    				this._getTabDatas(t);
-    			}
-    		}
-    	}
+    	this._getTabDatas(e);
+    	$(".tabClick li").removeClass('active');
+    	$("#type"+e).addClass('active');
     }
 	render() {
-		console.log("渲染1次");
 		const that = this;
 		let datas= this.state.data.data?this.state.data.data:[];
 	
@@ -138,9 +143,9 @@ class RankingComponent extends React.Component{
   					<div className="header">
 						<h3 className="title">排行榜</h3>
 			            <ul className="tabClick"  >
-			                <li id='type0' onClick={this.clickFun.bind(this) }  className="week active">周</li><span>|</span>
-			                <li id='type1' onClick={this.clickFun.bind(this) }  className="mon">月</li><span>|</span>
-			                <li id='type2' onClick={this.clickFun.bind(this) }  className="year">年</li>
+			                <li id='type0' onClick={this.clickFun.bind(this,0) }  className="week active">周</li><span>|</span>
+			                <li id='type1' onClick={this.clickFun.bind(this,1) }  className="mon">月</li><span>|</span>
+			                <li id='type2' onClick={this.clickFun.bind(this,2) }  className="year">年</li>
 			            </ul>
   					</div>
   					<hr className="wraphr"/>
@@ -152,15 +157,17 @@ class RankingComponent extends React.Component{
 		            	<div className="tabBox">
 		            	<div className="tabList">
 		            	<ul>
-		            	{/*<img className = "loadingimg" src="../../../images/info/spin.gif" alt=""/>*/}
 		            	{
 		            		datas.map((data,i)=>{
 		            			i=i+1;
 		            			if(i<10){
 		            				i="0"+i;
 		            			}
+		            			if(i>10){
+		            				return false;
+		            			}
 		            			return <li>
-		            				<Link to={{ pathname: "/info/detail"}} >
+		            				<Link to={{ pathname: "/info/detail",query:{id:data.id}}} >
 										<label className={"label"+i}>-{i}-</label>
 										<p>{ data.title }</p>
 									</Link>
@@ -206,23 +213,26 @@ class TypeComponent extends React.Component{
                 that.setState({
                     data:data
                 });
-            } else if(!state) {
-                 setTimeout(function() {//数据没有请求成功，就一直请求
-                    that._getTypeData();
-                    console.log('主人，刚才服务器出了一下小差');
-                }, 2000);
-            } else {
-                // $.noDataFunc();
+            } else{
+            	that.setState({
+                    data: []
+                });
             }
         });
     }
 	render(){
 		let typedata = this.state.data["data"] ? this.state.data["data"] :'';
 		let arr = Object.keys(typedata).map(key=> typedata[key]);
+
 		return(
 			<div className="type" role="nav">
   				<h3 className="title">分类</h3>
   				<hr/>
+  				<a href="#/info/list?categoryId">
+  					<button onClick={this.readySome.bind(this)}>
+  						<p>全部资讯</p>
+  					</button>
+  				</a>
   				{
 					arr.map((data,k) => {
 						let e = {
@@ -271,13 +281,10 @@ class PopularComponent extends React.Component{
                 that.setState({
                     data:data
                 });
-            } else if(!state) {
-                 setTimeout(function() {//数据没有请求成功，就一直请求
-                    that._getHottagData();
-                    console.log('主人，刚才服务器出了一下小差');
-                }, 2000);
-            } else {
-                // $.noDataFunc();
+            } else{
+            	that.setState({
+                    data: []
+                });
             }
         });
     }
@@ -327,6 +334,7 @@ class ContainerList extends React.Component {
 		that._getListDatas();
 	}
     getMoredatas(data){
+		$(".buttom button").css("display","block");
     	this._getListDatas(data);
     }
     check(){
@@ -374,25 +382,27 @@ class ContainerList extends React.Component {
         $.GetAjax('/v1/information/page', setData, 'GET', true, function(data, state) {
         // $.GetAjax('http://192.168.1.101:8090/view/info/data/page.json', setData, 'GET', true, function(data, state) {
             if (state && data.code == 1) {
+            	let totalPage = data.data.totalPage;
+            	if(that.page == totalPage || that.page > totalPage ){
+            		$(".buttom button").css("display","none");
+            	}
                that.Somes.push(data.data.data);
                that.setState({
 	               	data:that.Somes,
 	               	status:true
                });
-            } else if(!state) {
-                 setTimeout(function() {//数据没有请求成功，就一直请求
-                    // that._getHottagData();
-                    that._getListDatas();
-                    console.log('主人，刚才服务器出了一下小差');
-                }, 2000);
-            } else {
-                // $.noDataFunc();
+            } else{
+            	that.setState({
+                    data: []
+                });
             }
         });
     }
 	render() {
 		let some1=this.state.data?this.state.data:[];
+		this.check();
 		return (
+			<div className="con">
 			<div className="information">
 
 				{(() => {
@@ -412,7 +422,7 @@ class ContainerList extends React.Component {
 					<div className="left">
 						 {
 				        	some1.map((data1,k) => {
-				        		 return <ListComponent     data={data1?  data1 : []}/>
+				        		 return <ListComponent    parent={this.props.parent} data={data1?  data1 : []}/>
 					   			 })
 				        }
 			           <div className="buttom"  >
@@ -434,22 +444,11 @@ class ContainerList extends React.Component {
 					<div className="topR"></div>
 	      		</div>
 			</div>
+			</div>
 		)
 	}
 }
 
 module.exports = ContainerList
 
-// class aaa extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-// 	}
-// 	componentDidMount() {
-// 		console.log(this.props);
-// 	}
-// 	render() {
-// 		return (<div onClick={this.props.bbb}>About</div>)
-// 	}
-// }
 
-// module.exports = aaa

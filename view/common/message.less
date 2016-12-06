@@ -1,0 +1,110 @@
+@charset "utf-8";
+@import "../../common/style/z";
+
+.message{
+    .maxBody(99.9%,auto);
+    .d-ib();
+    .b-sizing();
+    hr{
+    	.maxBody(100%,auto);
+        border: 1px solid #e5e5e5;
+    }
+    .con{
+       .d-b();
+        .b-sizing();
+        .maxBody(1100px,auto);
+        padding-top:90px;
+        margin: auto;
+        .left{
+            .b-sizing();
+            .maxBody(50%,auto);
+            .fl();
+            .d-b();
+            clear: both;
+            p{
+                .font-s(30px);
+                color:#222222;
+            }
+        }
+        .form{
+            .d-ib();
+            .b-sizing();
+            .maxBody(50%,auto);
+            .fl();
+            .d-b();
+            // p{
+            //     .font-s(30px);
+            //     color:#222222;
+            // }
+            .text{
+                .title{
+                    .font-s(30px);
+                    color:#222222;
+                }
+                .textarea{
+                    .maxBody(510px,90px);
+                    .ba-c(#fff);
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    margin-top: 10px;
+                }
+                .msg_error{
+                    .d-i();
+                    .opa(0);
+                    .font-s(14px);
+                    width: 100%;
+                    color: #f12222;
+                    margin-left: 44px;
+                }
+            }
+            
+            .line{
+                margin-top: 30px;
+                p{
+                    .font-s(16px);
+                    .fl();
+                    .l-height(2);
+                    color:#222222;
+                    margin-right: 10px;
+                }
+                .content{
+                	.maxBody(473px,36px);
+                    .ba-c(#fff);
+                    .b-sizing();
+                    border-radius: 6px;
+                    border: 1px solid #e5e5e5;
+                    padding-left: 20px;
+                }
+                .submit{
+                	.maxBody(473px,36px);
+                    .font-s(16px);
+                    .c-point();
+                    .ba-c(#fff);
+                	border-radius: 6px;
+                    border: 1px solid #49befc;
+                    color:#49befc;
+                    margin-left: 43px;
+                    outline:none;
+                }
+                .submit:hover,.submit:active{
+                    .maxBody(473px,36px);
+                    .font-s(16px);
+                    .ba-c(#fff);
+                    .c-point();
+                    border-radius: 6px;
+                    border: 1px solid #49befc;
+                    color:#49befc;
+                    margin-left: 43px;
+                }
+                .msg_error{
+                    .d-i();
+                    .opa(0);
+                    .font-s(14px);
+                    width: 100%;
+                    color: #f12222;
+                    margin-left: 44px;
+                }
+            }
+        }
+    }
+}

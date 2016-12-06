@@ -61,12 +61,12 @@ class ContainerIndex extends React.Component {
 			yczs: {
 				title: '映潮产品',
 				info: [{
-					pathurl: '/',
+					pathurl: '/exponent',
 					imgurl:'../../images/black.gif',
 					lazyurl: '../../images/index/yczs.png',
 					name:'映潮指数'
 				},{
-					pathurl: '/',
+					pathurl: '/about',
 					imgurl:'../../images/black.gif',
 					lazyurl: '../../images/index/tianji.png',
 					name:'天玑'
@@ -105,7 +105,7 @@ class ContainerIndex extends React.Component {
 						let userObj = $.userlogin();
 						let result = userObj ? true : false;
 						switch ( result ) {
-							case true: return <Islogin userName={ userObj.userName }/>;
+							case true: return <Islogin user={ userObj }/>;
 							default:   return <Nologin />;
 						}
 					})()}

@@ -103,7 +103,6 @@
     var init={
         //内容切换
         translate:function(obj,windowWidth,star){
-            console.log(obj.style.opacity );
             // obj.style.webkitTransform='translate3d('+-star*330+'px,0,0)';
             // obj.style.transform='translate3d('+-star*330+',0,0)px';
             obj.style.webkitTransition='opacity ease-out 0.8s 0.9s';
