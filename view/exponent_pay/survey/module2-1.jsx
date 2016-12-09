@@ -1,14 +1,63 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PubSub from 'pubsub-js';
 
 class ContainerSurveyModule2_1 extends React.Component {
 	constructor(props) {
 		super(props);
+		this.viewMoudle = true;
+		this.btnState = "p";
+
+		this.parentData = false;
+        this.childData = false;
+        this.parentName = "";
+        this.childName = "";
 	}
 	componentDidMount() {
 		this.echart = echarts.init(ReactDOM.findDOMNode(this.refs.chart));
+		this.echart.showLoading();
+		this._getDatas();
+	}
+	componentWillReceiveProps(nextProps){
+		this.echart.showLoading();
+        this.props = nextProps;
+        this._getDatas();
+	}
+	_getDatas() {
+		let option = {
+			timeId: this.props.timeId,
+			areaId: this.props.areaId
+		};
+		$.GetAjax('/v1/zhishu/getIntegral', option, 'Get', true, (data,state)=>{
+            if (state && data.code == 1) {
+            	this.viewMoudle = true;
+                this.parentData = data.data && data.data['parent'];
+                this.childData = data.data && data.data['child'];
+                this.parentName = data.data && data.data['parentAreaName'];
+                this.childName = data.data && data.data['childAreaName'];
+                PubSub.publish('JBsub',data.data.indexReport);
+
+                this.showChart( this.btnState == "p" ? this.parentData : this.childData );
+                this.setState({
+                	status: true
+                });
+
+             } else {
+                this.viewMoudle = false;
+                this.setState({
+                	status: false
+                });
+             }
+        });
+	}
+	showChart(chartData) {
 		let xAxisData = ['网络交易额','网络零售额'];
+		let listDataName = ["大宗及B2B","网络零售额","实物型","服务型"];
+		let tradeScale = chartData.tradingSumYearOnYear;
+		let retailScale = chartData.retailYearOnYear;
+		tradeScale = tradeScale >= 0 ? ("+"+tradeScale+"%") : ("-"+tradeScale+"%");
+		retailScale = retailScale >= 0 ? ("+"+retailScale+"%") : ("-"+retailScale+"%");
 		var option = {
 		    tooltip : {
 		        trigger: 'axis',
@@ -16,17 +65,15 @@ class ContainerSurveyModule2_1 extends React.Component {
 		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0]['data'].name+" "+data[0]['data'].value+"<br/>"+data[1]['data'].name+" "+data[1]['data'].value;
+		        	return data[0]['data'].name ? data[0]['data'].name+" "+data[0]['data'].value+"<br/>"+data[1]['data'].name+" "+data[1]['data'].value : "无数据";
 		        }
 		    },
-		    grid: [
-		        {
-		        	x: '3%',
-		        	y: '12%',
-		        	width: '94%',
-		        	height: '74%'
-		        }
-		    ],
+		    grid: [{
+	        	x: '3%',
+	        	y: '20%',
+	        	width: '94%',
+	        	height: '70%'
+	        }],
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
@@ -61,8 +108,8 @@ class ContainerSurveyModule2_1 extends React.Component {
 	            stack: 'A',
 	            barWidth: '50%',
 	            data:[{
-                	value:335,
-                	name:'直达',
+                	value: chartData.stapleAndB2B || 0,
+                	name: listDataName[0],
 		            itemStyle: {
 			            normal: {
 			                label: {
@@ -74,14 +121,14 @@ class ContainerSurveyModule2_1 extends React.Component {
 									}, {
 									  offset: 1, color: '#ff599e'
 									}], false),
-			                shadowColor: 'rgba(0, 0, 0, .5)',
+			                shadowColor: 'rgba(0, 0, 0, 0)',
 			                shadowBlur: 20
 			            }
 			        }
                 },
                 {
-                	value:679, 
-                	name:'营销广告',
+                	value: chartData.entityRetail || 0, 
+                	name: listDataName[2],
 		            itemStyle: {
 			            normal: {
 			                label: {
@@ -95,7 +142,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 									}, {
 									  offset: 1, color: '#41b37e'
 									}], false),
-			                shadowColor: 'rgba(0, 0, 0, .5)',
+			                shadowColor: 'rgba(0, 0, 0, 0)',
 			                shadowBlur: 20
 			            }
 			        }
@@ -106,8 +153,8 @@ class ContainerSurveyModule2_1 extends React.Component {
 	            stack: 'A',
 	            barWidth: '50%',
 	            data:[{
-                	value:440, 
-                	name:'aaaaa',
+                	value: chartData.networkRetail|| 0, 
+                	name: listDataName[1],
                 	label: {
 	                    normal: {
 	                    	show: true,
@@ -122,7 +169,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			                label: {
 			                    show: true,
 			                    position: 'top',
-			                    formatter: '{c}亿元\n同比+30%\n'
+			                    formatter: chartData.networkTradingSum+'万元\n同比'+tradeScale
 			                },
 			                barBorderRadius:[10,10,0,0],
 			                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -130,14 +177,13 @@ class ContainerSurveyModule2_1 extends React.Component {
 									}, {
 									  offset: 1, color: '#49befc'
 									}], false),
-			                shadowColor: 'rgba(0, 0, 0, .5)',
+			                shadowColor: 'rgba(0, 0, 0, 0)',
 			                shadowBlur: 20
 			            }
 			        }
-			    },
-                {
-                	value:526, 
-                	name:'xxxxxxx',
+			    },{
+                	value: chartData.serviceRetail || 0, 
+                	name: listDataName[3],
                 	label: {
 	                    normal: {
 	                    	show: true,
@@ -152,7 +198,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			                label: {
 			                    show: false,
 			                    position: 'top',
-			                    formatter: '{c}亿元\n同比+30%\n'
+			                    formatter: chartData.networkRetail+'万元\n同比'+retailScale
 			                },
 			                barBorderRadius:[10,10,0,0],
 			                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -160,23 +206,48 @@ class ContainerSurveyModule2_1 extends React.Component {
 									}, {
 									  offset: 1, color: '#ff8f2b'
 									}], false),
-			                shadowColor: 'rgba(0, 0, 0, .5)',
+			                shadowColor: 'rgba(0, 0, 0, 0)',
 			                shadowBlur: 20
 			            }
 			        }
                 }]
 		    }]
 		};
+		this.echart.hideLoading();
 		this.echart.setOption(option);
 	}
+	changeNav(e) {
+		if ( $(e.target).hasClass('current') ) {
+			return false;
+		}else{
+			$(e.target).parent().find('span').removeClass('current');
+			$(e.target).addClass('current');
+
+            this.btnState = $(e.target).data('label');
+
+			this.showChart( this.btnState == "p" ? this.parentData : this.childData );
+		}
+	}
 	render() {
+		if ( !this.viewMoudle ) {
+			return false;
+		}
 		return (
 			<div className="survey-module-list">
 			   <div className="title">
 			   		<p>网络交易额与网络零售额</p>
+
 			   		<div className="nav-list">
-			   			<span className="current">全国</span>
-			   			<span>四川</span>
+			   			{(()=>{
+			   				if ( this.parentName ) {
+			   					return <span className="current" onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
+			   				}
+			   			})()}
+			   			{(()=>{
+			   				if ( this.childName ) {
+			   					return <span className="" onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
+			   				}
+			   			})()}
 			   		</div>
 			   </div>
 			   <div className="echarts-box" ref="chart"></div>

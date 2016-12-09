@@ -5,31 +5,38 @@ class RegionalBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.isBar = true;
+		this.messagedata = [];
 		this.bardata = false;
 	}
-	state = {
-		btnCurrent: 's'
-	};
-	getBarDatas(type){
-		// 21 实物型
-		// 22 服务型
-		let id = type && (type == "s" ? "21" : "22") || "21";
+	componentDidMount() {
+    	// 基于准备好的dom，初始化echarts实例
+        this.myChart = echarts.init(document.getElementById('bar-bar'));
+		this.myChart.showLoading('default',{
+			text: ''
+		});
+		this.getBarDatas();
+	}
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+		this.getBarDatas();
+	}
+	getBarDatas(){
 		let config = {
-			id: id,
 			timeId: this.props.timeId,
-			areaId: this.props.areaId
+			areaId: this.props.areaId,
+			categoryId:this.props.categoryId
 		}
-		$.GetAjax('/v1/area/getIndustryDistribute', config, 'Get', true, (data,state)=>{
+		$.GetAjax('/v1/category/industryTendency', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.isBar = true;
-            	this.bardata = data.data;
+            	this.bardata = data.data.list;
+            	this.messagedata = data.data.one;
             	this.renderBar();
             	this.setState({
             		status: true
             	});
             } else {
-            	// this.isBar = false;
-            	this.isBar = true;
+            	this.isBar = false;
             	this.setState({
             		status: false
             	});
@@ -45,7 +52,7 @@ class RegionalBar extends React.Component {
 		    	data.push(this.bardata[i].indexValue);
 			}
 		}
-		let colors = this.state.btnCurrent == 's' ? ['#fec630','#ff8f2b'] : ['#95cb5f','#41b371'];
+		let colors =  ['#fec630','#ff8f2b'] ;
 		let option = {
 			grid: [
 		        {
@@ -116,45 +123,23 @@ class RegionalBar extends React.Component {
 		},560);
 		
 	}
-	changeBar(key,e){
-		if ( key == this.state.btnCurrent ) {
-			return false;
-		};
-		this.myChart.showLoading('default',{
-			text: ''
-		});
-		this.setState({
-			btnCurrent: key
-		},()=>{
-			this.getBarDatas(key);
-		})
-	}
-	componentDidMount() {
-    	// 基于准备好的dom，初始化echarts实例
-        this.myChart = echarts.init(document.getElementById('bar'));
-		this.myChart.showLoading('default',{
-			text: ''
-		});
-		this.getBarDatas();
-	}
-	componentWillReceiveProps(nextProps){
-		this.myChart.showLoading('default',{
-			text: ''
-		});
-		this.props = nextProps;
-		this.getBarDatas();
-	}
 	render() {
 		if ( this.isBar == false ) {
 			return null;
 		}
+		let time = this.messagedata ? this.messagedata.timeName : ' ';
+		let data = this.messagedata ? this.messagedata.networkRetail : ' ';
+		let trading = this.messagedata ? this.messagedata.tradingSumYearOnYear : ' ';
 		return (
-			<div className="regional-bar">
+			<div className="tradeDetail-bar">
 			    <div className="bar-checked">
-			   		<input type="button" className={ this.state.btnCurrent === 's' ? "current" : "" } value="网络零售额" onClick={this.changeBar.bind(this,'s')}/>
-			   		<input type="button" className={ this.state.btnCurrent === 'f' ? "current" : "" } value="网络交易量" onClick={this.changeBar.bind(this,'f')}/>
+			   		<input type="button" className="current" value="网络零售额" />
 			   	</div>
-			    <div className="bar" id="bar"></div>
+			    <div className="bar-bar" id="bar-bar"></div>
+			    <div className="bar-message">
+			    	<p><span>{time}</span><span></span>网络零售额</p>
+					<p><span>{data}</span>元&nbsp;&nbsp;同比上升<span>{trading}</span>%</p>
+			    </div>
 			</div>
 		)
 	}

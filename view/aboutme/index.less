@@ -1,6 +1,7 @@
 @charset "utf-8";
 @import "../../common/style/css3";
 @import "../../common/style/z";
+@import "../../common/style/color";
 
 @bgColor: #F8F8F8;
 @borderShadow: 0 5px 20px rgba(0,0,0,.05);
@@ -39,13 +40,13 @@
 					border-bottom-left-radius: 6px;
 				}
 				&:hover{
-					background: #45546a;
+					.blue-gradient-x();
 					a{
 						color: #fff;
 					}
 				}
 				&.current{
-					background: #45546a;
+					.blue-gradient-x();
 					a{
 						color: #fff;
 					}
@@ -105,7 +106,7 @@
 				.border-radius(6px);
 				.b-sizing();
 				.font-s(14px);
-				padding: 5px 10px;
+				padding: 10px 10px;
 				border: 1px solid #ccc;
 				margin-left: 10%;
 				margin-bottom: 20px;

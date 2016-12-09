@@ -5,25 +5,23 @@ class RegionalBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.isBar = true;
-		this.bardata = false;
+		this.entity = []; // 实物型数据
+		this.service = []; // 服务型数据
 	}
 	state = {
 		btnCurrent: 's'
 	};
 	getBarDatas(type){
-		// 9 实物型
-		// 10 服务型
-		let id = type && (type == "s" ? "9" : "10") || "9";
 		let config = {
-			id: id,
 			timeId: this.props.timeId,
 			areaId: this.props.areaId
 		}
 		$.GetAjax('/v1/area/getIndustryDistribute', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.isBar = true;
-            	this.bardata = data.data;
-            	this.renderBar();
+            	this.entity = data.data && data.data['entity'];
+            	this.service = data.data && data.data['service'];
+            	this.renderBar(this.state.btnCurrent);
             	this.setState({
             		status: true
             	});
@@ -35,15 +33,14 @@ class RegionalBar extends React.Component {
             }
         });
 	}
-	renderBar(){
+	renderBar(type){
 		var xAxisData = [];
 		var data = [];
-		for (var i = 0; i < this.bardata.length; i++) {
-			if ( this.bardata[i] ) {
-				xAxisData.push(this.bardata[i].categoryName);
-		    	data.push(this.bardata[i].indexValue);
-			}
-		}
+		let bardata = type == 's' ? this.entity : this.service;
+		bardata.map((d,k)=>{
+			xAxisData.push(d.name);
+		    data.push(d.value);
+		});
 		let colors = this.state.btnCurrent == 's' ? ['#fec630','#ff8f2b'] : ['#95cb5f','#41b371'];
 		let option = {
 			grid: [
@@ -125,12 +122,12 @@ class RegionalBar extends React.Component {
 		this.setState({
 			btnCurrent: key
 		},()=>{
-			this.getBarDatas(key);
+			this.renderBar(key);
 		})
 	}
 	componentDidMount() {
     	// 基于准备好的dom，初始化echarts实例
-        this.myChart = echarts.init(document.getElementById('bar'));
+        this.myChart = echarts.init(this.refs.bar);
 		this.myChart.showLoading('default',{
 			text: ''
 		});
@@ -153,7 +150,7 @@ class RegionalBar extends React.Component {
 			   		<input type="button" className={ this.state.btnCurrent === 's' ? "current" : "" } value="实务型" onClick={this.changeBar.bind(this,'s')}/>
 			   		<input type="button" className={ this.state.btnCurrent === 'f' ? "current" : "" } value="服务型" onClick={this.changeBar.bind(this,'f')}/>
 			   	</div>
-			    <div className="bar" id="bar"></div>
+			    <div className="bar" ref="bar"></div>
 			</div>
 		)
 	}

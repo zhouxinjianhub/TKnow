@@ -8,12 +8,6 @@ import Report from './report';
 import "./pay.less";
 
 class ContainerPay extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	componentDidMount() {
-
-	}
 	render() {
 		let pageName = this.props.parent.params.name;
 		return (

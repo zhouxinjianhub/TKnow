@@ -21,8 +21,9 @@ class RegionalController extends React.Component {
 		this.datatimeAreaIdTiny = 0;
 		this.datatimeAreaId = 0;
 		this.datatimeAreaNameTiny = '全国';
-		this.datatimeAreaName = '全国';
+		this.datatimeAreaName = '全国';//地域筛选栏默认显示
 		this.datatimeAreaList = [];
+
 	}
 	componentDidMount() {
 		this.getData();
@@ -323,7 +324,19 @@ class RegionalController extends React.Component {
 		        series: [{
 		            type: 'map',
 		            map: mapName,
-		            silent: true
+		            silent: true,
+		            itemStyle:{
+						normal:{
+							borderColor:'#49befc',
+							borderWidth:0,
+							areaColor :'#49befc'
+						},
+						emphasis:{
+							borderColor:'#49befc',
+							borderWidth:0,
+							areaColor :'#49befc'
+						}
+					},
 		        }]
 		    });
 		    this.chart.hideLoading();
@@ -331,7 +344,7 @@ class RegionalController extends React.Component {
 	}
 	render() {
 		return (
-			<div className="regional-nav">
+			<div className="tradeDetail-nav">
 
 			    <div className="select-module" onMouseLeave={this.closeHoverDatatime.bind(this)}>
 			   		<span className="titles" onMouseEnter={this.hoverList1.bind(this)}>{ this.datatimeName }</span>
@@ -350,7 +363,8 @@ class RegionalController extends React.Component {
 			   		</div>
 			   	</div>
 			   <div className="map-module" id="maps"></div>
-			   <div className="button-module"><input type="button" value="查询数据详情" onClick={this.selectData.bind(this)}/></div>
+			   <div className="category-module" id="">{this.props.categoryName}</div>
+			   <div className="button-module"><input type="button" value="查询数据" onClick={this.selectData.bind(this)}/></div>
 			   <div className="share-module"><i className="iconfont icon-share"></i></div>
 			</div>
 		)

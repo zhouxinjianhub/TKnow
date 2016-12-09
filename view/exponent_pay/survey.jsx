@@ -16,6 +16,10 @@ class ContainerSurvey extends React.Component {
 		this.HTMLDOMTIME2 = [];
 		this.HTMLDOMTIME3 = [];
 	}
+	state = {
+		timeId: 75,
+		areaId: 51
+	};
 	componentDidMount() {
 
 	}
@@ -54,9 +58,9 @@ class ContainerSurvey extends React.Component {
 				</div>
 			    
 			   	<Module1 />
-			   	<Module2 />
-			   	<Module3 />
-			   	<Module4 />
+			   	<Module2 timeId={this.state.timeId} areaId={this.state.areaId}/>
+			   	<Module3 timeId={this.state.timeId} areaId={this.state.areaId}/>
+			   	<Module4 timeId={this.state.timeId} areaId={this.state.areaId}/>
 			</div>
 		)
 	}

@@ -172,7 +172,21 @@ $.extend({
 		}
 
 		return timeSpanStr;
-	}
+	},
+	regTest: function( type, str ) {
+		var reg = null;
+		if ( type == "phone" ) {
+			reg = /^0*(13|14|15|17|18|19)\d{9}$/
+		} else if ( type == "email" ) {
+			reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+		} else if ( type == "chinese" ) {
+			reg = /^[u4e00-u9fa5],{0,}$/
+		} else if ( type == "null" ) {
+			reg = /^\S+$/
+		}
+		return reg.test(str);
+	} 
+
 	//线上路径
 	// getCtx: function() {
 	// 	var webroot=document.location.href;

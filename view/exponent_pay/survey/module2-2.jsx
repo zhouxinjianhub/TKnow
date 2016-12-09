@@ -5,21 +5,72 @@ import ReactDOM from 'react-dom';
 class ContainerSurveyModule2_2 extends React.Component {
 	constructor(props) {
 		super(props);
+		this.viewMoudle = true;
+		this.commonData = false;
+		this.parentData = [];
+		this.childData = [];
 	}
 	componentDidMount() {
-		this.echarts = echarts.init(ReactDOM.findDOMNode(this.refs.chart));
+		this.echart = echarts.init(ReactDOM.findDOMNode(this.refs.chart));
+		this.echart.showLoading();
+		this._getDatas();
+	}
+	componentWillReceiveProps(nextProps){
+		this.echart.showLoading();
+        this.props = nextProps;
+        this._getDatas();
+	}
+	_getDatas() {
+		let option = {
+			timeId: this.props.timeId,
+			areaId: this.props.areaId
+		};
+		$.GetAjax('/v1/zhishu/monthlyTrade', option, 'Get', true, (data,state)=>{
+            if (state && data.code == 1) {
+            	this.viewMoudle = true;
+                this.parentData = data.data && data.data['parent'];
+                this.childData = data.data && data.data['child'];
+                this.commonData = data.data;
+
+                this.showChart();
+                this.setState({
+                	status: true
+                },()=>{
+                	this.showPie();
+                });
+
+             } else {
+                this.viewMoudle = false;
+                this.setState({
+                	status: false
+                });
+             }
+        });
+	}
+	showChart() {
+		let legendData = [this.commonData.parentAreaName,this.commonData.childAreaName];
+		let xAxis = [];
+		let parentData = [];
+		let childData = [];
+		this.parentData.map((datas,k)=>{
+			xAxis.push(datas.month < 10 ? "0"+datas.month+"月" : datas.month+"月");
+			parentData.push(datas.indexValue);
+		});
+		this.childData.map((datas,k)=>{
+			xAxis.push(datas.month < 10 ? "0"+datas.month+"月" : datas.month+"月");
+			childData.push(datas.indexValue);
+		});
 		var option = {
 		    tooltip : {
 		        trigger: 'axis',
 		        formatter: (data)=>{
-		        	console.log(data);
-		        	let result = data[0].name+"网络零售额<br/>"+data[0].seriesName+" "+data[0].value+"亿元 "+"环比+"+data[0].value+"<br/>"+
-		        				data[1].seriesName+" "+data[1].value+"亿元 "+"环比+"+data[1].value;
+		        	let result = data[0].name ? data[0].name+"网络零售额<br/>"+data[0].seriesName+" "+data[0].value+"万元 "+"环比+"+data[0].value+"<br/>"+
+		        				data[1].seriesName+" "+data[1].value+"万元 "+"环比+"+data[1].value : "无数据";
 		        	return result;
 		        }
 		    },
 		    legend: {
-		        data:['全国','四川'],
+		        data:legendData,
 		        align: 'left',
         		left: 240
 		    },
@@ -33,7 +84,7 @@ class ContainerSurveyModule2_2 extends React.Component {
 		    xAxis : [{
 	            type : 'category',
 	            boundaryGap : false,
-	            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+	            data : xAxis,
 				axisLine:{
 					show:false
 				},
@@ -48,9 +99,9 @@ class ContainerSurveyModule2_2 extends React.Component {
 	            show: false
 	        }],
 		    series : [{
-	            name:'全国',
+	            name: legendData[1],
 	            type:'line',
-	            stack: '总量',
+	            stack: 'k',
 	            itemStyle: {
 	            	normal: {
 	            		color: '#ff599e',
@@ -64,11 +115,11 @@ class ContainerSurveyModule2_2 extends React.Component {
 	            		}
 	            	}
 	            },
-	            data:[320, 332,320, 332,320, 332,320, 332,320, 332,320, 332]
+	            data: childData
 	        },{
-	            name:'四川',
+	            name:legendData[0],
 	            type:'line',
-	            stack: '总量',
+	            stack: 'k',
 	            label: {
 	                normal: {
 	                    show: false
@@ -87,11 +138,12 @@ class ContainerSurveyModule2_2 extends React.Component {
 	            		}
 	            	}
 	            },
-	            data:[820, 932,320, 332,320, 332,320, 332,320, 332,320, 332]
+	            data: parentData
 	        }]
 		};
-		this.echarts.setOption(option);
-		this.showPie();
+		this.echart.hideLoading();
+		this.echart.setOption(option);
+		
 	}
 	showPie() {
 		this.echartspie = echarts.init(ReactDOM.findDOMNode(this.refs.pie));
@@ -112,44 +164,75 @@ class ContainerSurveyModule2_2 extends React.Component {
 	                }
 	            },
 	            data:[{
-	            	value:35, 
-	            	name:'四川'
+	            	value: this.commonData && this.commonData.childSum, 
+	            	name: this.commonData.childAreaName || "",
+	            	itemStyle: {
+		            	normal: {
+		            		color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+								  offset: 0, color: '#ffac68'
+								}, {
+								  offset: 1, color: '#ff599e'
+								}], false)
+		            	}
+		            }
 	            },{
-	            	value:310,
-	            	name:'全国'
+	            	value: this.commonData && this.commonData.parentSum,
+	            	name: this.commonData.parentAreaName || "",
+	            	itemStyle: {
+		            	normal: {
+		            		color: '#ddd'
+		            	}
+		            }
 	            }]
 	        }]
 		};
 		this.echartspie.setOption(option);
 	}
 	render() {
+		if ( !this.viewMoudle ) {
+			return false;
+		}
 		return (
 			<div className="survey-module-list">
 			   <div className="title">
 			   		<p>月度网络交易额及环比增长率</p>
-			   		<div className="nav-list">
-			   			<span className="current">全国</span>
-			   			<span>四川</span>
-			   		</div>
 			   </div>
 			   <div className="echarts-box" ref="chart"></div>
 			   <ul className="module2-list">
-			   		<li>
-			   			<p>全国</p>
-			   			<p>网络零售额</p>
-			   			<p>247,269,22<span>亿元</span></p>
-			   		</li>
-			   		<li>
-			   			<p>四川省</p>
-			   			<p>网络零售额</p>
-			   			<p>247,269,00<span>亿元</span></p>
-			   		</li>
-			   		<li>
-			   			<p>四川省在全国</p>
-			   			<p>占比</p>
-			   			<p>13.88%</p>
-			   			<div className="module2-pie" ref="pie"></div>
-			   		</li>
+			   		{(()=>{
+			   			
+			   			if ( !this.commonData ) {
+			   				return false;
+			   			}else{
+			   				let HTMLDOMS = [];
+			   				let option = [{
+				   				title: this.commonData.parentAreaName,
+				   				type: '网络零售额',
+				   				total: this.commonData.parentSum+'<span>万元</span>'
+				   			},{
+				   				title: this.commonData.childAreaName,
+				   				type: '网络零售额',
+				   				total: this.commonData.childSum+'<span>万元</span>'
+				   			},{
+				   				title: this.commonData.childAreaName+"在"+this.commonData.parentAreaName,
+				   				type: '占比',
+				   				total: this.commonData.childScale+"%",
+				   				pie: <div className="module2-pie" ref="pie"></div>
+				   			}];
+
+			   				option.map((d,i)=>{
+			   					HTMLDOMS.push(<li>
+			   									{ d.title && <p dangerouslySetInnerHTML={{__html: d.title}}/> || '' }
+			   									{ d.type && <p dangerouslySetInnerHTML={{__html: d.type}}/> || '' }
+			   									{ d.total && <p dangerouslySetInnerHTML={{__html: d.total}}/> || '' }
+									   			{ d.pie || ''}
+									   		</li>)
+			   				})
+			   				return HTMLDOMS;
+			   			}
+			   			
+			   		})()}
+			   		
 			   </ul>
 			</div>
 		)

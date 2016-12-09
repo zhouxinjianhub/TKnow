@@ -18,9 +18,10 @@ class ContainerRegionalList extends React.Component {
 	getTopRouteDatas(){
 		let config = {
 			timeId: this.props.timeId,
-			areaId: this.props.areaId
+			areaId: this.props.areaId,
+			categoryId:this.props.categoryId 
 		}
-		$.GetAjax('/v1/area/topRoute', config, 'Get', true, (data,state)=>{
+		$.GetAjax('/v1/category/topRoute', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.isTopRoute = true;
             	this.topdata = data.data;
@@ -52,8 +53,8 @@ class ContainerRegionalList extends React.Component {
 			return null;
 		}
 		return (
-			<div className="regional-list swiper-container">
-				<p className="regional-list-header">热门榜单</p>
+			<div className="tradeDetail-list swiper-container">
+				<p className="tradeDetail-list-header">热门榜单</p>
 				<div className="swiper-wrapper">
 					{(() => {
 						let topdata = this.topdata || {}
@@ -67,10 +68,17 @@ class ContainerRegionalList extends React.Component {
 							topListHTML.push(<div className="swiper-slide">
 									        	<p className={ classNamed }>{ i } TOP5</p>
 									        	<ul>
-									        		{
-									        			topdata[i].map((data,k)=>{
-									        				return <li><i>{ k+1 }</i>{ data.name }</li>
-									        			})
+									        		{(() => {
+									        			let topdataResult = [];
+									        			if(topdata[i] != null){
+									        				topdata[i].map((data,k)=>{
+										        				topdataResult.push( <li><i>{ k+1 }</i>{ data.name }</li> );
+										        			})
+									        			}
+									        			return topdataResult;
+									        			
+									        		})()
+
 									        		}
 									        	</ul>
 									        </div>)

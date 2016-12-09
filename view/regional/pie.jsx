@@ -222,20 +222,20 @@ class RegionalBar extends React.Component {
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>B2B及大宗</p>
-									<p>{this.piedata.stapleAndB2B || ""}<span className="fontsmall">万元</span></p>
+									<p>{ this.piedata.stapleAndB2B || 0 }<span className="fontsmall">万元</span></p>
 								</div>
 							</li>
 							<li className="fee-color">
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>网络零售额</p>
-									<p>{this.piedata.networkRetail || ""}<span className="fontsmall">万元</span></p>
+									<p>{ this.piedata.networkRetail || 0 }<span className="fontsmall">万元</span></p>
 								</div>
 							</li>
 						</ul>
 					</div>
 					<p className="pie-title">数据解读</p>
-					<p className="pie-content">{this.piedata.tradingModel || ""}</p>
+					<p className="pie-content">{ this.piedata.tradingModel || "" }</p>
 				</div>
 				<div className="pie pie-lingshou">
 					<div className="pie-canvas">
@@ -245,14 +245,14 @@ class RegionalBar extends React.Component {
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>实物型</p>
-									<p>{this.piedata.entityRetail || ""}<span className="fontsmall">万元</span></p>
+									<p>{ this.piedata.entityRetail || 0 }<span className="fontsmall">万元</span></p>
 								</div>
 							</li>
 							<li className="green-color">
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>服务型</p>
-									<p>{this.piedata.serviceRetail || ""}<span className="fontsmall">万元</span></p>
+									<p>{ this.piedata.serviceRetail || 0 }<span className="fontsmall">万元</span></p>
 								</div>
 							</li>
 						</ul>

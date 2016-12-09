@@ -22,6 +22,10 @@ class RegionalController extends React.Component {
 		this.datatimeAreaId = 0;
 		this.datatimeAreaNameTiny = '全国';
 		this.datatimeAreaName = '全国';
+
+		this.AreaNameTiny = '全国';
+		this.AreaName = '全国';
+
 		this.datatimeAreaList = [];
 	}
 	componentDidMount() {
@@ -162,7 +166,7 @@ class RegionalController extends React.Component {
 
         data.map((data,k) => {
 
-	        childHtml.push(<li onClick={this.provinceClickChild.bind(this,k,data.id,data)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
+	        childHtml.push(<li onClick={this.provinceClickChild.bind(this,k,data.id,data)} className={data.isHas ? "" : "disable"} data-region={data.name}>{data.abbr}</li>);
         });
         
 		this.HTMLDOMREGION.push(
@@ -194,6 +198,7 @@ class RegionalController extends React.Component {
 		$('#provinceul').hide();
 		$('#provinceP').html(e.target.innerHTML);
 		this.datatimeAreaNameTiny = e.target.innerHTML;
+		this.AreaNameTiny = $(e.target).data('region');
 
 		$('#provinceul li').removeClass('current');
 		$(e.target).addClass('current');
@@ -213,7 +218,7 @@ class RegionalController extends React.Component {
 			childHtml.push(<li onClick={this.cityClickChild.bind(this,'全省',areaid,[])} className="current">全省</li>);
 
 	        childData.map((data,k) => {
-		        childHtml.push(<li onClick={this.cityClickChild.bind(this,k,data.id,data)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
+		        childHtml.push(<li onClick={this.cityClickChild.bind(this,k,data.id,data)} className={data.isHas ? "" : "disable"} data-region={data.name}>{data.abbr}</li>);
 	        });
 	        
 			this.HTMLDOMREGION2.push(
@@ -241,6 +246,8 @@ class RegionalController extends React.Component {
 		$(e.target).addClass('current');
 
 		this.datatimeAreaNameTiny = e.target.innerHTML;
+		this.AreaNameTiny = $(e.target).data('region');
+
 		this.datatimeAreaIdTiny = areaid;
 		let childData = [];
 
@@ -257,7 +264,7 @@ class RegionalController extends React.Component {
 			childHtml.push(<li onClick={this.areaClickChild.bind(this,areaid)} className="current">全市</li>);
 
 	        childData.map((data,k) => {
-		        childHtml.push(<li onClick={this.areaClickChild.bind(this,data.id)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
+		        childHtml.push(<li onClick={this.areaClickChild.bind(this,data.id)} className={data.isHas ? "" : "disable"} data-region={data.name}>{data.abbr}</li>);
 	        });
 	        
 			this.HTMLDOMREGION2.push(
@@ -286,10 +293,12 @@ class RegionalController extends React.Component {
 
 		this.datatimeAreaIdTiny = areaid;
 		this.datatimeAreaNameTiny = e.target.innerHTML;
+		this.AreaNameTiny = $(e.target).data('region');
 	}
 	sublimeRegion(e){
 		this.datatimeAreaId = this.datatimeAreaIdTiny;
 		this.datatimeAreaName = this.datatimeAreaNameTiny;
+		this.AreaName = this.AreaNameTiny;
 		this.closeHoverRegion();
 		this.setState({
 			hover: true
@@ -304,7 +313,7 @@ class RegionalController extends React.Component {
 		this.props.callback(this.datatimeId,this.datatimeAreaId);
 	}
 	setMaps(){
-		let mapName = this.datatimeAreaName;
+		let mapName = this.AreaName;
 
 		if ( this.datatimeAreaName == "全国" ) {
 			mapName = "中国";

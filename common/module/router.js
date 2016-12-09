@@ -140,7 +140,7 @@ ReactDOM.render(
 			}
 		}}/>
 
-		<Route path="/exponent_free" component={ ExponentFreeComponent }/>
+		<Route path="/exponent_free(/:freeName)" component={ ExponentFreeComponent }/>
 		<Route path="/exponent_pay/:name" component={ ExponentPayComponent }/>
 		<Route path="/aboutme/:name" component={ AboutMeComponent }/>
 

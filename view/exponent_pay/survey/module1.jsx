@@ -1,12 +1,33 @@
 
 import React from 'react';
+import PubSub from 'pubsub-js';
 
 class ContainerSurveyModule1 extends React.Component {
+	constructor(props) {
+		super(props);
+		this.JBView = false;
+	}
+	state = {
+		title: '简报',
+		content: ''
+	};
+	componentDidMount() {
+		PubSub.subscribe('JBsub', (topic, data) => {
+			this.JBView = true;
+			this.setState({
+				statue: true,
+				content: data
+			});
+		});
+	}
 	render() {
+		if ( !this.JBView ) {
+			return false;
+		}
 		return (
 			<div className="survey-module">
-			   <div className="survey-module-title">简报</div>
-			   <div className="survey-module-content">简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报简报</div>
+			   <div className="survey-module-title">{ this.state.title || ''}</div>
+			   <div className="survey-module-content">{ this.state.content || '' }</div>
 			</div>
 		)
 	}

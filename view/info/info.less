@@ -16,6 +16,8 @@
             .maxBody(715px, 300px);
             float: left;
             border-radius: 6px;
+            border: 1px solid #e5e5e5;
+            background: #fff;
             .swiper-wrapper {
                 .swiper-slide {
                     .tc();
@@ -61,6 +63,7 @@
         .advert {
             .maxBody(355px, 300px);
             float: right;
+            background: #fff;
             img {
                 .maxBody(355px, 300px);
                 border-radius: 6px;
@@ -254,6 +257,19 @@
                             background: rgba(255, 255, 255, 0);
                             outline: none;
                         }
+                        button:hover{
+                            .maxBody(170px, 37px);
+                            .tc();
+                            .font-s(16px);
+                            cursor: pointer;
+                            margin: auto;
+                            color: #fff;
+                            border-radius: 26px;
+                            margin-top: 20px;
+                            border: 2px solid #49bffc;
+                            background: #49bffc;
+                            outline: none;
+                        }
                     }
                 }
                 .right {
@@ -325,6 +341,9 @@
                             color: #bbbbbb;
                             font-size: 16px;
                             cursor: pointer;
+                        }
+                        .tabClick li:hover{
+                            color:#49befc;
                         }
                         .tabClick span {
                             // width: 25%;
@@ -444,6 +463,14 @@
                                 }
                             }
                         }
+                        a:hover{
+                            button {
+                                p {
+                                    cursor: pointer;
+                                    color: #49befc;
+                                }
+                            }
+                        }
                     }
                     .Popular {
                         margin-top: 60px;
@@ -464,6 +491,29 @@
                                     .b-sizing();
                                     cursor: pointer;
                                     color: #49befc;
+                                    border-radius: 20px;
+                                    margin-top: 20px;
+                                    margin-right: 20px;
+                                    border: 2px solid #49befc;
+                                    padding: 7px 14px 7px 14px;
+                                    float: left;
+                                }
+                            }
+                        }
+                        a:hover{
+                             filter:chroma(color=#000000);
+                              button {
+                                border: none;
+                                background: none;
+                                outline: none;
+                                p {
+                                    // .maxBody(150px,50px);
+                                    .tc();
+                                    .font-s(14px);
+                                    .b-sizing();
+                                    cursor: pointer;
+                                    color:#fff;
+                                    background: #49befc;
                                     border-radius: 20px;
                                     margin-top: 20px;
                                     margin-right: 20px;

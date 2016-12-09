@@ -57,3 +57,11 @@
 	@startColor: #ff8f2b;
 	.linear-gradient-x(@startColor,@endColor);
 }
+
+// 从上到下渐变
+.blue-gradient-top(){
+	// @endColor: #46d2fb;
+	// @startColor: #49befc;
+	// .linear-gradient-x(@startColor,@endColor);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#46d2fb), to(#49befc));/*谷歌*/ 
+}

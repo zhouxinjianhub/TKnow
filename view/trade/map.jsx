@@ -7,46 +7,65 @@ class TradeMap extends React.Component {
 	constructor(props) {
 		super(props);
 		this.isBar = true;
+		this.bardatalen = 0;
 		this.datatimeAreaName = '全国';
 	}
-	state = {
-		btnCurrent: 's'
-	};
 	componentDidMount() {
 		// 基于准备好的dom，初始化echarts实例
-        this.myChartMap = echarts.init(document.getElementById('map'));
-        this.myChartBar = echarts.init(document.getElementById('bar'));
+        this.myChartMap = echarts.init(document.getElementById('tradeDetail-map'));
+        this.myChartBar = echarts.init(document.getElementById('tradeDetail-bar'));
         this.myChartMap.showLoading('default',{
 			text: ''
 		});
         this.myChartBar.showLoading('default',{
 			text: ''
 		});
-		this.renderMap();
-		this.renderBar();
+		this.getMapDatas();
 	}
-	changeMap(key,e){
-		if ( key == this.state.btnCurrent ) {
-			return false;
-		};
-		this.myChartMap.showLoading('default',{
-			text: ''
-		});
-		this.myChartBar.showLoading('default',{
-			text: ''
-		});
-		this.setState({
-			btnCurrent: key
-		},()=>{
-			// this.getBarDatas(key);
-			this.renderMap();
-			this.renderBar();
-		})
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+		this.getMapDatas();
 	}
-	randomData(){
-		return  Math.round(Math.random()*1400);
+	getMapDatas(){
+		let config = {
+			timeId: 75,
+			areaId: this.props.areaId,
+			categoryId:this.props.categoryId
+		}
+		$.GetAjax('/v1/category/getSaleList', config, 'Get', true, (data,state)=>{
+            if (state && data.code == 1) {
+
+            	this.isBar = true;
+            	this.bardata = data.data;
+            	this.bardatalen = data.data.length;
+            	this.renderMap();
+            	this.renderBar();
+            	this.setState({
+            		status: true
+            	});
+            } else {
+            	this.isBar = false;
+            	this.setState({
+            		status: false
+            	});
+            }
+        });
 	}
 	renderMap(){
+		//后台数据从大到小传入
+		let mapData=[];
+		let name;
+		let value;
+		let maxData;
+		for (var i = 0; i < this.bardata.length; i++) {
+			maxData = this.bardata[0].indexValue;
+			if ( this.bardata[i] ) {
+				name = this.bardata[i].shortName;
+				value = this.bardata[i].indexValue;
+		    	mapData.push({name:name , value:value},);
+			}
+		}
+		
 		let mapName = this.datatimeAreaName;
 		if ( this.datatimeAreaName == "全国" ) {
 			mapName = "中国";
@@ -54,7 +73,6 @@ class TradeMap extends React.Component {
 		let series = [];
 		$.get('../../map/'+mapName+'.json', myJson => {
 		});
-		
 		let option = {
 			 
 		    tooltip: {
@@ -62,13 +80,16 @@ class TradeMap extends React.Component {
 		    },
 		    visualMap: {
 		    	orient: 'horizontal',
+		    	inverse :true,
 		        min: 0,
-		        max: 2500,
+		        max: maxData,
 		        left: 'left',
 		        top: 'bottom',
-		        text: ['低','指数：高'],           // 文本，默认为数值文本
+		        text: ['指数：高','低'],           // 文本，默认为数值文本
 		        calculable: true,
-		        color: ["#E7DAFF","#667CFD"],
+		        inRange: {
+	                 color: ["#e6daff","#5b83ff"],
+	            },
 		        type: 'piecewise',
 		        itemWidth:7,
 		        itemHeight:14,
@@ -90,71 +111,70 @@ class TradeMap extends React.Component {
 	                    show: false
 	                },
 	                emphasis: {
-	                    show: true
+	                    show: false
 	                }
 	            },
 				itemStyle:{
 					normal:{
 						borderColor:'#fff',
-						borderWidth:2
+						borderWidth:2,
+						areaColor :'#edeff5'
+					},
+					emphasis:{
+						borderColor:'#fff',
+						borderWidth:2,
+						areaColor :'#5b83ff'
+						// color :'rgba(75, 75, 75, 0)',
 					}
 				},
-	            data:[
-	                {name: '北京',value: this.randomData() },
-	                {name: '天津',value: this.randomData() },
-	                {name: '上海',value: this.randomData() },
-	                {name: '重庆',value: this.randomData() },
-	                {name: '河北',value: this.randomData() },
-	                {name: '河南',value: this.randomData() },
-	                {name: '云南',value: this.randomData() },
-	                {name: '辽宁',value: this.randomData() },
-	                {name: '黑龙江',value: this.randomData() },
-	                {name: '湖南',value: this.randomData() },
-	                {name: '安徽',value: this.randomData() },
-	                {name: '山东',value: this.randomData() },
-	                {name: '新疆',value: this.randomData() },
-	                {name: '江苏',value: this.randomData() },
-	                {name: '浙江',value: this.randomData() },
-	                {name: '江西',value: this.randomData() },
-	                {name: '湖北',value: this.randomData() },
-	                {name: '广西',value: this.randomData() },
-	                {name: '甘肃',value: this.randomData() },
-	                {name: '山西',value: this.randomData() },
-	                {name: '内蒙古',value: this.randomData() },
-	                {name: '陕西',value: this.randomData() },
-	                {name: '吉林',value: this.randomData() },
-	                {name: '福建',value: this.randomData() },
-	                {name: '贵州',value: this.randomData() },
-	                {name: '广东',value: this.randomData() },
-	                {name: '青海',value: this.randomData() },
-	                {name: '西藏',value: this.randomData() },
-	                {name: '四川',value: this.randomData() },
-	                {name: '宁夏',value: this.randomData() },
-	                {name: '海南',value: this.randomData() },
-	                {name: '台湾',value: this.randomData() },
-	                {name: '香港',value: this.randomData() },
-	                {name: '澳门',value: this.randomData() }
-	            ]
-		    }]
+	            data:mapData
+	            // [{name:"贵州",value:5000},
+	            // 	{name:"四川",value:500},
+	            // ]
 
+		    }]
 		};
 		setTimeout(()=>{
-			this.myChartMap.hideLoading();
+			
 			this.myChartMap.setOption(option);
+			this.myChartMap.hideLoading();
 		},600);
 	}
 	renderBar(){
+		let yAxisData=[];
+		let BarData = [];
+		let name;
+		let value;
+		for (let i = 9; i > -1; i--) {
+			if ( this.bardata[i] ) {
+				name = this.bardata[i].areaName;
+				value = this.bardata[i].indexValue;
+				yAxisData.push(name);
+				BarData.push(value);
+			}else{
+				name = '';
+				value = '';
+				yAxisData.push(name);
+				BarData.push(value);
+			}
+		}
+
+		let colors =  ['#a168ff','#5883ff'] ;
 		let option = {
 		    tooltip: {
-		        trigger: 'axis',
+		    	show:true,
+		    	showContent:true,
+		        /*trigger: 'axis',
 		        axisPointer: {
 		            type: 'shadow'
-		        }
+		        }*/
 		    },
 		    grid: {
 		        left: '3%',
-		        right: '4%',
-		        bottom: '3%',
+		        height:'100%',
+		        top:'0%',
+		        // right: '4%',
+		        bottom: '0%',
 		        containLabel: true
 		    },
 		    xAxis: {
@@ -175,25 +195,26 @@ class TradeMap extends React.Component {
 		    },
 		    yAxis: {
 		        type: 'category',
-		         axisLine:{
+		        axisLine:{
 		            show:false
 		        },
 		        axisTick:{
 		            show:false
 		        },
 		        axisLabel:{
-		            show:true
+		            show:true,
+		            margin:30
 		        },
 		        splitLine:{
 		            show:false
 		        },
-		        data: ['10.          巴西','9.            印尼','8.            美国','7.            印度','6.            巴西','5.            印尼','4.            美国','3.            印度','2.            中国','1.            世界人口(万)']
+		        data:yAxisData
 		    },
 		    series: [   
 		        {
-		            name: '2011年', 
+		            name: '热度指数', 
 		            type: 'bar',
-		            data: [1, 2, 3, 4, 5,6,7,8,9,10],
+		            data:BarData,
 		            barWidth: 16,
 			        barMinHeight: 16,
 		            itemStyle:{
@@ -204,29 +225,44 @@ class TradeMap extends React.Component {
 			                    formatter: '{c}\n'
 			                },
 			                barBorderRadius:60,
-		                    color:'#a168ff'
+		                    color:new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
+								  offset: 0, color: colors[0]
+								}, {
+								  offset: 1, color: colors[1]
+								}], false),
 		                }
 		            }
 		        }
 		    ]
 		};
 		setTimeout(()=>{
-			this.myChartBar.hideLoading();
 			this.myChartBar.setOption(option);
+			this.myChartBar.hideLoading();
 		},600);
 	}
 	render() {
 		if ( this.isBar == false ) {
 			return null;
 		}
+		let result=[];
+		for(let i = 1; i < this.bardatalen || i == this.bardatalen;i++){
+			result.push(i);
+		}
 		return (    
-			<div className="trade-map">
+			<div className="tradeDetail-map">
 			    <div className="map-checked">
-			   		<input type="button" className={ this.state.btnCurrent === 's' ? "current" : "" }  onClick={this.changeMap.bind(this,'s')} value="在线旅游热度指数" />
-			   		<input type="button" className={ this.state.btnCurrent === 'f' ? "current" : "" }  onClick={this.changeMap.bind(this,'f')} value="旅游观光景区热度指数" />
+			   		<input type="button" className="current"  value={this.props.categoryName+"热度指数"} />
 			   	</div>
-			    <div className="map" id="map"></div>
-			    <div className="bar" id="bar"></div>
+			    <div className="Detail-map" id="tradeDetail-map"></div>
+			    <div className="Detail-place" id="">
+				{
+					result.map((data,k) => {
+						return  <span >{data+'.'}</span>
+				        		
+		        	})
+				}
+			    </div>
+			    <div className="Detail-bar" id="tradeDetail-bar"></div>
 			</div>
 		)
 	}

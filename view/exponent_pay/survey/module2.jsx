@@ -9,6 +9,10 @@ class ContainerSurveyModule1 extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	state = {
+		timeId: this.props.timeId,
+		areaId: this.props.areaId
+	};
 	componentDidMount() {
 
 	}
@@ -17,10 +21,10 @@ class ContainerSurveyModule1 extends React.Component {
 			<div className="survey-module">
 			   <div className="survey-module-title">电子商务整体交易及走势</div>
 			   <div className="survey-module-content">
-			   		<Module2_1 />
-			   		<Module2_2 />
-			   		<Module2_3 />
-			   		<Module2_4 />
+			   		<Module2_1 timeId={this.state.timeId} areaId={this.state.areaId}/>
+			   		<Module2_2 timeId={this.state.timeId} areaId={this.state.areaId}/>
+			   		<Module2_3 timeId={this.state.timeId} areaId={this.state.areaId}/>
+			   		<Module2_4 timeId={this.state.timeId} areaId={this.state.areaId}/>
 			   </div>
 			</div>
 		)

@@ -1,19 +1,75 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 class ContainerSurveyModule2_4 extends React.Component {
 	constructor(props) {
 		super(props);
+		this.viewMoudle = true;
+		this.btnState = "p";
+
+		this.parentData = false;
+        this.childData = false;
+        this.parentName = "";
+        this.childName = "";
 	}
 	componentDidMount() {
-		this.echarts = echarts.init(ReactDOM.findDOMNode(this.refs.chart));
+		this.echart = echarts.init(this.refs.chart);
+		this.echart.showLoading();
+		this._getDatas();
+	}
+	componentWillReceiveProps(nextProps){
+		this.echart.showLoading();
+        this.props = nextProps;
+        this._getDatas();
+	}
+	_getDatas() {
+		let option = {
+			type: 9, // 9实物型， 10服务型
+			timeId: this.props.timeId,
+			areaId: this.props.areaId
+		};
+		$.GetAjax('/v1/zhishu/industryAnalysis', option, 'Get', true, (data,state)=>{
+            if (state && data.code == 1) {
+            	this.viewMoudle = true;
+                this.parentData = data.data && data.data['parent'];
+                this.childData = data.data && data.data['child'];
+                this.parentName = data.data && data.data['parentAreaName'];
+                this.childName = data.data && data.data['childAreaName'];
 
-		var option = {
-		    tooltip: {},
+                this.showChart( this.btnState == "p" ? this.parentData : this.childData );
+                this.setState({
+                	status: true
+                });
+
+             } else {
+                this.viewMoudle = false;
+                this.setState({
+                	status: false
+                });
+             }
+        });
+	}
+	showChart(chartData){
+		let xAxisData = [];
+		let data = chartData;
+		chartData.map((d,k)=>{
+			xAxisData.push(d.name);
+		});
+		let option = {
+		    tooltip: {
+		    	trigger: 'axis',
+		    	axisPointer : {
+		            type : 'shadow'
+		        },
+		        formatter: (data)=>{
+		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+data[0].value+"万元"+"  "+"占比"+(data[0].data['scale']*100)+"%" : "无数据";
+		        }
+		    },
+		    color: ['#15a45c','#35b055','#68c448','#98d63c','#caea31','#ecf728'],
 		    grid: [{
 		        top: 0,
 		        width: '50%',
+		        height: '100%',
 		        left: 0,
 		        containLabel: true
 		    }],
@@ -22,7 +78,7 @@ class ContainerSurveyModule2_4 extends React.Component {
             	top:'20%',
             	right: 0,
             	itemGap:30,
-                data:['直达', '营销广告','搜索引擎']
+                data: xAxisData,
             },
 		    xAxis: [{
 		        type: 'value',
@@ -39,7 +95,7 @@ class ContainerSurveyModule2_4 extends React.Component {
 		    }],
 		    yAxis: [{
 		        type: 'category',
-		        data:['直达', '营销广告','搜索引擎'],
+		        data: xAxisData,
 		        axisLine:{
 					show:false
 				},
@@ -53,43 +109,71 @@ class ContainerSurveyModule2_4 extends React.Component {
 		    series: [{
 		        type: 'bar',
 		        z: 3,
-		        label: {
+		        barWidth: 30,
+		        barMinHeight: 10,
+		        itemStyle: {
 		            normal: {
-		                position: 'right',
-		                show: true
+		                label: {
+		                    show: false
+		                },
+		                barBorderRadius:10,
+		                color: new echarts.graphic.LinearGradient(1, 0, 0, 1, [{
+								  offset: 0, color: '#95cb5f'
+								}, {
+								  offset: 1, color: '#41b37e'
+								}], false)
 		            }
 		        },
-		        data:[
-	                {value:335, name:'直达', selected:true},
-	                {value:679, name:'营销广告'},
-	                {value:1548, name:'搜索引擎'}
-	            ]
+		        data:data
 		    }, {
 		        type: 'pie',
-		        radius: ['20%', '70%'],
+		        radius: ['30%', '70%'],
 		        center: ['70%', '50%'],
-		        label: {
-	                normal: {
-	                    show: false
-	                }
-	            },
-		        data:[
-	                {value:335, name:'直达', selected:true},
-	                {value:679, name:'营销广告'},
-	                {value:1548, name:'搜索引擎'}
-	            ]
+	            itemStyle: {
+		            normal: {
+		                label: {
+		                    show: false
+		                }
+		            }
+		        },
+		        data:data
 		    }]
 		}
-		this.echarts.setOption(option);
+		this.echart.hideLoading();
+		this.echart.setOption(option);
+	}
+	changeNav(e) {
+		if ( $(e.target).hasClass('current') ) {
+			return false;
+		}else{
+			$(e.target).parent().find('span').removeClass('current');
+			$(e.target).addClass('current');
+			
+			this.btnState = $(e.target).data('label');
+
+			this.showChart( this.btnState == "p" ? this.parentData : this.childData );
+		}
 	}
 	render() {
+		if ( !this.viewMoudle ) {
+			return false;
+		}
 		return (
 			<div className="survey-module-list">
 			   <div className="title">
 			   		<p>服务型网络零售行业解析</p>
+
 			   		<div className="nav-list">
-			   			<span className="current">全国</span>
-			   			<span>四川</span>
+			   			{(()=>{
+			   				if ( this.parentName ) {
+			   					return <span className="current" onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
+			   				}
+			   			})()}
+			   			{(()=>{
+			   				if ( this.childName ) {
+			   					return <span className="" onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
+			   				}
+			   			})()}
 			   		</div>
 			   </div>
 			   <div className="echarts-box" ref="chart"></div>

@@ -75,7 +75,11 @@ class CommentComponent extends React.Component {
 		};
 		
 		if ( values.length == 0 ) {
-			alert('评论内容不能为空');
+			layer.open({
+				title: '评论',
+				content: '<div>评论内容不能为空</div>',
+				scrollbar: false
+			});
 			e.target.value = "发表";
 			ReactDOM.findDOMNode(this.refs.addinfo).value = "";
 			return false;
@@ -87,7 +91,7 @@ class CommentComponent extends React.Component {
 	_addInformation(url,option) {
 		$.GetAjax(url,option,'GET',false,(data,state)=>{
 			if ( state && data.code == 1 ) {
-				alert('评论成功');
+				layer.msg('评论成功', {icon: 6});
 				this._getDatas(this.option);
 				ReactDOM.findDOMNode(this.refs.addinfo).value = "";
 			}
