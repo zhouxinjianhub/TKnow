@@ -21,9 +21,11 @@ class RegionalBar extends React.Component {
             	this.isBar = true;
             	this.entity = data.data && data.data['entity'];
             	this.service = data.data && data.data['service'];
-            	this.renderBar(this.state.btnCurrent);
             	this.setState({
             		status: true
+            	},()=>{
+            		this.start();
+            		this.renderBar(this.state.btnCurrent);
             	});
             } else {
             	this.isBar = false;
@@ -51,7 +53,15 @@ class RegionalBar extends React.Component {
 		        	height: '74%'
 		        }
 		    ],
-		    tooltip: {},
+		    tooltip: {
+		    	trigger: 'axis',
+		    	axisPointer : {
+		            type : 'shadow'
+		        },
+		        formatter: (data)=>{
+		        	return data[0].name ? data[0].name+"  "+data[0].value+"万元" : "无数据";
+		        }
+		    },
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
@@ -84,33 +94,27 @@ class RegionalBar extends React.Component {
 		        type: 'bar',
 		        name: '',
 		        data: data,
-		        barWidth: 40,
+		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
 		            normal: {
 		                label: {
-		                    show: false,
-		                    position: 'top',
-		                    formatter: '{c}\n'
+		                    show: false
 		                },
 		                barBorderRadius:10,
 		                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
 								  offset: 0, color: colors[0]
 								}, {
 								  offset: 1, color: colors[1]
-								}], false),
-		                shadowColor: 'rgba(0, 0, 0, .5)',
-		                shadowBlur: 20
+								}], false)
 		            }
 		        }
 		    }]
 		};
 		
-		setTimeout(()=>{
-			this.myChart.hideLoading();
-			this.myChart.setOption(option);
-		},560);
-		
+		this.myChart.hideLoading();
+		this.myChart.setOption(option);
+	
 	}
 	changeBar(key,e){
 		if ( key == this.state.btnCurrent ) {
@@ -126,19 +130,18 @@ class RegionalBar extends React.Component {
 		})
 	}
 	componentDidMount() {
-    	// 基于准备好的dom，初始化echarts实例
+		this.getBarDatas();
+	}
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+		this.getBarDatas();
+	}
+	start(){
+		// 基于准备好的dom，初始化echarts实例
         this.myChart = echarts.init(this.refs.bar);
 		this.myChart.showLoading('default',{
 			text: ''
 		});
-		this.getBarDatas();
-	}
-	componentWillReceiveProps(nextProps){
-		this.myChart.showLoading('default',{
-			text: ''
-		});
-		this.props = nextProps;
-		this.getBarDatas();
 	}
 	render() {
 		if ( this.isBar == false ) {

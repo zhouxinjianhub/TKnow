@@ -363,7 +363,7 @@ class RegionalController extends React.Component {
 			   		</div>
 			   	</div>
 			   <div className="map-module" id="maps"></div>
-			   <div className="category-module" id="">{this.props.categoryName}</div>
+			   <div className="category-module" id="">{this.props.parent.location.query.categoryName ? this.props.parent.location.query.categoryName : ''}</div>
 			   <div className="button-module"><input type="button" value="查询数据" onClick={this.selectData.bind(this)}/></div>
 			   <div className="share-module"><i className="iconfont icon-share"></i></div>
 			</div>

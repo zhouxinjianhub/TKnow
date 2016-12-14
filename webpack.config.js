@@ -7,7 +7,7 @@ const webpack = require("webpack"),
 // const node_modules_dir = path.join(__dirname, 'node_modules'); // 获取某个路径
 
 const TIME = new Date();
-const fileNamed = "router";
+const fileNamed = "app";
 const env = process.env.NODE_ENV;
 // console.log('当前开发环境是：'+ env);
 
@@ -18,11 +18,11 @@ module.exports = {
         common: ["react", "react-dom", 'react-router']
     },
     output: {
-        publicPath: "../../build/",
+        publicPath: "../build/",
         path: path.join(__dirname, "build"),
-        filename: "index.min.js",
-        // chunkFilename: '[name].[chunkhash:5].chunk.js'
-        chunkFilename: '[name].chunk.js'
+        filename: "main.min.js",
+        // chunkFilename: '[chunkhash:20].js'
+        chunkFilename: 'chunk/[name].chunk.js'
     },
     module: {
         preLoaders: [
@@ -42,12 +42,12 @@ module.exports = {
                 loader: "style-loader!css-loader!autoprefixer-loader"
             },
             {
-                test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?limit=3000&name=[hash].[ext]'
+                test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?limit=1000&name=font/[hash].[ext]'
             },
             {
-                test: /\.(png|jpg)$/,
-                loader: 'url?limit=3000&name=[hash].[ext]'
-            }, 
+　　　　　　    test: /\.(png|jpg)$/,
+    　　　　　　loader: 'url-loader?limit=1000&name=images/[hash:8].[name].[ext]'
+    　　　　},
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
@@ -80,9 +80,9 @@ module.exports = {
                 NODE_ENV: JSON.stringify("production")
             }
         }),// 环境部署
-        new webpack.optimize.CommonsChunkPlugin('common', "common.bundle.js"), //提取多个页面之间的公共模块
+        new webpack.optimize.CommonsChunkPlugin('common', "common.min.js"), //提取多个页面之间的公共模块
         new webpack.BannerPlugin( TIME.toLocaleString() + ' , zhouxinjian'), // 头部注释
-        new ExtractTextPlugin("index.min.css"),
+        new ExtractTextPlugin("main.min.css"),
         // new HtmlWebpackPlugin({
         //     title: 'App',
         //     filename: 'index.html'

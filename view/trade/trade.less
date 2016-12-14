@@ -33,6 +33,9 @@
         width: 175px;
         background-color: #f8f8f8;
         overflow: auto;
+        li{
+            position: relative;
+        }
         .tab {
             font-family: 微软雅黑;
             color: #49befc;
@@ -43,7 +46,13 @@
             text-align: center;
             border-width: 0px;
             height: 80px; 
-            outline: none;  
+            outline: none;
+
+        }
+        #current {
+            color: #ffffff;
+            background: linear-gradient(to right, #49befc, #46d2fb);
+              
         }
 
         .tab:hover,
@@ -56,7 +65,7 @@
             .font-s(14px);
             .abs();
             right: 21px;
-            top: 0;
+            top: 34px;
             color: @bgColor;
         }
     }
@@ -67,9 +76,81 @@
         .publicMoudle();
         float: left;
         height: 560px;
-        width: 630px;
+        width: 630px;       
         background-color: #ffffff;
+        padding-left: 10px;
         overflow: auto;
+        .list-title{
+            .font-s(16px);
+            color: #d1d6e1;
+            margin-top: 30px;
+            margin-left: 10px;
+            margin-bottom: 20px;
+            .l-h(16px);
+            .rel();
+            .font-fm();
+            &:after{
+                content: "";
+                .d-ib7();
+                .maxBody(80%,1px);
+                .abs();
+                top: 8px;
+                left: 0;
+                .ba-c(#d1d6e1);
+                margin-left: 15%;               
+            }
+        }
+        ul{
+            width: 100%;
+            margin: 0 0 50px 0;
+            .clearfix();
+            @width: 80px;
+            @height: 111px;
+            li{
+                .maxBody(@width,@height);
+                .fl();
+                .rel();
+                margin-left: 10px;
+                margin-right:10px;
+                a{
+                    .abs();
+                    .maxBody();
+                    .font-s(14px);
+                    .font-fm();
+                    color: #4b4b4b;
+                }
+                img{
+                   .maxBody(@width, @width); 
+                }
+               
+                .list-dv{
+                    .maxBody(@width, @width);
+                    .rel();
+                    .border-radius(3px);
+                    &:after{
+                        content: '';
+                        .transition(all 275ms cubic-bezier(.4,.25,.3,1));
+                        .pos-box-cc(@width,@width);
+                        .border-radius(6px);
+                        .box-shadow(0 5px 20px 0 rgba(0,0,0,.05));
+                        .abs();
+                        .z-index(9);
+                    }
+                    &:hover:after{
+                        .box-shadow(0 10px 20px 0 rgba(0,0,0,.4));
+                    }                  
+                  
+                  
+                }
+                p{
+                    .l-h(34px);
+                    .text-c();
+                }
+                // &:nth-child(3n-1){
+                //     margin: 0 30px;
+                // }
+            }
+        }
     }
 
     .hot {

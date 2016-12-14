@@ -4,15 +4,16 @@ import React from 'react';
 class ContainerSurveyModule4 extends React.Component {
 	constructor(props) {
 		super(props);
-		this.viewMoudle = true;
+		this.viewMoudle = false;
 		this.dataList = void 0;
 	}
 	componentDidMount() {
 		this.echart = echarts.init(this.refs.chart);
-		this.echart.showLoading();
+		this.refs.lastChart.style.display = 'none';
 		this._getDatas();
 	}
 	componentWillReceiveProps(nextProps){
+		this.echart.showLoading();
         this.props = nextProps;
         this._getDatas();
 	}
@@ -25,7 +26,8 @@ class ContainerSurveyModule4 extends React.Component {
             if (state && data.code == 1) {
             	this.viewMoudle = true;
             	this.dataList = data.data;
-            	this.showChart(this.dataList["networkTradingList"] || []);
+            	this.showChart(this.dataList["networkTradingList"] || [],0);
+            	this.refs.lastChart.style.display = 'block';
                 this.setState({
                 	status: true
                 });
@@ -38,13 +40,26 @@ class ContainerSurveyModule4 extends React.Component {
              }
         });
 	}
-	showChart(chartData) {
+	showChart(chartData,type) {
 		let xAxisData = [];
 		let data = chartData;
 		chartData.map((d,k)=>{
 			xAxisData.push(d.name);
 		});
-		let colors = ['#fec630','#ff8f2b'];
+
+		let colors = [{
+			start: '#ba5bd5',
+			end: '#9761f1'
+		},{
+			start: '#ffac68',
+			end: '#ff599e'
+		},{
+			start: '#fec630',
+			end: '#ff8f2b'
+		},{
+			start: '#95cb5f',
+			end: '#41b37e'
+		}];
 		let option = {
 			grid: [
 		        {
@@ -95,7 +110,7 @@ class ContainerSurveyModule4 extends React.Component {
 		        type: 'bar',
 		        name: '',
 		        data: data,
-		        barWidth: 30,
+		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
 		            normal: {
@@ -104,9 +119,9 @@ class ContainerSurveyModule4 extends React.Component {
 		                },
 		                barBorderRadius:10,
 		                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-								  offset: 0, color: colors[0]
+								  offset: 0, color: colors[type].start
 								}, {
-								  offset: 1, color: colors[1]
+								  offset: 1, color: colors[type].end
 								}], false)
 		            }
 		        }
@@ -124,12 +139,12 @@ class ContainerSurveyModule4 extends React.Component {
 			$(e.target).addClass('current');
 
 			this.echart.showLoading();
-			this.showChart(this.dataList[ajaxCont[type]] || []);
+			this.showChart(this.dataList[ajaxCont[type]] || [],type);
 		}
 	}
 	render() {
 		return (
-			<div className="survey-module">
+			<div className="survey-module" ref="lastChart">
 				<div className="survey-module-title">四川省各市州电子商务交易解析</div>
 				<div className="survey-module-content">
 					<div className="module4-nav">

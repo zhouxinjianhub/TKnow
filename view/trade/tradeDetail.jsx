@@ -14,36 +14,38 @@ class ContainerRegional extends React.Component {
 	constructor(props) {
 		super(props);
 		this.isTopRoute = true;
+		// this.categoryId = '';
+		// this.categoryName = '';
 	}
 	state = {
 		timeId: '',
 		areaId: 0,
-		categoryId: 4, //行业Id
-		categoryName:'在线旅游'
 	}
 	callbackNav(timeId,areaId){
 		this.setState({
 			timeId: timeId || '',
-			areaId: areaId || 0
+			areaId: areaId || 0 ,
 		})
 	}
 	componentDidMount() {
+		// this.categoryId = this.props.parent.location.query.categoryId ?  this.props.parent.location.query.categoryId : 4 ;
+		// this.categoryName = this.props.parent.location.query.categoryName ?  this.props.parent.location.query.categoryName : '在线旅游' ;
 		PubSub.subscribe('getNavYearId', (topic, data) => {
 			this.state.timeId = data; 
 		});
 	}
 	render() {
+		let categoryId = this.props.parent.location.query.categoryId ?  this.props.parent.location.query.categoryId : '' ;
 		return (
 			<div className="trade-detail">
-			    <Nav callback={this.callbackNav.bind(this)} categoryName={this.state.categoryName}/>
-			    <Map timeId={this.state.timeId} areaId={this.state.areaId} categoryId={this.state.categoryId} categoryName={this.state.categoryName}/>
+			    <Nav callback={this.callbackNav.bind(this)}  parent={this.props.parent}/>
+			    <Map timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent} />
 
-				<Bar timeId={this.state.timeId} areaId={this.state.areaId} categoryId={this.state.categoryId} categoryName={this.state.categoryName}/>
+				<Bar timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent}/>
 			   	
-			    <List timeId={this.state.timeId} areaId={this.state.areaId} categoryId={this.state.categoryId} categoryName={this.state.categoryName}/>
+			    <List timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent}/>
 
-			    <Comment module="region" option={{'page': 1,'pageSize': 10,'areaId': this.state.areaId}}/>
-			    {/*<iframe src="/1.pdf" width="1100" height="500"></iframe>*/}
+			    <Comment module="trade" option={{'page': 1,'pageSize': 10,'areaId': this.state.areaId,'categoryId':categoryId}}/>
 			</div>
 		)
 	}

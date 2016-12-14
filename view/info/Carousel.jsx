@@ -35,7 +35,7 @@ class CarouselComponent extends React.Component{
 
 		        	{
 		        		this.data.map((data,k) => {
-			    		return  <Link className="swiper-slide" to={{ pathname: data.url }} >
+			    		return  <Link className="swiper-slide" >
 				        			<img src={data.picUrl}/>
 				        			<span>{data.title}</span>
 				        		</Link>
@@ -71,7 +71,7 @@ class AdvertComponent extends React.Component{
 	render(){
 		return(
 			<div className="advert">
-	    		 <Link className="advert" to={{ pathname: this.pathname }} >
+	    		 <Link className="advert" >
 	    			<img src={this.picUrl}/>
 	    			<span>{this.title}</span>
 	    		</Link>

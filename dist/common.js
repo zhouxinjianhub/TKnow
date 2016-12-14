@@ -113,7 +113,84 @@ $.extend({
 				webkitTransformOrigin: '0 0 0',
 				position: 'absolute',
 				top: '0'
+			});
+		}
+	},
+	wechartShare(config) {
+		if ( $('body').hasClass('mobileBody') ) {
+			$.onloadJavascript('http://res.wx.qq.com/open/js/jweixin-1.0.0.js',true,false,()=>{
+				$.GetAjax('/v1/wx/getToken', {url: location.href}, 'Get', true, (data,state)=>{
+		            if (state && data.code == 1) {
+		                console.log(data.data);
+		                let wechartObj = data.data;
+						wx.config({
+							debug: false,
+							appId: wechartObj.appId,
+							timestamp: wechartObj.timestamp,
+							nonceStr: wechartObj.nonceStr,
+							signature: wechartObj.signature,
+							jsApiList: [
+								'onMenuShareTimeline',
+								'onMenuShareAppMessage'
+							]
+						});
+						let config = {
+							title: config.title || '映潮科技',
+							desc: config.desc || '猛戳打开查看该数据',
+							link: location.href,
+							imgUrl: './images/logo-white.png'
+						};
+						$.wechartReady(config);
+		            }
+		        });
 			})
+		}
+	},
+	wechartReady: function (config) {
+		wx.ready(function () {
+			wx.onMenuShareAppMessage({
+				title:  config.title,
+				desc:   config.desc,
+				link:   config.link,
+				imgUrl: config.imgUrl,
+				trigger: function (res) {
+					// alert('用户点击发送给朋友123');
+				},
+				success: function (res) {
+					// alert('已分享123');
+				},
+				cancel: function (res) {
+					// alert('取消了分享');
+				},
+				fail: function (res) {
+					alert(JSON.stringify(res));
+				}
+			});
+			wx.onMenuShareTimeline({
+				title:  config.title || 'title2',
+				desc:   config.desc || 'desc2',
+				link:   config.link || 'link2',
+				imgUrl: config.imgUrl || 'http://zhouxinjian.top/web/img/share.jpg',
+				trigger: function (res) {
+					// alert('用户点击分享到朋友圈');
+				},
+				success: function (res) {
+					// alert('已分享');
+				},
+				cancel: function (res) {
+					// alert('取消了分享');
+				},
+				fail: function (res) {
+					alert(JSON.stringify(res));
+				}
+			});
+		});
+	},
+	isPhone: function () {
+		if ( $('body').hasClass('mobileBody') ) {
+			return true;
+		}else{
+			return false;
 		}
 	},
 	// 判断用户是否登录
@@ -126,6 +203,14 @@ $.extend({
 		}
 		let result = config.sig ? config : false;
 		return result;
+	},
+	laoutLogin: function (callback) {
+		$.cookie('token','');
+		$.cookie('account','');
+		$.cookie('nickname','');
+		if (callback && typeof(callback) === 'function') {
+			callback();
+		}
 	},
 	// 图片懒加载
 	lazyloadImg: function (url,callback) {
@@ -185,7 +270,19 @@ $.extend({
 			reg = /^\S+$/
 		}
 		return reg.test(str);
-	} 
+	},
+	urlEncode: function(param, key){
+		var paramStr="";
+		if(param instanceof String||param instanceof Number||param instanceof Boolean){
+			paramStr+="&"+key+"="+encodeURIComponent(param);
+		}else{
+			$.each(param,function(i){
+				var k=key==null?i:key+(param instanceof Array?"["+i+"]":"."+i);
+				paramStr+='&'+ $.urlEncode(this, k);
+			});
+		}
+		return paramStr.substr(1);
+	}
 
 	//线上路径
 	// getCtx: function() {
@@ -198,7 +295,7 @@ $.extend({
 	// }
 });
 
-$.onloadJavascript('../config.js');
+$.onloadJavascript('./config.js');
 
 (function(window) {
     var theUA = window.navigator.userAgent.toLowerCase();

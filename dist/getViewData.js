@@ -11,16 +11,17 @@
 	$.GetAjax = function(url, data, type, async, callback) {
 		var url = url || '',
 			type = type || 'GET',
-			data = data || '',
+			data = data || {},
 			async = async || true,
 			json = void 0;
+
+		data['token'] = $.cookie('token') || '';
 
 		$.ajax({
 			//	请求配置
 			url: $.httpxhr+url,
 			type: type,
 			data: data,
-			header:{"token": $.cookie('token')},
 			async: async
 
 		}).done(function(data) {

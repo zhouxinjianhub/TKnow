@@ -90,6 +90,7 @@
 				.z-index(99);
 				color: #4b4b4b;
 				.font-s(16px);
+				width: 100%;
 			}
 			.iconfont{
 				.font-s(20px);
@@ -268,6 +269,92 @@
 					}
 				}
 			}
+			.nav-list-datatime{
+				.abs();
+				.z-index(99);
+				margin-left: -20px;
+				top: 31px;
+				.clearfix();
+				.b-sizing();
+				.box-shadow(@borderShadow);
+				.border-radius(6px);
+				.d-n();
+				background: #fff;
+				div{
+					.d-ib();
+					height: 320px;
+					border-left: 1px solid #D7DBE5;
+					.b-sizing();
+					.rel();
+					&.check-1{
+						border: 0;
+						width: 201px;
+						p{
+							span{
+								padding: 0 66px 0 25px;
+							}
+						}
+					}
+					&.check-2{
+						.abs();
+						left: 201px;
+						top: 0;
+						width: 100px;
+						p{
+							span{
+								padding: 0 40px 0 25px;
+							}
+						}
+					}
+					&.check-3{
+						.abs();
+						left: 301px;
+						top: 0;
+						width: 400px;
+						span{
+							.d-ib();
+							width: 133px;
+							.l-h(80px);
+							.text-c();
+							&.current{
+								.blue-gradient-x();
+								color: #fff;
+							}
+						}
+					}
+					
+					p{
+						@spanHeight: 80px;
+						.d-ib();
+						width: 100%;
+						.l-h(@spanHeight);
+						.rel();
+						span{
+							.rel();
+							.d-ib();
+							.b-sizing();
+							width: 100%;
+							height: 100%;
+							z-index: 99;
+						}
+						i{
+							.font-s(20px);
+							.abs();
+							right: 11px;
+							top: 2px;
+							color: transparent;
+						}
+						&.current{
+							.blue-gradient-x();
+							color: #fff;
+							.rel();
+							i{
+								color: #fff;
+							}
+						}
+					}
+				}
+			}
 		}
 		.button-module{
 			@color: #49befc;
@@ -293,6 +380,57 @@
 			.clearfix();
 			width: 100%;
 			height: 32px;
+			.nav-small-area{
+				width: 146px;
+				padding: 0 20px 0 20px;
+				.titles {
+					left: -20px;
+				}
+				.nav-list-region-checked{
+					width: 100%;
+					.abs();
+					max-height: 140px;
+					height: auto;
+					overflow-y: auto;
+					.publicMoudle();
+					margin: 0;
+					left: 0;
+					top: 30px;
+					.d-n();
+					background: #fff;
+					li{
+						.b-sizing();
+						.l-h(23px);
+						.font-s(16px);
+						color: #4b4b4b;
+						padding: 0 15px;
+						&:hover{
+							.blue-gradient-x();
+							color: #fff;
+						}
+						&:hover.disable{
+							color: #4b4b4b;
+							opacity: 0.5;
+							background: none;
+							cursor: not-allowed;
+						}
+						&:hover.current{
+							.blue-gradient-x();
+							color: #fff;
+						}
+						&.current{
+							color: #49befc;
+						}
+					}
+				}
+			}
+			.nav-large-time{
+				width: 203px;
+				padding: 0 20px 0 20px;
+				.titles {
+					left: -20px;
+				}
+			}
 		}
 		.survey-module{
 			.clearfix();
@@ -587,85 +725,252 @@
 					float:right;
 					img{
 						float:right;
+						cursor:pointer;
 					}
 				}
 			}
 			.indicatorTable{
 				margin-top:40px;
 				width: 100%;
+				position: relative;
+				width: 100%;
+			    height: 450px;
+			    border-top-left-radius: 6px;
+			    border-top-right-radius: 6px;
+			    position: relative;
 				.indicator-content{
 					width: 100%;
-				    height: 400px;
+					position: relative;
+					width: 100%;
+				    height: 450px;
+				    border-top-left-radius: 6px;
+				    border-top-right-radius: 6px;
+				    position: relative;
+				    .b-sizing();
+				   	.slimtable-container-div{
+			   		    overflow-x: scroll;
+				   	}
+			   		.indicTable{
+			    		border-collapse: collapse;
+						border: 1px solid #ddd;
+				    	thead{
+
+				    		th{
+				    			word-break: keep-all;/*必须*/
+				    			position: relative;
+				    			background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#46d2fb), to(#49befc));
+								border: 1px solid #ddd;
+								color: #fff;
+								text-align: left;
+							    padding: 10px 20px;
+							    font-size: 16px;
+							    font-weight: normal;
+								-ms-user-select: none;
+								-moz-user-select: none;
+								-webkit-user-select: none;
+								user-select: none;
+								white-space: nowrap;
+								.slimtable-activeth {
+									background-color: #2a487f;
+								}
+								/* Sprites */
+
+								.slimtable-sprites {
+									margin-left: 2px;
+									margin-right: 5px;
+									vertical-align: middle;
+
+									display: inline-block;
+									background: url(../../images/exponent-pay/sort.png) -16px 0 no-repeat;
+									width: 7px;
+									height: 9px;
+								}
+
+								.slimtable-sortboth {
+									background-position: -1px -1px;
+								}
+
+								.slimtable-sortnone {
+									background-position: -19px -19px;
+								}
+
+								.slimtable-sortasc {
+									background-position: -1px -19px;
+								}
+
+								.slimtable-sortdesc {
+									background-position: -19px -1px;
+								}
+				    		}
+				    		.td0{
+				    			display: inline-block;
+								width: 200px;
+    							position: absolute;
+    							background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#46d2fb), to(#49befc));
+    							z-index: 100;
+    							padding: 10px 20px;
+    							border-right: 1px solid #cacece;
+				    		}
+				    		.td1{
+				    			padding-left:250px;
+				    		}
+				    	}
+				    	tbody{
+				    		tr{
+				    			td{
+				    				border-bottom: 1px solid #ddd;
+								    color: #4b4b4b;
+								    padding: 10px 20px;
+								    font-size: 16px;
+				    			}
+				    			.td0{
+					    			display: inline-block;
+									width: 200px;
+	    							position: absolute;
+	    							background: #fff;
+	    							z-index: 100;
+	    							padding: 10px 20px;
+	    							border: 1px solid #cacece;
+					    		}
+					    		.td1{
+					    			padding-left:250px;
+					    		}
+				    		}
+				    	}
+				    	.slimtable-container-div {
+							display: inline-block;
+						}
+				    }
+
+				}
+				.indicator_column{
+					width: 100%;
+					position: relative;
+				    height: 434px;
 				    overflow-x: scroll;
 				    border: 1px solid #b9b1b1;
 				    border-top-left-radius: 6px;
 				    border-top-right-radius: 6px;
-				    .b-sizing();
-				    .table{
-				    	width: 100%;
-				    	height: auto;
-					    border-top-left-radius: 6px;
-					    border-top-right-radius: 6px;
-					    border-collapse:collapse;
-					    overflow: hidden;
-					    tr{
-					    	height:40px;
-					    	td{
-					    		word-break: keep-all;/*必须*/
-					    		padding-top:10px;
-    							padding-bottom: 10px;
-    							padding-right: 20px;
-    							position: relative;
-    							border-bottom: 1px solid #cacece;
-    							font-size: 16px;
-					    	}
-					    	.tdone{
-								display: inline-block;
-								width: 200px;
-    							position: absolute;
-    							background: #fff;
-    							z-index: 100;
-    							// padding: 10px 20px;
-    							padding-top:10px;
-    							padding-bottom: 10px;
-    							padding-right: 20px;
-    							padding-left: 20px;
-    							// line-height: 2;
-							}
-							.tdtwo{
-								padding-left:250px;
-							}
-					    }
-					    .head{
-							width: 100%;
-				    		border-top-right-radius: 6px;
-							border-top-left-radius: 6px;
-							color: #fff;
-							.b-sizing();
-							.l-h(38px);
-							.blue-gradient-top();
-							.thone{
-								display: inline-block;
-								width: 200px;
-    							position: absolute;
-    							.blue-gradient-top();
-    							z-index: 1000;
-    							border-top-left-radius: 6px;
-    							padding-left: 20px;
-    							
-							}
-							.tdtwo{
-								padding-left:250px;
-							}
-							td{
-								padding-left: 20px;
-    							padding-right: 20px;
-    							position: relative;
-    							// word-break: keep-all;/*必须*/
-							}
-					    }
-				    }
+				    position: absolute;
+				    top: 0;
+				    left: 0;
+				    width: 184px;
+				    overflow: hidden;
+				    z-index: 1000;
+				    background: #fff;
+					.indicTable_column{
+						overflow: hidden;
+					    position: absolute;
+					    z-index: 40;
+					    top: 0px;
+					    left: 0px;
+					    border-collapse: collapse;
+						border: 1px solid #ddd;
+						border-collapse: collapse;
+						border: 1px solid #ddd;
+				    	thead{
+				    		.td0{
+				    			width:184px;
+				    			position: absolute;
+				    		}
+				    		th{
+				    			background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#46d2fb), to(#49befc));
+								border: 1px solid #ddd;
+								color: #fff;
+								text-align: left;
+							    padding: 10px 20px;
+							    font-size: 16px;
+							    font-weight: normal;
+								-ms-user-select: none;
+								-moz-user-select: none;
+								-webkit-user-select: none;
+								user-select: none;
+								white-space: nowrap;
+								.slimtable-activeth {
+									background-color: #2a487f;
+								}
+								/* Sprites */
 
+								.slimtable-sprites {
+									margin-left: 2px;
+									margin-right: 5px;
+									vertical-align: middle;
+
+									display: inline-block;
+									background: url(../../images/exponent-pay/sort.png) -16px 0 no-repeat;
+									width: 7px;
+									height: 9px;
+								}
+
+								.slimtable-sortboth {
+									background-position: -1px -1px;
+								}
+
+								.slimtable-sortnone {
+									background-position: -19px -19px;
+								}
+
+								.slimtable-sortasc {
+									background-position: -1px -19px;
+								}
+
+								.slimtable-sortdesc {
+									background-position: -19px -1px;
+								}
+				    		}
+				    	}
+				    	tbody{
+				    		tr{
+				    			td{
+				    				border: 1px solid #ddd;
+								    color: #4b4b4b;
+								    padding: 10px 20px;
+								    font-size: 16px;
+				    			}
+				    		}
+				    	}
+				    	.slimtable-container-div {
+							display: inline-block;
+						}
+				    }
+				    /* Paging */
+					.slimtable-paging-div {
+						margin-top: 5px;
+						display: inline-block;
+						width: 100%;
+						.slimtable-paging-seldiv {
+							display: inline;
+							float: right;
+						}
+
+						.slimtable-paging-select {
+							margin-right: 10px;
+							border-radius: 5px;
+							border: 1px solid #ccc;
+							padding: 3px;
+						}
+
+						.slimtable-paging-btnsdiv {
+							display: inline-block;
+						}
+
+						.slimtable-page-btn {
+							display: inline-block;
+							width: 25px;
+							height: 25px;
+							line-height: 25px;
+							border-radius: 5px;
+							border: 1px solid #ccc;
+							text-align: center;
+							font-weight: bold;
+							margin-right: 5px;
+							cursor: pointer;
+						}
+
+						.slimtable-page-btn.active {
+							background-color: #ccc;
+						}
+					}
 				}
 				.comment-split{
 					margin-left: 60px;

@@ -2,19 +2,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import { Nologin, Islogin } from "loginState";
 
 import './index.less';
 
 class ContainerIndexLogo extends React.Component {
-	componentDidMount() {
+	componentDidMount() {	
 		ReactDOM.findDOMNode(this.refs.logo).ondragstart = ()=>{return false;};
 	}
 	render() {
 		return (
 			<div className="logo">
-				<img src="../../images/logo.png" ref="logo"/>
+				<img src="./images/logo.png" ref="logo"/>
 			</div>
 		)
 	}
@@ -38,23 +39,24 @@ class ContainerIndex extends React.Component {
 		}
 	}
 	render() {
+
 		let renderObj = [{
 			server: {
 				title: '数据服务',
 				info: [{
 					pathurl: '/regional',
-					imgurl:'../../images/black.gif',
-					lazyurl: '../../images/index/diyu.png',
+					imgurl:'./images/black.gif',
+					lazyurl: './images/index/diyu.png',
 					name:'地域维度'
 				},{
 					pathurl: '/trade',
-					imgurl:'../../images/black.gif',
-					lazyurl: '../../images/index/hangye.png',
+					imgurl:'./images/black.gif',
+					lazyurl: './images/index/hangye.png',
 					name:'行业维度'
 				},{
 					pathurl: '/info',
-					imgurl:'../../images/black.gif',
-					lazyurl: '../../images/index/news.png',
+					imgurl:'./images/black.gif',
+					lazyurl: './images/index/news.png',
 					name:'数据资讯'
 				}]
 			},
@@ -62,18 +64,18 @@ class ContainerIndex extends React.Component {
 				title: '映潮产品',
 				info: [{
 					pathurl: '/exponent',
-					imgurl:'../../images/black.gif',
-					lazyurl: '../../images/index/yczs.png',
+					imgurl:'./images/black.gif',
+					lazyurl: './images/index/yczs.png',
 					name:'映潮指数'
 				},{
 					pathurl: '/about',
-					imgurl:'../../images/black.gif',
-					lazyurl: '../../images/index/tianji.png',
+					imgurl:'./images/black.gif',
+					lazyurl: './images/index/tianji.png',
 					name:'天玑'
 				},{
 					pathurl: '/',
-					imgurl:'../../images/black.gif',
-					lazyurl: '../../images/index/app.png',
+					imgurl:'./images/black.gif',
+					lazyurl: './images/index/app.png',
 					name:'手机APP',
 					stop: '即将上线<br/>敬请期待'
 				}]

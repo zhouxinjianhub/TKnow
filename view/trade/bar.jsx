@@ -6,34 +6,42 @@ class RegionalBar extends React.Component {
 		super(props);
 		this.isBar = true;
 		this.messagedata = [];
-		this.bardata = false;
+		this.bardata = [];
 	}
+	state = {
+		status: true
+	};
 	componentDidMount() {
-    	// 基于准备好的dom，初始化echarts实例
-        this.myChart = echarts.init(document.getElementById('bar-bar'));
-		this.myChart.showLoading('default',{
-			text: ''
-		});
 		this.getBarDatas();
 	}
 	componentWillReceiveProps(nextProps){
 		this.props = nextProps;
 		this.getBarDatas();
 	}
+	start(){
+		// 基于准备好的dom，初始化echarts实例
+        this.myChart = echarts.init(this.refs.bar);
+		this.myChart.showLoading('default',{
+			text: ''
+		});
+	}
 	getBarDatas(){
 		let config = {
 			timeId: this.props.timeId,
 			areaId: this.props.areaId,
-			categoryId:this.props.categoryId
+			categoryId:this.props.parent.location.query.categoryId ? this.props.parent.location.query.categoryId : ''
 		}
 		$.GetAjax('/v1/category/industryTendency', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.isBar = true;
             	this.bardata = data.data.list;
             	this.messagedata = data.data.one;
-            	this.renderBar();
+            	
             	this.setState({
             		status: true
+            	},()=>{
+            		this.renderBar();
+            		this.start();
             	});
             } else {
             	this.isBar = false;
@@ -48,7 +56,7 @@ class RegionalBar extends React.Component {
 		var data = [];
 		for (var i = 0; i < this.bardata.length; i++) {
 			if ( this.bardata[i] ) {
-				xAxisData.push(this.bardata[i].categoryName);
+				xAxisData.push(this.bardata[i].month+"月");
 		    	data.push(this.bardata[i].indexValue);
 			}
 		}
@@ -62,13 +70,19 @@ class RegionalBar extends React.Component {
 		        	height: '74%'
 		        }
 		    ],
-		    tooltip: {},
+		    tooltip: {
+		    	trigger: 'axis',
+		        axisPointer: {
+		            type: 'shadow'
+		        }
+		    },
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
 		            textStyle: {
 		                color: '#4b4b4b',
-		                fontSize: '14px'
+		                fontSize: '14px',
+		                fontFamily:'Microsoft Yahei ui'
 		            }
 		        },
 				axisLine:{
@@ -93,9 +107,9 @@ class RegionalBar extends React.Component {
 		    },
 		    series: [{
 		        type: 'bar',
-		        name: '',
+		        name: '网络零售额',
 		        data: data,
-		        barWidth: 40,
+		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
 		            normal: {
@@ -110,14 +124,15 @@ class RegionalBar extends React.Component {
 								}, {
 								  offset: 1, color: colors[1]
 								}], false),
-		                shadowColor: 'rgba(0, 0, 0, .5)',
-		                shadowBlur: 20
+		                // shadowColor: 'rgba(0, 0, 0, .5)',
+		                // shadowBlur: 20
 		            }
 		        }
 		    }]
 		};
 		
 		setTimeout(()=>{
+			// console.log(1);
 			this.myChart.hideLoading();
 			this.myChart.setOption(option);
 		},560);
@@ -135,9 +150,9 @@ class RegionalBar extends React.Component {
 			    <div className="bar-checked">
 			   		<input type="button" className="current" value="网络零售额" />
 			   	</div>
-			    <div className="bar-bar" id="bar-bar"></div>
+			    <div className="bar-bar" ref="bar"></div>
 			    <div className="bar-message">
-			    	<p><span>{time}</span><span></span>网络零售额</p>
+			    	<p><span>{time}</span><span>{this.props.categoryName}</span>网络零售额</p>
 					<p><span>{data}</span>元&nbsp;&nbsp;同比上升<span>{trading}</span>%</p>
 			    </div>
 			</div>

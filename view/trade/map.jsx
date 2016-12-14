@@ -6,45 +6,48 @@ import ReactDOM from 'react-dom';
 class TradeMap extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isBar = true;
+		this.istradeMap = true;
 		this.bardatalen = 0;
 		this.datatimeAreaName = '全国';
 	}
 	componentDidMount() {
-		// 基于准备好的dom，初始化echarts实例
-        this.myChartMap = echarts.init(document.getElementById('tradeDetail-map'));
-        this.myChartBar = echarts.init(document.getElementById('tradeDetail-bar'));
-        this.myChartMap.showLoading('default',{
-			text: ''
-		});
-        this.myChartBar.showLoading('default',{
-			text: ''
-		});
 		this.getMapDatas();
 	}
 	componentWillReceiveProps(nextProps){
 		this.props = nextProps;
 		this.getMapDatas();
 	}
+	getRef(){
+		// 基于准备好的dom，初始化echarts实例
+        this.myChartMap = echarts.init(this.refs.map);
+        this.myChartBar = echarts.init(this.refs.bar);
+        this.myChartMap.showLoading('default',{
+			text: ''
+		});
+        this.myChartBar.showLoading('default',{
+			text: ''
+		});
+	}
 	getMapDatas(){
 		let config = {
-			timeId: 75,
+			timeId: this.props.timeId ,
 			areaId: this.props.areaId,
-			categoryId:this.props.categoryId
+			categoryId:this.props.parent.location.query.categoryId ? this.props.parent.location.query.categoryId : ''
 		}
 		$.GetAjax('/v1/category/getSaleList', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
-
-            	this.isBar = true;
+            	this.istradeMap = true;
             	this.bardata = data.data;
             	this.bardatalen = data.data.length;
-            	this.renderMap();
-            	this.renderBar();
             	this.setState({
             		status: true
+            	},()=>{
+            		this.renderMap();
+            		this.renderBar();
+            		this.getRef();
             	});
             } else {
-            	this.isBar = false;
+            	this.istradeMap = false;
             	this.setState({
             		status: false
             	});
@@ -65,7 +68,6 @@ class TradeMap extends React.Component {
 		    	mapData.push({name:name , value:value},);
 			}
 		}
-		
 		let mapName = this.datatimeAreaName;
 		if ( this.datatimeAreaName == "全国" ) {
 			mapName = "中国";
@@ -135,9 +137,9 @@ class TradeMap extends React.Component {
 		    }]
 		};
 		setTimeout(()=>{
-			
-			this.myChartMap.setOption(option);
 			this.myChartMap.hideLoading();
+			this.myChartMap.setOption(option);
+			
 		},600);
 	}
 	renderBar(){
@@ -145,9 +147,9 @@ class TradeMap extends React.Component {
 		let BarData = [];
 		let name;
 		let value;
-		for (let i = 9; i > -1; i--) {
+		for (let i = 0; i < 10; i++) {
 			if ( this.bardata[i] ) {
-				name = this.bardata[i].areaName;
+				name = this.bardata[i].shortName;
 				value = this.bardata[i].indexValue;
 				yAxisData.push(name);
 				BarData.push(value);
@@ -195,6 +197,7 @@ class TradeMap extends React.Component {
 		    },
 		    yAxis: {
 		        type: 'category',
+		        inverse :true,
 		        axisLine:{
 		            show:false
 		        },
@@ -236,12 +239,12 @@ class TradeMap extends React.Component {
 		    ]
 		};
 		setTimeout(()=>{
-			this.myChartBar.setOption(option);
 			this.myChartBar.hideLoading();
+			this.myChartBar.setOption(option);
 		},600);
 	}
 	render() {
-		if ( this.isBar == false ) {
+		if ( this.istradeMap == false ) {
 			return null;
 		}
 		let result=[];
@@ -251,9 +254,9 @@ class TradeMap extends React.Component {
 		return (    
 			<div className="tradeDetail-map">
 			    <div className="map-checked">
-			   		<input type="button" className="current"  value={this.props.categoryName+"热度指数"} />
+			   		<input type="button" className="current"  value={this.props.parent.location.query.categoryName+"热度指数"} />
 			   	</div>
-			    <div className="Detail-map" id="tradeDetail-map"></div>
+			    <div className="Detail-map" ref="map"></div>
 			    <div className="Detail-place" id="">
 				{
 					result.map((data,k) => {
@@ -262,7 +265,7 @@ class TradeMap extends React.Component {
 		        	})
 				}
 			    </div>
-			    <div className="Detail-bar" id="tradeDetail-bar"></div>
+			    <div className="Detail-bar" ref="bar"></div>
 			</div>
 		)
 	}

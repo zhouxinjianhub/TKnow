@@ -1,6 +1,5 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import "./comment.less";
 import "../../dist/page.js";
@@ -42,7 +41,7 @@ class CommentComponent extends React.Component {
 			e.target.value = e.target.value.substr(0,this.totalNum);
 			valueLength = this.totalNum;
 		}
-		ReactDOM.findDOMNode(this.refs.residue).innerText = this.totalNum-valueLength;
+		this.refs.residue.innerText = this.totalNum-valueLength;
 	}
 	addInformationController(e){
 		let isLogin = $.userlogin();
@@ -54,7 +53,7 @@ class CommentComponent extends React.Component {
 		const moduleType = this.props.module || false;
 		let url = void 0;
 		let option = {};
-		let values = $.trim(ReactDOM.findDOMNode(this.refs.addinfo).value);
+		let values = $.trim(this.refs.addinfo.value);
 		
 		switch (moduleType){
 			case "info": (()=>{
@@ -71,6 +70,13 @@ class CommentComponent extends React.Component {
 					areaId: this.option.areaId
 				}
 			})();break;
+			case "trade": (()=>{
+				url = "/v1/category/inner/addCategoryComment";
+				option = {
+					comment: values,
+					categoryId: this.option.categoryId
+				}
+			})();break;
 			default: break;
 		};
 		
@@ -81,7 +87,7 @@ class CommentComponent extends React.Component {
 				scrollbar: false
 			});
 			e.target.value = "发表";
-			ReactDOM.findDOMNode(this.refs.addinfo).value = "";
+			this.refs.addinfo.value = "";
 			return false;
 		};
 
@@ -93,7 +99,7 @@ class CommentComponent extends React.Component {
 			if ( state && data.code == 1 ) {
 				layer.msg('评论成功', {icon: 6});
 				this._getDatas(this.option);
-				ReactDOM.findDOMNode(this.refs.addinfo).value = "";
+				this.refs.addinfo.value = "";
 			}
 		});
 	}
@@ -104,6 +110,7 @@ class CommentComponent extends React.Component {
 		switch (moduleType){
 			case "info":url = "/v1/information/commentList";break;
 			case "region":url = "/v1/area/commentList";break;
+			case "trade":url = "/v1/category/commentList";break;
 			default: break;
 		};
 		if ( !moduleType ) {return false;};
@@ -127,11 +134,11 @@ class CommentComponent extends React.Component {
 		e.target.style.borderColor = '#ccc';
 	}
 	closeMsk(state,e) {
-		ReactDOM.findDOMNode(this.refs.openmsk).style.display = "none";
+		this.refs.openmsk.style.display = "none";
 		state && history.go(0) || "";
 	}
 	openMsk(e) {
-		ReactDOM.findDOMNode(this.refs.openmsk).style.display = "block";
+		this.refs.openmsk.style.display = "block";
 	}
 	render() {
 		return (
@@ -153,7 +160,7 @@ class CommentComponent extends React.Component {
 								this.state.data['data'].data.map((d,k)=>{
 									htmlDom.push(<li>
 													<div className="left">
-														<img src={d.avatar || "../../images/user.jpg"}/>
+														<img src={d.avatar || "./images/user.jpg"}/>
 													</div>
 													<div className="right">
 														<p className="userName">{d.account}<span className="lou">#{lou-this.props.option.pageSize*page}</span></p>

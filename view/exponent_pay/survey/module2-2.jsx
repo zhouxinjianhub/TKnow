@@ -1,6 +1,5 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 class ContainerSurveyModule2_2 extends React.Component {
 	constructor(props) {
@@ -11,7 +10,7 @@ class ContainerSurveyModule2_2 extends React.Component {
 		this.childData = [];
 	}
 	componentDidMount() {
-		this.echart = echarts.init(ReactDOM.findDOMNode(this.refs.chart));
+		this.echart = echarts.init(this.refs.chart);
 		this.echart.showLoading();
 		this._getDatas();
 	}
@@ -146,7 +145,7 @@ class ContainerSurveyModule2_2 extends React.Component {
 		
 	}
 	showPie() {
-		this.echartspie = echarts.init(ReactDOM.findDOMNode(this.refs.pie));
+		this.echartspie = echarts.init(this.refs.pie);
 		var option = {
 		    series: [{
 	            name:'访问来源',

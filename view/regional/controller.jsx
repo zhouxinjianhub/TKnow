@@ -1,11 +1,11 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 
 class RegionalController extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.HTMLDOM = [];
 		this.HTMLDOM2 = [];
 		this.HTMLDOM3 = [];
@@ -26,22 +26,32 @@ class RegionalController extends React.Component {
 		this.AreaNameTiny = '全国';
 		this.AreaName = '全国';
 
+		this.longAreaTime = '全国';
 		this.datatimeAreaList = [];
+		if ( $.isPhone() ) {
+			this.datatimeId = this.props.location.query['timeId'];
+			this.datatimeAreaId = this.props.location.query['areaId'];
+		}
 	}
 	componentDidMount() {
-		this.getData();
-		this.chart = echarts.init(document.getElementById('maps'));
-		this.chart.showLoading('default',{
-			text: ''
-		});
-		this.setMaps();
-		PubSub.subscribe('getNavYear', (topic, data) => {
-			this.datatimeName = data.timeName;
-			this.datatimeId = data.timeId;
-			this.setState({
-				hover: true
+		if ( !$.isPhone() ) {
+			this.getData();
+			this.chart = echarts.init(document.getElementById('maps'));
+			this.chart.showLoading('default',{
+				text: ''
 			});
-		});
+			this.setMaps();
+			this.pubsub_token = PubSub.subscribe('getNavYear', (topic, data) => {
+				this.datatimeName = data.timeName;
+				this.datatimeId = data.timeId;
+				this.setState({
+					hover: true
+				},()=>{
+					this.getRegionData(this.datatimeId);
+					PubSub.unsubscribe(this.pubsub_token);
+				});
+			});
+		}
 	}
 	getData(){
 		$.GetAjax('/v1/system/datatimeList', null, 'Get', true, (data,state)=>{
@@ -56,7 +66,7 @@ class RegionalController extends React.Component {
 		this.HTMLDOM = [];
 		this.HTMLDOM2 = [];
 		this.HTMLDOM3 = [];
-		ReactDOM.findDOMNode(this.refs.largeModule).style.display = 'block';
+		this.refs.largeModule.style.display = 'block';
 
 		let check_1_HTML = [];
 		for ( let i in this.datatimeList ) {
@@ -74,7 +84,7 @@ class RegionalController extends React.Component {
 		});
 	}
 	closeHoverDatatime(e){
-		ReactDOM.findDOMNode(this.refs.largeModule).style.display = 'none';
+		this.refs.largeModule.style.display = 'none';
 	}
 	hoverList2(key,e){
 		this.HTMLDOM2 = [];
@@ -152,7 +162,7 @@ class RegionalController extends React.Component {
 	}
 	regionHover(e){
 
-		ReactDOM.findDOMNode(this.refs.regionModule).style.display = 'block';
+		this.refs.regionModule.style.display = 'block';
 
 		this.HTMLDOMREGION = [];
 		this.HTMLDOMREGION2 = [];
@@ -199,7 +209,7 @@ class RegionalController extends React.Component {
 		$('#provinceP').html(e.target.innerHTML);
 		this.datatimeAreaNameTiny = e.target.innerHTML;
 		this.AreaNameTiny = $(e.target).data('region');
-
+		
 		$('#provinceul li').removeClass('current');
 		$(e.target).addClass('current');
 		let childData = [];
@@ -307,24 +317,41 @@ class RegionalController extends React.Component {
 		});
 	}
 	closeHoverRegion(e){
-		ReactDOM.findDOMNode(this.refs.regionModule).style.display = 'none';
+		this.refs.regionModule.style.display = 'none';
+	}
+	geterCode() {
+		let configer = {
+			timeId: this.datatimeId,
+			areaId: this.datatimeAreaId
+		};
+
+		let params = encodeURIComponent(location.href + "?" +$.param(configer));
+		let result = $.httpxhr + "/v1/system/qrCode?url=" + params;
+		return result;
 	}
 	selectData(e){
 		this.props.callback(this.datatimeId,this.datatimeAreaId);
-	}
+	}	
 	setMaps(){
 		let mapName = this.AreaName;
 
 		if ( this.datatimeAreaName == "全国" ) {
 			mapName = "中国";
 		};
-		$.get('../../map/'+mapName+'.json', myJson => {
+		$.get('./map/'+mapName+'.json', myJson => {
 		    echarts.registerMap(mapName, myJson);
 		    this.chart.setOption({
 		        series: [{
 		            type: 'map',
 		            map: mapName,
-		            silent: true
+		            silent: true,
+		            itemStyle: {
+	            		normal: {
+	            			areaColor: '#49befc',
+	            			color: '#49befc',
+	            			borderColor: '#49befc'
+	            		}
+	            	}
 		        }]
 		    });
 		    this.chart.hideLoading();
@@ -350,7 +377,10 @@ class RegionalController extends React.Component {
 			   	</div>
 			   <div className="map-module" id="maps"></div>
 			   <div className="button-module"><input type="button" value="查询数据详情" onClick={this.selectData.bind(this)}/></div>
-			   <div className="share-module"><i className="iconfont icon-share"></i></div>
+			   <div className="share-module">
+			   		<i className="iconfont icon-share"></i>
+			   		<img src={ this.geterCode() }/>
+			   </div>
 			</div>
 		)
 	}

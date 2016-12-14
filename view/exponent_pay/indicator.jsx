@@ -1,5 +1,6 @@
 
 import React from 'react';
+
 import Indicator1 from './indicator/indicator1';
 
 class ContainerIndicator extends React.Component {
@@ -74,6 +75,7 @@ class ContainerIndicator extends React.Component {
 				   	<div className="button-module"><input type="button" value="查询" onClick={this.selectData.bind(this)}/></div>
 				</div>
 			    
+
 			   	<Indicator1 />
 			</div>
 		)

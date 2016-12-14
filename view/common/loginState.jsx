@@ -25,7 +25,7 @@ class Islogin extends React.Component {
 		return (
 			<div className="nav-login">
 				<Link to={{ pathname: this.props.user.url}} >{this.props.user.account}</Link>
-				<img src="../../images/user.jpg" />
+				<img src="./images/user.jpg" />
 			</div>
 		)
 	}

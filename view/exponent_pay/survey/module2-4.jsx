@@ -96,6 +96,7 @@ class ContainerSurveyModule2_4 extends React.Component {
 		    yAxis: [{
 		        type: 'category',
 		        data: xAxisData,
+		        inverse :true,
 		        axisLine:{
 					show:false
 				},
@@ -109,7 +110,7 @@ class ContainerSurveyModule2_4 extends React.Component {
 		    series: [{
 		        type: 'bar',
 		        z: 3,
-		        barWidth: 30,
+		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
 		            normal: {

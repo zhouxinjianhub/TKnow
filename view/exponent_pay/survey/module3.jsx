@@ -4,7 +4,7 @@ import React from 'react';
 class ContainerSurveyModule3 extends React.Component {
 	constructor(props) {
 		super(props);
-		this.viewMoudle = true;
+		this.viewMoudle = false;
 	}
 	state = {
 		t_data: {},

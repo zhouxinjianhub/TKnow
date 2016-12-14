@@ -4,12 +4,11 @@ import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 import { Link } from 'react-router';
 
-
 import Message from "../common/message";//评论回复模块
-// import "./js/jquery.easing.1.3.js";			// 
-// import "./js/jquery.roundabout2.js";			// 
-// 
-// import PublicReport from './PublicReport';
+
+
+import "./js/jquery.easing.1.3.js";
+import "./js/jquery.roundabout2.js";
 
 import "./free.less";
 
@@ -36,17 +35,17 @@ class StaticPartComponent extends React.Component{
 	render() {
 		let renderObj = [
 			{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/exponent_free/screen1.png',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/exponent_free/yingchaointroduce.png',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/exponent_free/screen2.png',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/exponent_free/coreContent.png',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/exponent_free/screen3.png',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/exponent_free/demand.png',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/exponent_free/screen4.png',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/exponent_free/forms.png',
 			}
 		];
 
@@ -91,14 +90,14 @@ class CarouselComponent extends React.Component{
 		super(props);
 		this.isImg = true;
 		this.imgdata = [];
-		this.result = [];
+		this.result = []; 
 	}
 
 	componentDidMount() {
 		this.getCarData();
 		require.ensure([], require => {
-			require('./js/jquery.easing.1.3.js');
-			require('./js/jquery.roundabout2.js');
+			// require('./js/jquery.easing.1.3.js');
+			// require('./js/jquery.roundabout2.js');
 			$('#myRoundabout').css("opacity","1");
 			$('#myRoundabout').roundabout({
 	 			autoplay: true,
@@ -110,21 +109,33 @@ class CarouselComponent extends React.Component{
 	       		btnNext: '#previous',
 	 			btnPrev: '#next'
 			});
-
-		}, 'myRoundabout');
+		}, 'myRoundabout'); 
 		
+	}
+	componentDidUpdate(){
+		$('#myRoundabout').roundabout({
+ 			autoplay: true,
+            autoplayDuration: 5000,
+            autoplayPauseOnHover: true,
+            shape: 'figure8',
+       		minOpacity: 1,
+
+       		btnNext: '#previous',
+ 			btnPrev: '#next'
+		});
+
 	}
 	getCarData(){
 	 	const that = this;
         let setData = {
             dataType:'json',
         };
-        // $.GetAjax('/v1/zhishu/freeDataReportList', setData, 'GET', true, function(data , state) {
-        $.GetAjax('/exponent_free/js/freeDataReportList.json', setData,'GET', true, function(data ,state) {
+        $.GetAjax('/v1/zhishu/freeDataReportList', setData, 'GET', true, function(data , state) {
+        // $.GetAjax('/exponent_free/js/freeDataReportList.json', setData,'GET', true, function(data ,state) {
            if (state && data.code == 1) {
            		that.isImg = true;
            		that.imgdata = data.data;
-           		// that.renderMap();
+           		that.renderImg();
                 that.setState({
                     status: true
                 });
@@ -138,9 +149,10 @@ class CarouselComponent extends React.Component{
         });
 	}
 	renderImg(){
+
 		this.imgdata.map((data,k) => {
 			this.result.push(<li>
-								<Link to={{ pathname: "/exponent_free/freeDetail",query:{freeUrl:data.freeUrl}}} >
+								<Link to={{ pathname: "/exponent_free/freeDetail",query:{freeUrl:data.freeUrl,name:data.name}}} >
 				        			<img src={data.picUrl}/>
 				        		</Link>
 			        			<div></div>
@@ -151,10 +163,11 @@ class CarouselComponent extends React.Component{
 		return this.result;
 	}
 	render(){
+		
 		if(this.isImg == false){
 			return null;
 		}
-		this.renderImg();
+
 		let divStyle = {
 			width:'900px',
 			height:'400px',
@@ -169,25 +182,25 @@ class CarouselComponent extends React.Component{
 		        </div>
 		        <div className="content">
 					<ul id="myRoundabout" style={divStyle}>
-						
-						<li>
+						{this.result}
+						{/*<li>
 							<a href="http://localhost:8090/#/exponent_free/freeDetail?freeUrl=http%3A%2F%2F192.168.1.221%3A8080%2Fapi%2Fv1%2Ffile%2FdownloadFile%3Fkey%3Dlynn%26name%3D1.pdf%26ak%3D1">
-								<img src="../../images/exponent_free/1.jpg" alt=""/>
+								<img src="./images/exponent_free/1.jpg" alt=""/>
 							</a>
 							<div></div>
 						</li>
 						<li>
 							<a href="http://localhost:8090/#/exponent_free/freeDetail?freeUrl=http%3A%2F%2F192.168.1.221%3A8080%2Fapi%2Fv1%2Ffile%2FdownloadFile%3Fkey%3Dlynn%26name%3D1.pdf%26ak%3D1">
-								<img src="../../images/exponent_free/1.jpg" alt=""/>
+								<img src="./images/exponent_free/1.jpg" alt=""/>
 							</a>
 							<div></div>
 						</li>
 						<li>
 							<a href="http://localhost:8090/#/exponent_free/freeDetail?freeUrl=http%3A%2F%2F192.168.1.221%3A8080%2Fapi%2Fv1%2Ffile%2FdownloadFile%3Fkey%3Dlynn%26name%3D1.pdf%26ak%3D1">
-								<img src="../../images/exponent_free/1.jpg" alt=""/>
+								<img src="./images/exponent_free/1.jpg" alt=""/>
 							</a>
 							<div></div>
-						</li>
+						</li>*/}
 					
 					</ul>
 		        </div>
@@ -238,14 +251,17 @@ class PublicReportComponent extends React.Component{
 	constructor(props){
 		super(props);
 		this.freeUrl=[];
+		this.title = [];
 	}
 	check(){
 		this.freeUrl = this.props.parent.location.query.freeUrl ?  this.props.parent.location.query.freeUrl : '' ;
+		this.title = this.props.parent.location.query.name ?  this.props.parent.location.query.name : '' ;
 	}
 	render() {
 		this.check();
 		return (
 			<div className="freeDetail">
+				<div className="freeDe-title">天知道&nbsp;&nbsp;|&nbsp;&nbsp;映潮指数&nbsp;&nbsp;|&nbsp;&nbsp;{this.title}</div>
 				<iframe src={this.freeUrl} frameborder="0"></iframe>
 			</div>
 		)

@@ -149,8 +149,9 @@ class ContainerLogin extends React.Component {
                         {(()=>{
                             let third = [
                                 <p className="text_login_other">-——————  第三方帐号登录  ——————-</p>,
-                                <div className="login_qq" onClick={this.loginByQq.bind(this)}></div>,
-                                <div className="login_weixin" onClick={this.loginByWeixin.bind(this)}></div>
+                                <a href="https://graph.qq.com/oauth/show?which=Login&display=pc&response_type=code&client_id=100270989&redirect_uri=https%3A%2F%2Fpassport.csdn.net%2Faccount%2Flogin%3Foauth_provider%3DQQProvider&state=test" className="login_qq"></a>,
+                                <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxb0cf58edd59d5db9&redirect_uri=http%3a%2f%2fwww.tknows.com&response_type=code&scope=snsapi_login#wechat_redirect" 
+                                    className="login_weixin"></a>
                             ];
                             return this.props.source ?  null : third
                         })()}

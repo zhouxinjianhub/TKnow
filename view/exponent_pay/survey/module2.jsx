@@ -5,18 +5,32 @@ import Module2_2 from "./module2-2";
 import Module2_3 from "./module2-3";
 import Module2_4 from "./module2-4";
 
-class ContainerSurveyModule1 extends React.Component {
+class ContainerSurveyModule2 extends React.Component {
 	constructor(props) {
 		super(props);
+		this.viewMoudle = false;
 	}
-	state = {
-		timeId: this.props.timeId,
-		areaId: this.props.areaId
-	};
 	componentDidMount() {
-
+		this.viewMoudle = true;
+		this.setState({
+			status: true,
+			timeId: this.props.timeId,
+			areaId: this.props.areaId
+		});
+	}
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+		this.viewMoudle = true;
+		this.setState({
+			status: true,
+			timeId: this.props.timeId,
+			areaId: this.props.areaId
+		});
 	}
 	render() {
+		if ( !this.viewMoudle ) {
+			return false;
+		}
 		return (
 			<div className="survey-module">
 			   <div className="survey-module-title">电子商务整体交易及走势</div>
@@ -31,4 +45,4 @@ class ContainerSurveyModule1 extends React.Component {
 	}
 }
 
-module.exports = ContainerSurveyModule1
+module.exports = ContainerSurveyModule2

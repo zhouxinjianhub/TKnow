@@ -40,8 +40,8 @@ class TradeHotLabel extends React.Component{
 		return (
 			<div className="hot">
 				{
-					hotlabelMap.map((data,k) => {										
-			    		return  <Link to={"/info/"+data.id} >
+					hotlabelMap.map((data,k) => {	
+			    		return  <Link to={{ pathname: "/trade/tradeDetail",query:{categoryId:data.id,categoryName:data.name}}}  >
 			    		     		<button  className="label">
 					        			{data.name}
 					        		</button>
@@ -67,7 +67,6 @@ class TradeContent extends React.Component{
 
 	}
 	componentDidMount() {
-
        this.getCategorys();
 	}
 
@@ -99,23 +98,27 @@ class TradeContent extends React.Component{
 
 
     }
+    test(){
+    	// console.log('test!test!test!');
+    }
+    loadImage(){
+  //   	for ( let i in this.refs) {
+		// 	let imgDom = ReactDOM.findDOMNode(this.refs[i]);
+		// 	let data_url = imgDom.getAttribute('data-url');
+		// 	if ( data_url ) {
+		// 		$.lazyloadImg(data_url, images => {
+		// 			setTimeout(()=>{
+		// 				imgDom.setAttribute('src',images.src);
+		// 			});
+		// 		});
+		// 	}
+		// }
+    }
 	render () {
 
 		var categorys = this.state.categorys? this.state.categorys :'';
 		var categoryMap = Object.keys(categorys).map(key=> categorys[key]);
-		// console.log(categorys);
-		// console.log(categoryMap);
-		// console.log(categorys[0]);
-		// var obj = {"name1":"张三","name2":"李四"}; 
-		// var value = obj.name1;//得到了"undefined"
-		// console.log(obj)
-		// console.log(value)
-		// var a={};
-		// a.name="tom";
-		// a.age=10;
-		// console.log(a);
-		// console.log(a.name);
-		// console.log(categorys[0]['name']);
+		
 
 
 		return (
@@ -125,14 +128,77 @@ class TradeContent extends React.Component{
 		   					
 						categoryMap.map((data,k) => {	
 				    		return  <li >
-				    					<button onClick={this.changeMap.bind(this,k)} className="tab">{data.name}</button><i className="iconfont icon-right"></i>
+				    					<button id={ k == this.state.index ? "current" : "" } onClick={this.changeMap.bind(this,k)} className="tab">{data.name}</button><i className="iconfont icon-right"></i>
 				    				</li>							        	
 				    	})
 					}
 					</ul>
 			   	</div>
 				<div className="content_right">							
-                	{this.state.index}
+                	{(() => {
+
+						let bodyHtml = [];
+						let childHtml= [];
+						
+						let category=categorys[this.state.index];	
+						console.log(categorys);						
+						if(category){
+							let firstChild=category.chilren[0];
+							if(firstChild){
+								let secondChild=firstChild.chilren;
+								if(secondChild&&secondChild.length>0){
+									for ( let i in category.chilren ){
+										childHtml=[];
+										bodyHtml.push(<p className="list-title">{ category.chilren[i].name }</p>);
+									    let	thirdChilden=category.chilren[i].chilren;																		
+										thirdChilden.map((obj,key) => {
+												childHtml.push(	
+																<li>
+																<Link to = {{ pathname: "/trade/tradeDetail",query:{categoryId:obj.id,categoryName:obj.name}}}  >
+																	<div className="list-dv">											
+																		<img  src={obj.imageUrl}/>
+																	</div>
+																	<p>{ obj.name }</p>
+																</Link>	
+																</li>
+															)
+										});
+										bodyHtml.push(<ul>{ childHtml }</ul>);
+
+										
+									}
+
+								}else{
+									
+									    let	thirdChilden=category.chilren;	
+
+										thirdChilden.map((obj,key) => {
+												childHtml.push(	
+																<li>
+																<Link to = {{ pathname: "/trade/tradeDetail",query:{categoryId:obj.id,categoryName:obj.name}}}  >
+																	<div className="list-dv">											
+																		<img  src={obj.imageUrl}/>
+																	</div>
+																	<p>{ obj.name }</p>
+																</Link>	
+																</li>
+															)
+										});
+										bodyHtml.push(<ul>{ childHtml }</ul>);
+
+
+								}
+
+								// this.loadImage();
+
+							}
+							
+												
+						}					
+						
+						return bodyHtml;					
+                	
+					})()}
 			   	</div>
 			</div>
 		)

@@ -106,7 +106,7 @@ class ContainerSurveyModule2_3 extends React.Component {
 		        type: 'bar',
 		        name: '',
 		        data: data,
-		        barWidth: 30,
+		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
 		            normal: {

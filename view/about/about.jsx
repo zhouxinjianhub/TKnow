@@ -28,23 +28,23 @@ class StaticPartComponent extends React.Component{
 	render() {
 		let renderObj = [
 			{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/about/tianji1.png',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/about/tianji1.png',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/about/tianji2.jpg',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/about/tianji2.jpg',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/about/tianji3.gif',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/about/tianji3.gif',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/about/tianji5.png',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/about/tianji5.png',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/about/tianji6.jpg',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/about/tianji6.jpg',
 			},{
-				imgurl:'../../images/black.gif',
-				lazyurl: '../../images/about/tianji7.jpg',
+				imgurl:'./images/black.gif',
+				lazyurl: './images/about/tianji7.jpg',
 			}
 		];
 
@@ -57,23 +57,22 @@ class StaticPartComponent extends React.Component{
 
 		return (
 			<div className="staticPart">
-				<div className="introduce">
+				<div className="tianji">
 					<div className="content">
 						{ childHtml[0]}
 					</div>
 				</div>				
-				<div className="coreContent">
+				<div className="platform">
 					<div className="content">
 						{ childHtml[1]}
 					</div>
 				</div>
-				<div className="dema">
+				<div className="visualization">
 					<div className="content">
 						{ childHtml[2]}
 					</div>
 				</div>
-				<div className="repo">
-				
+				<div className="output">
 					<div className="content">
 						{ childHtml[3]}
 					</div>
@@ -83,11 +82,33 @@ class StaticPartComponent extends React.Component{
 	}
 }
 
-// <CarouselComponent data={this.state.data ? this.state.data : []} getDatas={this._getDatas}/>
 
 /**
- * @name  CarouselComponent 轮播图组件
+ *   SwitherComponent 切换组件
  */
+class SwitherComponent extends React.Component{
+	constructor(props) {
+		super(props);
+		
+	}	
+	render(){
+		return (
+			<div className="swither-container">
+				<p>多种展现形式</p>
+				<img className="switcher_imge"></img>
+				<div className="switch">
+				  <a>单屏</a>
+				  <a>多屏</a>
+				</div>
+		    </div>
+		)
+	}
+}
+
+/**
+ *   CarouselComponent 轮播图组件
+ */
+
 class CarouselComponent extends React.Component{
 	constructor(props) {
 		super(props);
@@ -95,13 +116,12 @@ class CarouselComponent extends React.Component{
 	}
 	componentDidMount() {
 		new Swiper('.swiper-container', {
-	        pagination: '.swiper-pagination',
+		    pagination: '.swiper-pagination',
+	        slidesPerView: 4,
+	        centeredSlides: true,
 	        paginationClickable: true,
-	        spaceBetween: 30,
-	        autoplay : 100000,//自动切换的时间间隔（单位ms）
-	        grabCursor : true,
-	        direction: 'vertical',
-	        mousewheelControl: true
+	        spaceBetween: 30    
+		    
 	    });
 	}
 	componentWillReceiveProps(nextProps){//在组件接收到一个新的prop时被调用 
@@ -111,20 +131,20 @@ class CarouselComponent extends React.Component{
     }
 	render(){
 		return (
-			<div className="swiper-container">
-		        <div className="swiper-wrapper">
-
-		        	{
-		        		this.data.map((data,k) => {
-			    		return  <Link className="swiper-slide" to={{ pathname: data.url }} >
-				        			<img src={data.picUrl}/>
-				        			<span>{data.title}</span>
-				        		</Link>
-			        	})
-			        }
-
-		        </div>
-		        <div className="swiper-pagination"></div>
+			<div className="swiper">
+				<p>典型客户</p>
+				<div className="swiper-container">
+					 <div className="swiper-wrapper">
+				        <div className="swiper-slide">Slide 1</div>
+			            <div className="swiper-slide">Slide 2</div>
+			            <div className="swiper-slide">Slide 3</div>
+			            <div className="swiper-slide">Slide 4</div>
+			            <div className="swiper-slide">Slide 5</div>
+			            <div className="swiper-slide">Slide 6</div>
+				    </div>
+				    
+				</div>   
+		        
 		    </div>
 		)
 	}
@@ -132,20 +152,22 @@ class CarouselComponent extends React.Component{
 
 
 
-
-
-
 class ContainerAbout extends React.Component {
 	constructor(props) {
 		super(props);
 	}
-	componentDidMount() {
-		
+	componentDidMount() {		
+		$(".container>.content>.nav").addClass("nav-free");		
+	}
+	componentWillUnmount(){  		
+		$(".container>.content>.nav").removeClass("nav-free");		
 	}
 	render() {
 		return (
 			<div className="container-about">
 			   <StaticPartComponent/>               
+			   <SwitherComponent/>               
+			   <CarouselComponent/>               
 			   <Message />
 			</div>
 		)

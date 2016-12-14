@@ -17,7 +17,7 @@ class ContainerTrade extends React.Component {
 				{(()=>{
 					switch( tradeName ){
 						case "tradeIndex"   : return <TradeIndex/>
-						case "tradeDetail"  : return <TradeDetail/>
+						case "tradeDetail"  : return <TradeDetail parent={this.props.parent}/>
 						default : 	     return <TradeIndex/>
 					}
 				})()}

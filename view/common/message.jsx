@@ -169,8 +169,6 @@ class MessageComponent extends React.Component {
 	 * 提交
 	 */
     submit(text,name,phone,email){
-    	alert("提交成功，我们会尽快联系您！");
-    	// console.log("text:"+text+",name:"+name+",phone:"+phone+",email:"+email);
     	let that = this;
 		let datas = {
 			content:text,
@@ -180,9 +178,17 @@ class MessageComponent extends React.Component {
 		};
 		$.GetAjax('/v1/tianji/addFeedback',datas,'POST',true,function(data,state){
 			if(state && data.code == 1){
-				console.log("提交成功");
+				layer.open({
+					title: '提交状态',
+					content: '<div>提交成功，我们会尽快联系您！</div>',
+					scrollbar: false
+				});
 			}else{
-				console.log("提交失败");
+				layer.open({
+					title: '提交状态',
+					content: '<div>提交失败</div>',
+					scrollbar: false
+				});
 			}
 		})
   	}

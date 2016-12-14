@@ -19,7 +19,7 @@ class ContainerRegionalList extends React.Component {
 		let config = {
 			timeId: this.props.timeId,
 			areaId: this.props.areaId,
-			categoryId:this.props.categoryId 
+			categoryId:this.props.parent.location.query.categoryId ? this.props.parent.location.query.categoryId : ''
 		}
 		$.GetAjax('/v1/category/topRoute', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {

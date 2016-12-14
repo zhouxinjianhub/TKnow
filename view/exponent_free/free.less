@@ -1,6 +1,7 @@
 @charset "utf-8";
 @import "../../common/style/z";
-
+@import "../../common/style/css3";
+@import "../../common/style/color";
 body{
     .container{
         .content{
@@ -19,13 +20,7 @@ body{
             .introduce{
                 .b-sizing();
                 .maxBody(100%,556px);
-                FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#d1d6e1,endColorStr=#fff); /*IE 6 7 8*/ 
-                background: -ms-linear-gradient(top, #d1d6e1,  #fff);        /* IE 10 */
-                background:-moz-linear-gradient(top,#d1d6e1,#fff);/*火狐*/ 
-                background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#d1d6e1), to(#fff));/*谷歌*/ 
-                background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d6e1), to(#fff));      /* Safari 4-5, Chrome 1-9*/
-                background: -webkit-linear-gradient(top, #d1d6e1, #fff);   /*Safari5.1 Chrome 10+*/
-                background: -o-linear-gradient(top, #d1d6e1, #fff);  /*Opera 11.10+*/
+                .linear-gradient(#d1d6e1,#fff);
                 .content{
                     margin: auto;
                     .b-sizing();
@@ -38,13 +33,7 @@ body{
             .coreContent{
                 .b-sizing();
                 .maxBody(100%,auto);
-                FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#f8b57c,endColorStr=#f7d67f); /*IE 6 7 8*/ 
-                background: -ms-linear-gradient(to right, #f8b57c,  #f7d67f);        /* IE 10 */
-                background:-moz-linear-gradient(left,#f8b57c,#f7d67f);/*火狐*/ 
-                background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#f8b57c), to(#f7d67f));/*谷歌*/ 
-                background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8b57c), to(#f7d67f));      /* Safari 4-5, Chrome 1-9*/
-                background: -webkit-linear-gradient(left, #f8b57c, #f7d67f);   /*Safari5.1 Chrome 10+*/
-                background: -o-linear-gradient(left, #f8b57c, #f7d67f);  /*Opera 11.10+*/
+                .linear-gradient-x(#f8b57c,#f7d67f);
                 .content{
                      margin: auto;
                     .b-sizing();
@@ -84,14 +73,14 @@ body{
         }
         .Carousel{
             .maxBody(100%,600px);
-            background: #edeff5;
-            display: inline-block;
+            .ba-c(#edeff5);
+            .d-ib();
             .title{
                 .maxBody(100%,auto);
                 margin-bottom: 50px;
                 p{
-                    text-align: center;
-                    font-size: 24px;
+                    .text-c();
+                    .font-s(24px);
                     color: #222222;
                 }
             }
@@ -99,59 +88,50 @@ body{
                 .maxBody(10%,400px);
             }
             .next{
-                float:left;
-                display: inline;
+                .fl(@f:left;);
                 a{
-                    height: 110px;
-                    width: 55px;
+                    .maxBody(55px,110px);
+                    .pos (a);
+                    .d-ib();
+                    .c-point();
                     background: url(../../images/exponent_free/ico.png) no-repeat;
-                    position: absolute;
-                    display: inline-block;
                     margin-top: 150px;
                     z-index: 10;
-                    cursor: pointer;
                     right: 0;
                     background-position: -56px 0;
                 }
             }
             .previous{
-                float:right;
-                display: inline;
+                .fr(@f:right);
                 a{
-                    height: 110px;
-                    width: 56px;
+                    .maxBody(56px,110px);
+                    .pos (a);
+                    .d-ib();
+                    .c-point();
                     background: url(../../images/exponent_free/ico.png) no-repeat;
-                    position: absolute;
-                    display: inline-block;
                     margin-top: 150px;
                     z-index: 10;
-                    cursor: pointer;
                     left: 0;
                 }
             }
             .content{
                 .b-sizing();
                 .maxBody(80%,400px);
+                .d-ib();
                 margin: auto;
-                display: inline-block;
                 ul {
-                    // .maxBody(900px,400px);
+                    .maxBody(900px,400px);
                     list-style: none;
                     padding: 0;
                     margin: 0 auto;
-                    // .opa(0);
                     li{
-                        .maxBody(60%,auto);
+                        .maxBody(60%,70%);
+                        // .maxBody(680px,382px);
                         .c-point();
                         .text-c();
                         background-color: #ccc;
                         .roundabout-in-focus {
                             cursor: default;
-                        }
-
-                        span{
-                            .d-b();
-                            padding-top: 6em;
                         }
                         img{
                             .maxBody(100%,100%);
@@ -163,7 +143,7 @@ body{
                             .maxBody(100%,100%);
                             .d-b();
                             .pos (a);
-                            background: #595959;
+                            .ba-c(#595959);
                             border-radius: 10px;
                             z-index: 0;
                             top: 10px;
@@ -179,13 +159,24 @@ body{
         }
     }
     .freeDetail{
-        .maxBody(1100px,700px);
-        width: 1100px;
+        .maxBody(1100px,780px);
         margin-left: auto;
         margin-right: auto;
+        .freeDe-title{
+            .maxBody(1100px,38px);
+            .l-h(38px);
+            .b-sizing();
+            .blue-gradient-x();
+            border-top-right-radius: 6px;
+            border-top-left-radius: 6px;
+            padding-left: 20px;
+            color: #fff;
+        }
         iframe{
-            .maxBody(1100px,700px);
-            border: 0px;
+            .maxBody(1100px,740px);
+            .b-sizing();
+            .ba-c(#fff);
+            border: 1px solid #e5e5e5;
         }
     }
 }

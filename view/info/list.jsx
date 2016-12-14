@@ -31,33 +31,30 @@ class ListComponent extends React.Component{
 		super(props);
 	}
 	getTime(time){
-		// 将时间戳(以s为单位)换成时间格式字符串
-		let timestamp = time;
-		let newDate = new Date();
-		newDate.setTime(timestamp * 1000);
 
-		Date.prototype.format = function(format) {
-	       let date = {
-	              "M+": this.getMonth() + 1,
-	              "d+": this.getDate(),
-	              "h+": this.getHours(),
-	              "m+": this.getMinutes(),
-	              "s+": this.getSeconds(),
-	              "q+": Math.floor((this.getMonth() + 3) / 3),
-	              "S+": this.getMilliseconds()
-	       };
-	       if (/(y+)/i.test(format)) {
-	              format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-	       }
-	       for (let k in date) {
-	              if (new RegExp("(" + k + ")").test(format)) {
-	                     format = format.replace(RegExp.$1, RegExp.$1.length == 1
-	                            ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-	              }
-	       }
-	       return format;
-		}
-		return newDate.format('yyyy-MM-dd');
+		// 将时间戳(以毫秒为单位)换成时间格式字符串
+	    Date.prototype.Format = function (fmt) { //author: meizz 
+	        let o = {
+	            "M+": this.getMonth() + 1, //月份 
+	            "d+": this.getDate(), //日 
+	            "H+": this.getHours(), //小时 
+	            "m+": this.getMinutes(), //分 
+	            "s+": this.getSeconds(), //秒 
+	            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+	            "S": this.getMilliseconds() //毫秒 
+	        };
+	        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	        for (let k in o)
+	        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	        return fmt;
+	    }
+	
+		let dateTimeJsonStr = time; // C# DateTime类型转换的Json格式
+	    dateTimeJsonStr = Date.now();
+	    let msecStr = dateTimeJsonStr.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
+	    let msesInt = Number.parseInt(msecStr); // 毫秒字符串转换成数值
+	    let dt = new Date(msesInt); // 初始化Date对象
+		return dt.Format('yyyy-MM-dd');
 	}
 	render(){
 		// 渲染列表数据
@@ -415,7 +412,7 @@ class ContainerList extends React.Component {
 				
 				<div className="top">
 					<div className="topL"></div>
-					<img src="../../../images/info/2.png" alt=""/>
+					<img src="../../../images/info/info-topBg.png" alt=""/>
 					<div className="topR"></div>
 				</div>
 				<div className="content">
@@ -440,7 +437,7 @@ class ContainerList extends React.Component {
 				</div>
 	      		<div className="bottom">
 					<div className="topL"></div>
-					<img src="../../../images/info/1.png" alt=""/>
+					<img src="../../../images/info/info-bottomBg.png" alt=""/>
 					<div className="topR"></div>
 	      		</div>
 			</div>

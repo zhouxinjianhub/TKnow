@@ -13,7 +13,7 @@ import "./regional.less";
 class ContainerRegional extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isTopRoute = true;
+		this.isTopRoute = false;
 	}
 	state = {
 		timeId: '',
@@ -29,11 +29,12 @@ class ContainerRegional extends React.Component {
 		PubSub.subscribe('getNavYearId', (topic, data) => {
 			this.state.timeId = data;
 		});
+		$.wechartShare();
 	}
 	render() {
 		return (
 			<div className="container-regional">
-			    <Nav callback={this.callbackNav.bind(this)}/>
+			    <Nav callback={this.callbackNav.bind(this)} location={this.props.parent.location}/>
 			    
 			    <Pie timeId={this.state.timeId} areaId={this.state.areaId}/>
 

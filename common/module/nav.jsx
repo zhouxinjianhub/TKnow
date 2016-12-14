@@ -38,7 +38,7 @@ class Nav extends React.Component {
 				<div className="nav-box">
 					<div className="nav-logo">
 						<Link to={{ pathname: "/"}} >
-							<img src="../../images/logo-white.png" ref="logo" title="映潮科技"/>
+							<img src="./images/logo-white.png" ref="logo" title="映潮科技"/>
 						</Link>
 					</div>
 					<ul>

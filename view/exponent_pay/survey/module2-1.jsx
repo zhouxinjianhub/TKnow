@@ -1,6 +1,5 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 
 class ContainerSurveyModule2_1 extends React.Component {
@@ -15,7 +14,7 @@ class ContainerSurveyModule2_1 extends React.Component {
         this.childName = "";
 	}
 	componentDidMount() {
-		this.echart = echarts.init(ReactDOM.findDOMNode(this.refs.chart));
+		this.echart = echarts.init(this.refs.chart);
 		this.echart.showLoading();
 		this._getDatas();
 	}
@@ -229,11 +228,8 @@ class ContainerSurveyModule2_1 extends React.Component {
 		}
 	}
 	render() {
-		if ( !this.viewMoudle ) {
-			return false;
-		}
 		return (
-			<div className="survey-module-list">
+			<div className="survey-module-list" >
 			   <div className="title">
 			   		<p>网络交易额与网络零售额</p>
 

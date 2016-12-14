@@ -1,5 +1,7 @@
 
 import React from 'react';
+
+import Nav from './survey/controller';
 import Module1 from './survey/module1';
 import Module2 from './survey/module2';
 import Module3 from './survey/module3';
@@ -8,59 +10,35 @@ import Module4 from './survey/module4';
 class ContainerSurvey extends React.Component {
 	constructor(props) {
 		super(props);
-		this.HTMLDOMREGION = [];
-		this.HTMLDOMREGION2 = [];
-		this.HTMLDOMREGION3 = [];
-
-		this.HTMLDOMTIME = [];
-		this.HTMLDOMTIME2 = [];
-		this.HTMLDOMTIME3 = [];
+		this.loadStart = false;
 	}
-	state = {
-		timeId: 75,
-		areaId: 51
-	};
+	loadShowStart(timeId,areaId){
+		this.loadStart = true;
+		this.setState({
+			timeId: timeId,
+			areaId: areaId
+		},()=>{
+			this.loadStart = false;
+		})
+	}
 	componentDidMount() {
-
-	}
-	closeHoverDatatime() {
-
-	}
-	hoverList1() {
-
-	}
-	sublimeRegion(){
-
-	}
-	selectData(){
-
+		
 	}
 	render() {
 		return (
 			<div className="pay-section">
-				<div className="pay-section-nav">
-					<div className="select-module">
-				   		<span className="titles">成都市</span>
-				   		<i className="iconfont icon-down"></i>
-				   		<div className="nav-list-region" ref="regionModule">
-		   					{ this.HTMLDOMREGION }{ this.HTMLDOMREGION2 }{ this.HTMLDOMREGION3 }
-				   		</div>
-				   	</div>
-				   	<div className="select-module" >
-				   		<span className="titles">2016年一季度</span>
-				   		<i className="iconfont icon-down"></i>
-				   		<div className="nav-list-page" ref="pageModule">
-				   			{ this.HTMLDOMTIME }{ this.HTMLDOMTIME2 }{ this.HTMLDOMTIME3 }
-		   					<input type="button" value="确定" className="areaButton" onClick={this.sublimeRegion.bind(this)}/>
-				   		</div>
-				   	</div>
-				   	<div className="button-module"><input type="button" value="查询" onClick={this.selectData.bind(this)}/></div>
-				</div>
-			    
-			   	<Module1 />
-			   	<Module2 timeId={this.state.timeId} areaId={this.state.areaId}/>
-			   	<Module3 timeId={this.state.timeId} areaId={this.state.areaId}/>
-			   	<Module4 timeId={this.state.timeId} areaId={this.state.areaId}/>
+				<Nav callback={ this.loadShowStart.bind(this) }/>
+			    {(()=>{
+			    	let	childDom = [];
+			    	if ( this.loadStart ) {
+			    		childDom.push(<Module1 />);
+			    		childDom.push(<Module2 timeId={this.state.timeId} areaId={this.state.areaId}/>);
+			    		childDom.push(<Module3 timeId={this.state.timeId} areaId={this.state.areaId}/>);
+			    		childDom.push(<Module4 timeId={this.state.timeId} areaId={this.state.areaId}/>);
+			    	}
+			    	return childDom;
+			    })()}
+			   	
 			</div>
 		)
 	}
