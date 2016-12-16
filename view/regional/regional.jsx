@@ -8,6 +8,7 @@ import List from "./list";
 import Comment from "../common/comment";
 import PubSub from 'pubsub-js';
 
+
 import "./regional.less";
 
 class ContainerRegional extends React.Component {

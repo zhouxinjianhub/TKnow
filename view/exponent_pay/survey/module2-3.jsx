@@ -4,7 +4,7 @@ import React from 'react';
 class ContainerSurveyModule2_3 extends React.Component {
 	constructor(props) {
 		super(props);
-		this.viewMoudle = true;
+		this.viewMoudle = false;
 		this.btnState = "p";
 
 		this.parentData = false;
@@ -13,14 +13,17 @@ class ContainerSurveyModule2_3 extends React.Component {
         this.childName = "";
 	}
 	componentDidMount() {
-		this.echart = echarts.init(this.refs.chart);
-		this.echart.showLoading();
 		this._getDatas();
 	}
 	componentWillReceiveProps(nextProps){
-		this.echart.showLoading();
         this.props = nextProps;
         this._getDatas();
+	}
+	start() {
+		this.echart = echarts.init(this.refs.chart);
+		this.echart.showLoading('default',{
+			text: ''
+		});
 	}
 	_getDatas() {
 		let option = {
@@ -35,14 +38,17 @@ class ContainerSurveyModule2_3 extends React.Component {
                 this.childData = data.data && data.data['child'];
                 this.parentName = data.data && data.data['parentAreaName'];
                 this.childName = data.data && data.data['childAreaName'];
-
-                this.showChart( this.btnState == "p" ? this.parentData : this.childData );
+                
                 this.setState({
                 	status: true
+                },()=>{
+                	this.start();
+                	this.showChart( this.btnState == "p" ? this.parentData : this.childData );
                 });
 
              } else {
                 this.viewMoudle = false;
+                this.props.addError();
                 this.setState({
                 	status: false
                 });

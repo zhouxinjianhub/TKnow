@@ -84,21 +84,40 @@ class StaticPartComponent extends React.Component{
 
 
 /**
- *   SwitherComponent 切换组件
+ *   SwitherComponent 切换图片组件
  */
 class SwitherComponent extends React.Component{
 	constructor(props) {
 		super(props);
 		
-	}	
+	}
+
+	switch(id,event){
+		$(".switch a").removeClass('active');	
+    	$("#o"+id).addClass('active');
+    	var imgDom=this.refs.switcher_imge;
+    	var url='';
+    	switch (id) {
+    		case 0:
+    			url="url(../../images/about/tianji7.jpg)";
+    			break;
+    		default:
+    			url="url(../../images/about/tianji6.jpg)";
+    			break;
+    	}
+    	imgDom.style.background=url;
+
+	}
+
+
 	render(){
 		return (
 			<div className="swither-container">
-				<p>多种展现形式</p>
-				<img className="switcher_imge"></img>
+				<p className="tips">多种展现形式</p>
+				<img ref="switcher_imge" className="switcher_imge"></img>
 				<div className="switch">
-				  <a>单屏</a>
-				  <a>多屏</a>
+				  <a id="o0" className="active" onClick={this.switch.bind(this,0) } >单屏</a>
+				  <a id="o1" onClick={this.switch.bind(this,1) } >多屏</a>
 				</div>
 		    </div>
 		)
@@ -112,38 +131,79 @@ class SwitherComponent extends React.Component{
 class CarouselComponent extends React.Component{
 	constructor(props) {
 		super(props);
-		this.data = [];
+		this.state = {       
+            data:[]
+        };
 	}
 	componentDidMount() {
+		this.requestData();
 		new Swiper('.swiper-container', {
-		    pagination: '.swiper-pagination',
-	        slidesPerView: 4,
-	        centeredSlides: true,
-	        paginationClickable: true,
-	        spaceBetween: 30    
+        	nextButton: '.swiper-button-next',
+        	prevButton: '.swiper-button-prev',
+	        slidesPerView: 5,
+	        spaceBetween: 30,
+	        loop: true,
+	        breakpoints: {
+	            1024: {
+	                slidesPerView: 4,
+	                spaceBetween: 10
+	            },
+	            768: {
+	                slidesPerView: 3,
+	                spaceBetween: 5
+	            },
+	            640: {
+	                slidesPerView: 2,
+	                spaceBetween: 5
+	            },
+	            320: {
+	                slidesPerView: 1,
+	                spaceBetween: 2
+	            }
+	        },   
 		    
 	    });
 	}
-	componentWillReceiveProps(nextProps){//在组件接收到一个新的prop时被调用 
-		let list = nextProps ? nextProps : [];
-		let listdata = list.data.data ? list.data.data : [];
-		this.data = listdata.data ? listdata.data : [];
-    }
+	requestData(){
+		var self = this;
+
+        let datas = {
+           
+        };
+
+        $.GetAjax('/v1/tianji/careList', datas, 'POST', true, function(data , state) {
+
+            if ( state && data.code == 1 ) {
+            	self.setState({
+					data:data.data
+				});
+
+            } else {
+
+
+            }
+        });
+	}
+
 	render(){
 		return (
 			<div className="swiper">
 				<p>典型客户</p>
 				<div className="swiper-container">
-					 <div className="swiper-wrapper">
-				        <div className="swiper-slide">Slide 1</div>
-			            <div className="swiper-slide">Slide 2</div>
-			            <div className="swiper-slide">Slide 3</div>
-			            <div className="swiper-slide">Slide 4</div>
-			            <div className="swiper-slide">Slide 5</div>
-			            <div className="swiper-slide">Slide 6</div>
-				    </div>
-				    
-				</div>   
+			        <div className="swiper-wrapper">
+			        	 {
+			        	 	this.state.data.map((data,k) => {                            
+                                            return   <div className="swiper-slide">{data.name}</div>                                                        
+                                        }
+                            ) 
+                             
+                        }			           
+			        </div>
+
+
+			        <div className="swiper-button-next"></div>
+			        <div className="swiper-button-prev"></div>
+			    </div>  
 		        
 		    </div>
 		)

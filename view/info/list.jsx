@@ -31,7 +31,6 @@ class ListComponent extends React.Component{
 		super(props);
 	}
 	getTime(time){
-
 		// 将时间戳(以毫秒为单位)换成时间格式字符串
 	    Date.prototype.Format = function (fmt) { //author: meizz 
 	        let o = {

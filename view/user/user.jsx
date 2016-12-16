@@ -8,28 +8,15 @@ class ContainerUser extends React.Component {
 		super(props);
 		this.userDatas = {};
 		this.userToken = $.cookie('token');
-		if ( !this.userToken ) { 
-			if ( history.go ) {
-				history.go(-1);
-			}else{
-				hashHistory.push('/');
-			}
-		}
+
+		this.reviewPassword = this.reviewPassword.bind(this);
 	}
 	componentDidMount() {
-		this.getUserMsg();
-	}
-	getUserMsg() {
-		let token = this.props.parent.location.query['access_token'] || null;
-		console.log(token);
-		if ( token ) {
-			this.getThirdUser(token);
-		}else{
-			this.getUser(this.userToken);
-		}
+		this.getUser(this.userToken);
 	}
 	getUser(token){
-		$.GetAjax('/v1/personal/inner/getUserInfo',{token: token},'GET',false,(data,state)=>{
+
+		$.GetAjax('/v1/personal/inner/getUserInfo',null,'GET',false,(data,state)=>{
 			if ( state && data.code == 1 ) {
 				this.userDatas = data.data;
 				this.setState({
@@ -41,50 +28,134 @@ class ContainerUser extends React.Component {
 					$.laoutLogin(()=>{
 						hashHistory.push('/login');
 					});
-				},3000);
+				},2000);
 			}
 		});
 	}
-	getThirdUser(token){
+	reviewPassword(e){
+		
+		let pass = $.trim($(this.refs.pass).val());
+		let newpass = $.trim($(this.refs.newpass).val());
+		let newpasscopy = $.trim($(this.refs.newpasscopy).val());
+		
+		if ( !$.regTest('password',pass) ) {
+			layer.tips('密码格式不正确，请输入6-16位', this.refs.pass);
+			return false;
+		}
 
+		if ( !$.regTest('password',newpass) ) {
+			layer.tips('密码格式不正确，请输入6-16位', this.refs.newpass);
+			return false;
+		}
+
+		if ( newpasscopy !== newpass ) {
+			layer.tips('两次密码输入不一致', this.refs.newpasscopy);
+			return false;
+		}
+
+		let option = {
+			oldPas: pass,
+			newPas: newpass
+		};
+		layer.load(3, {
+			shade: [0.2,'#000']
+		});
+		this.updatePassword(option);
 	}
-	openJs() {
-		var ref = window.open("page.html", "newwindow","height=100, width=400, top=0,left=0,toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no,status=no");
-        console.log(ref);
-        // hashHistory.push('/login');
+	updatePassword(option){
+		
+		$.GetAjax('/v1/personal/inner/updatePas',option,'GET',false,(data,state)=>{
+			
+			if ( state && data.code == 1 ) {
+				layer.closeAll('loading'); //关闭加载层
+				layer.msg('密码修改成功，请重新登录！');
+				setTimeout(()=>{
+					$.laoutLogin(()=>{
+						hashHistory.push('/login');
+					});
+				},888)
+				
+			}else{
+				setTimeout(()=>{
+					layer.closeAll('loading'); //关闭加载层
+					layer.msg(data.message || "密码修改失败");
+				},888)
+			}
+		});
+	}
+	bindThirdUser(type, bind, e){
+		if ( type == 'qq' ) {
+			bind == 'bind' ? this.bindthird(type) : this.clearthird(type);
+		}
+	}
+	bindthird(type) {
+		if ( type == 'qq' ) {
+			location.href = $.thirdxhr;
+		} else {
+			alert('wx');
+		}
+		
+	}
+	clearthird(type){
+		const that = this;
+		let typeNums = type == 'qq' ? 0 : 1;
+		//询问框
+		layer.confirm('真的要解除绑定么？', {
+			btn: ['确定','我再想想'] //按钮
+		}, function(){
+			$.GetAjax('/v1/personal/inner/relieveBand',{type:typeNums},'GET',false,(data,state)=>{
+				if ( state && data.code == 1 ) {
+					layer.msg('解除成功！');
+					that.getUser(that.userToken);
+				}else{
+					layer.msg('解除失败，稍后再试！');
+				}
+			});
+		}, function(index){
+			layer.close(index);
+		});
+		
 	}
 	render() {
-		let pageName = this.props.parent.params.name;
+		if ( !this.userToken ) { 
+			if ( history.go ) {
+				history.go(-1);
+				return false;
+			}else{
+				hashHistory.push('/');
+				return false;
+			}
+		};
 		return (
 			<div className="container-user">
 			   <div className="user-nav">
 			   		<div className="user-logo">
-			   			<img src="./images/user.jpg" />
+			   			<img src={ this.userDatas.avatar || "./images/user.jpg" } />
 			   		</div>
-			   		<h3>六个中文字符</h3>
+			   		<h3>{ this.userDatas.account || "" }</h3>
 			   </div>
 			   <div className="user-section">
 			   		<div className="user-module">
 			   			<div className="user-title"><span>账号信息</span></div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">用户名</p>
-			   				<p className="user-list-cont">六个中文字符</p>
+			   				<p className="user-list-cont">{ this.userDatas.account || "" }</p>
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">手机号码</p>
 			   				<p className={ this.userDatas.mobile && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.mobile || '未绑定' }</p>
-			   				<input type="button" value={ this.userDatas.mobile ? "更改" : "绑定" } onClick={ this.openJs.bind(this) } />
+			   				<input type="button" value={ this.userDatas.mobile ? "更改" : "绑定" }/>
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">QQ</p>
 			   				<p className={ this.userDatas.qqOpenid && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.qqOpenid || '未绑定' }</p>
-			   				<input type="button" value={ this.userDatas.qqOpenid ? "解绑" : "绑定" }/>
+			   				<input type="button" value={ this.userDatas.qqOpenid ? "解绑" : "绑定" } onClick={ this.bindThirdUser.bind(this,'qq',this.userDatas.qqOpenid ? "unbind" : "bind") }/>
 			   				
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">微信</p>
 			   				<p className={ this.userDatas.weinxinOpenid && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.weinxinOpenid || '未绑定' }</p>
-			   				<input type="button" value={ this.userDatas.weinxinOpenid ? "解绑" : "绑定" }/>
+			   				<input type="button" value={ this.userDatas.weinxinOpenid ? "解绑" : "绑定" } onClick={ this.bindThirdUser.bind(this,'wx',this.userDatas.weinxinOpenid ? "unbind" : "bind") }/>
 			   				
 			   			</div>
 			   		</div>
@@ -104,19 +175,19 @@ class ContainerUser extends React.Component {
 			   			<div className="user-title"><span>修改密码</span></div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">原密码</p>
-			   				<input type="password" value=""/>
+			   				<input type="password" ref="pass"/>
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">新密码</p>
-			   				<input type="password" value=""/>
+			   				<input type="password" ref="newpass"/>
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">确认密码</p>
-			   				<input type="password" value=""/>
+			   				<input type="password" ref="newpasscopy"/>
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-zw"></p>
-			   				<input type="button" value="确定"/>
+			   				<input type="button" value="确定" onClick={ this.reviewPassword }/>
 			   			</div>
 			   		</div>
 			   </div>

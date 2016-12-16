@@ -4,18 +4,22 @@ import React from 'react';
 class ContainerSurveyModule4 extends React.Component {
 	constructor(props) {
 		super(props);
-		this.viewMoudle = false;
+		this.viewMoudle = true;
 		this.dataList = void 0;
+		this.selected = 0;
 	}
 	componentDidMount() {
-		this.echart = echarts.init(this.refs.chart);
-		this.refs.lastChart.style.display = 'none';
 		this._getDatas();
 	}
 	componentWillReceiveProps(nextProps){
-		this.echart.showLoading();
         this.props = nextProps;
         this._getDatas();
+	}
+	start() {
+		this.echart = echarts.init(this.refs.chart);
+		this.echart.showLoading('default',{
+			text: ''
+		});
 	}
 	_getDatas() {
 		let option = {
@@ -24,12 +28,15 @@ class ContainerSurveyModule4 extends React.Component {
 		};
 		$.GetAjax('/v1/zhishu/electronicAnalysis', option, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
+            	this.selected = 0;
             	this.viewMoudle = true;
             	this.dataList = data.data;
-            	this.showChart(this.dataList["networkTradingList"] || [],0);
-            	this.refs.lastChart.style.display = 'block';
+            	
                 this.setState({
                 	status: true
+                },()=>{
+                	this.start();
+                	this.showChart(this.dataList["networkTradingList"] || [],0);
                 });
 
              } else {
@@ -137,21 +144,26 @@ class ContainerSurveyModule4 extends React.Component {
 		}else{
 			$(e.target).parent().find('span').removeClass('current');
 			$(e.target).addClass('current');
-
-			this.echart.showLoading();
+			this.selected = type;
+			this.echart.showLoading('default',{
+				text: ''
+			});
 			this.showChart(this.dataList[ajaxCont[type]] || [],type);
 		}
 	}
 	render() {
+		if ( !this.viewMoudle ) {
+			return false;
+		};
 		return (
-			<div className="survey-module" ref="lastChart">
+			<div className="survey-module">
 				<div className="survey-module-title">四川省各市州电子商务交易解析</div>
 				<div className="survey-module-content">
 					<div className="module4-nav">
-						<span className="current" onClick={this.changeNav.bind(this,0)}>网络交易额</span>
-						<span onClick={this.changeNav.bind(this,1)}>网络零售额</span>
-						<span onClick={this.changeNav.bind(this,2)}>实物型网络零售额</span>
-						<span onClick={this.changeNav.bind(this,3)}>服务型网络零售额</span>
+						<span className={ this.selected == 0 ? "current" : "" } onClick={this.changeNav.bind(this,0)}>网络交易额</span>
+						<span className={ this.selected == 1 ? "current" : "" } onClick={this.changeNav.bind(this,1)}>网络零售额</span>
+						<span className={ this.selected == 2 ? "current" : "" } onClick={this.changeNav.bind(this,2)}>实物型网络零售额</span>
+						<span className={ this.selected == 3 ? "current" : "" } onClick={this.changeNav.bind(this,3)}>服务型网络零售额</span>
 					</div>
 					<div className="module-echarts" ref="chart"></div>
 				</div>

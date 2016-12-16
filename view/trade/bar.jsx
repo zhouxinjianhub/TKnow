@@ -132,7 +132,6 @@ class RegionalBar extends React.Component {
 		};
 		
 		setTimeout(()=>{
-			// console.log(1);
 			this.myChart.hideLoading();
 			this.myChart.setOption(option);
 		},560);

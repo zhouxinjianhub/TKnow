@@ -2,44 +2,28 @@
 import React from 'react';
 import { Link ,hashHistory} from 'react-router';
 import "./login.less";
+import "./loginCommon.less";
 
 class ContainerLogin extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {       
-            data:"",
+            data:""
         };
 	}
 	componentDidMount() {
         
 	}
+      
     /**
-     * qq登录
-     */
-    loginByQq( e ) {
+    * 点击登录
+    */
+    checkLogin( e ) {    
 
-        alert("qq登录");
-
-    }
-     /**
-      * 微信登录
-      */
-     loginByWeixin( e ) {
-
-        alert("微信登录");
-        
-    }
-  
-     /**
-      * 点击登录
-      */
-    checkLogin( e ) {         
-        console.log(e);
         var self = this;       
         var name =  this.refs.username.value.trim();
-         // console.log(name);
         var pass = this.refs.password.value.trim();
-         // console.log(pass);
+
         if ( !name ) {
             self.error_name_msg("请输入账户/手机号码");            
             return false;
@@ -49,8 +33,8 @@ class ContainerLogin extends React.Component {
              self.error_password_msg("请输入密码");           
             return false;
         }
-       
-       self.requset_login(name,pass)  
+
+        self.requset_login(name,pass)  
        
     }
 
@@ -61,13 +45,12 @@ class ContainerLogin extends React.Component {
             username:name,
             password:pass
         };
+
         $.GetAjax('/v1/personal/login', datas, 'POST', true, function(data , state) {
-                        
-            console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status); 
 
             if ( state && data.code == 1 ) {
 
-                self.jumpToIndex(data,pass);      
+                self.jumpToIndex(data);      
 
             } else {
 
@@ -77,22 +60,21 @@ class ContainerLogin extends React.Component {
         }); 
     }
 
-    jumpToIndex(data,pass){    
+    jumpToIndex(data){    
 
         var account=data.data.account,
             nickname=data.data.nickname,
-            token=data.data.token,
-            password=pass; 
+            token=data.data.token;
 
-        this.setCookie(account,nickname,token,password);
+        this.setCookie(account,nickname,token);
     }
 
 
-    setCookie(account,nickname,token,password){
+    setCookie(account,nickname,token){
+
         $.cookie('account', account); 
         $.cookie('nickname', nickname); 
         $.cookie('token', token); 
-        $.cookie('password', password); 
         this.props.source ? this.props.closeMsk(true) : hashHistory.push('/index');
     }
     /**
@@ -128,7 +110,7 @@ class ContainerLogin extends React.Component {
         return (
             <div className={ this.props.source ? "container-login other" : "container-login" }>
                     {(()=>{
-                        return this.props.source ?  null : <div className="img_head"></div>
+                        return this.props.source ?  null : <Link to="/index"><div className="img_head"></div></Link>
                     })()}  
                 <div id="wrapper" className="login-page">
                     <div className="login_form_head">
@@ -149,9 +131,8 @@ class ContainerLogin extends React.Component {
                         {(()=>{
                             let third = [
                                 <p className="text_login_other">-——————  第三方帐号登录  ——————-</p>,
-                                <a href="https://graph.qq.com/oauth/show?which=Login&display=pc&response_type=code&client_id=100270989&redirect_uri=https%3A%2F%2Fpassport.csdn.net%2Faccount%2Flogin%3Foauth_provider%3DQQProvider&state=test" className="login_qq"></a>,
-                                <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxb0cf58edd59d5db9&redirect_uri=http%3a%2f%2fwww.tknows.com&response_type=code&scope=snsapi_login#wechat_redirect" 
-                                    className="login_weixin"></a>
+                                <a href={$.thirdxhr} className="login_qq"></a>,
+                                <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxb0cf58edd59d5db9&redirect_uri=http%3a%2f%2fwww.tknows.com&response_type=code&scope=snsapi_login#wechat_redirect" className="login_weixin"></a>
                             ];
                             return this.props.source ?  null : third
                         })()}

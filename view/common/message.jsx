@@ -23,6 +23,8 @@ class MessageComponent extends React.Component {
 	}
 	//判断不能为空或空格
 	checkName(event){
+		this.nameOk=false;
+
 		let name=event.target.value;  
 	    if (name.length == 0) {
 	        this.error_msg('name','请输入您的姓名',true);
@@ -36,6 +38,8 @@ class MessageComponent extends React.Component {
 	}
 	//电话号码和手机号码同时验证
 	checkPhone(event){
+		this.phoneOk=false;
+
 		let phone=event.target.value;  
 	    let regTel1 = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/.test(phone);//带区号的固定电话
 	    let regTel2 = /^(\d{7,8})(-(\d{3,}))?$/.test(phone);//不带区号的固定电话
@@ -53,6 +57,8 @@ class MessageComponent extends React.Component {
 	    }
 	}
 	checkText(event){
+		this.textOk=false;
+
 		let text=event.target.value;  
 	    if (text.length == 0) {
 	        this.error_msg('text','请输入您想说的内容',true);
@@ -67,6 +73,8 @@ class MessageComponent extends React.Component {
 	    }
 	}
 	checkEmail(event){
+		this.emailOk=false;
+
 		let email=event.target.value;  
 		let RegEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 	    if (!RegEmail.test(email)) {
@@ -136,31 +144,27 @@ class MessageComponent extends React.Component {
 	 * 点击注册
 	 */
     checkSubmit(){   
-	      let needback=false;
-	      let text=this.refs.text.value;
-	       if(!text)
-	      {
-	         this.error_msg('text','请输入您想说的内容',true);
-	         needback=true;
-	      }
+	    let needback=false;
+	    let text=this.refs.text.value;
+	    if(!text){
+	        this.error_msg('text','请输入您想说的内容',true);
+	        needback=true;
+	    }
 
-	      let name=this.refs.name.value; 
-	      if(!name)
-	      {
-	         this.error_msg('name','请输入您的姓名',true);
-	         needback=true;
-	      }
-	      let phone=this.refs.phonenum.value;
-	       if(!phone)
-	      {
-	         this.error_msg('phone','请输入您的电话/手机号码',true);
-	         needback=true;
-	      }
-	      let email= this.refs.email.value;
-	      if(needback)
-	      {
+	    let name=this.refs.name.value; 
+	    if(!name){
+	        this.error_msg('name','请输入您的姓名',true);
+	        needback=true;
+	    }
+	    let phone=this.refs.phonenum.value;
+	    if(!phone){
+	        this.error_msg('phone','请输入您的电话/手机号码',true);
+	        needback=true;
+	    }
+	    let email= this.refs.email.value;
+	    if(needback){
 	        return false;
-	      }
+	    }
 	    if(this.nameOk&&this.phoneOk&&this.textOk){   
 	      this.submit(text,name,phone,email);
 	    }

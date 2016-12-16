@@ -1,0 +1,139 @@
+@charset "utf-8";
+@import "../../common/style/z";
+.pay-report{   
+	ul,li{ list-style: none}
+    .tabClick{ 
+    	background: #ffffff; 
+    	overflow: hidden
+    }
+    .tabClick li{ 
+    	color: #bbbbbb; 
+    	height:40px; 
+    	line-height: 40px; 
+    	width: 25%; 
+    	float: left; 
+    	text-align: center
+    }
+    .tabClick li.active{ 
+    	color: #000000; 
+    	transition: 0.1s; 
+    	font-weight: bold
+    }
+    .tabCon{ 
+    	overflow: hidden
+    }
+    .tabBox{ 
+    	position: relative
+    }
+    .tabList{
+    	word-break: break-all; 
+    	width:100%;
+    	float:left; 
+    	color:#4b4b4b; 
+    	font-size:16px; 
+        height: 780px;
+        overflow: auto;
+        .div-bottom{
+            .maxBody(100%, 90px);
+            .b-sizing();
+            .pos (r);
+            .tc();
+            .btn-more {
+                .maxBody(170px, 37px);
+                font-family: 微软雅黑;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #49befc;
+                background: #ffffff;
+                color: #49befc;
+                border-radius: 18px;
+                font-size: 16px;
+                outline: none;
+                .c-point();                
+                margin: auto;
+                margin-top: 30px;
+            }
+
+            .btn-more:hover{
+                color: #ffffff;
+                background: #49befc;
+                opacity:0.8
+            }
+
+            
+            // .btn-more:focus {
+            //     color: #ffffff;
+            //     background: #49befc;
+            //     opacity:1
+            // }   
+        }
+        
+    }
+    .list-cell{
+        width: 100%;
+        height: 160px;
+        margin-top: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #e5e5e5;
+        .img-main{
+            .maxBody(240px, 160px);
+            float: left;
+        }
+        .div-content{
+            margin-left: 270px;
+            height: 160px;
+            position: relative;
+            h1{
+                font-weight: bold;
+                font-size: 18px; 
+                color: #222222;
+                // margin-top: 10px;
+            }
+            p{
+                margin-top: 20px;
+                font-size: 16px;
+                color: #4b4b4b;
+            }
+            .div-download{
+                position: absolute;
+                bottom: 0px;
+                .b-sizing();
+                padding-top: 10px;
+                b{
+                    float: left;
+                    position: relative;
+                    top: 15px;
+                }
+                .img-download{
+                    float: left;                   
+                    .maxBody(30px, 30px);
+                    margin-left: 10px;
+                }
+
+            }
+            
+        }
+
+    }
+    .lineBorder{ 
+    	height: 2px; 
+    	overflow: hidden; 
+    	border-bottom:1px solid #eeeeee; 
+    	background: #eeeeee
+    }
+    .lineDiv{ 
+    	background: #49bffc; 
+    	height: 2px; 
+    	width: 25%;
+    }
+    .div-nodata{
+        .maxBody(100%, 600px);
+        // background-color: red;
+        .img-nodata{
+            .maxBody(284px, 284px);
+            background-image: url(../../images/exponent-pay/no-data.png);
+        }
+    }
+
+
+}

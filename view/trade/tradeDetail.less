@@ -260,6 +260,7 @@
 			margin: 5px 15px;
 			.l-h(40px);
 			.text-c();
+			.rel();
 			.iconfont{
 				.font-s(30px);
 				.c-point();
@@ -267,6 +268,18 @@
 				.background-clip(text);
 				-webkit-text-fill-color: transparent;
     			text-transform: uppercase;
+			}
+			img{
+				.abs();
+				.maxBody(117px,117px);
+				left: -120px;
+				top: -40px;
+				.box-shadow(@borderShadow);
+				.z-index(9);
+				.d-n();
+			}
+			&:hover img{
+				.d-b();
 			}
 		}
 	}

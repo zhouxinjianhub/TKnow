@@ -12,7 +12,7 @@ class ContainerSurvey extends React.Component {
 		super(props);
 		this.loadStart = false;
 	}
-	loadShowStart(timeId,areaId){
+	loadShowStart(areaId,timeId){
 		this.loadStart = true;
 		this.setState({
 			timeId: timeId,

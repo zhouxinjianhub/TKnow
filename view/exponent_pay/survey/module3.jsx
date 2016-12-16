@@ -5,6 +5,7 @@ class ContainerSurveyModule3 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.viewMoudle = false;
+		this.ajaxCont = ["networkTradingList","networkRetailList","entityRetailList","serviceRetailList"];
 	}
 	state = {
 		t_data: {},
@@ -27,6 +28,7 @@ class ContainerSurveyModule3 extends React.Component {
             if (state && data.code == 1) {
             	this.viewMoudle = true;
                 this.setState({
+                	type: this.ajaxCont[0],
                 	t_data: data.data
                 });
 
@@ -45,17 +47,15 @@ class ContainerSurveyModule3 extends React.Component {
 			$(e.target).parent().find('span').removeClass('current');
 			$(e.target).addClass('current');
 
-			let ajaxCont = ["networkTradingList","networkRetailList","entityRetailList","serviceRetailList"];
-
 			this.setState({
-            	type: ajaxCont[type]
+            	type: this.ajaxCont[type]
             });
 		}
 	}
 	render() {
 		if ( !this.viewMoudle ) {
 			return false;
-		}
+		};
 		let [parentHTML=[],childHTML=[],childHTML2=[],tempNums=0] = [];
 		childHTML.push(
 			<div className="bold-list">
@@ -103,10 +103,10 @@ class ContainerSurveyModule3 extends React.Component {
 				<div className="survey-module-title">全国31省市电子商务交易解析</div>
 				<div className="survey-module-content">
 					<div className="module3-nav">
-						<span className="current" onClick={this.changeNav.bind(this,0)}>网络交易额</span>
-						<span onClick={this.changeNav.bind(this,1)}>网络零售额</span>
-						<span onClick={this.changeNav.bind(this,2)}>实物型网络零售额</span>
-						<span onClick={this.changeNav.bind(this,3)}>服务型网络零售额</span>
+						<span className={ this.state.type == 0 ? "current" : "" } onClick={this.changeNav.bind(this,0)}>网络交易额</span>
+						<span className={ this.state.type == 1 ? "current" : "" } onClick={this.changeNav.bind(this,1)}>网络零售额</span>
+						<span className={ this.state.type == 2 ? "current" : "" } onClick={this.changeNav.bind(this,2)}>实物型网络零售额</span>
+						<span className={ this.state.type == 3 ? "current" : "" } onClick={this.changeNav.bind(this,3)}>服务型网络零售额</span>
 					</div>
 					<div className="module3-list">
 						{ parentHTML }

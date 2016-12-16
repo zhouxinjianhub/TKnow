@@ -18,11 +18,11 @@ module.exports = {
         common: ["react", "react-dom", 'react-router']
     },
     output: {
-        publicPath: "../build/",
-        path: path.join(__dirname, "build"),
+        path: path.join(__dirname, ".","build"),
         filename: "main.min.js",
         // chunkFilename: '[chunkhash:20].js'
-        chunkFilename: 'chunk/[name].chunk.js'
+        chunkFilename: 'chunk/[name].chunk.js',
+        publicPath: "./build/"
     },
     module: {
         preLoaders: [
@@ -42,7 +42,8 @@ module.exports = {
                 loader: "style-loader!css-loader!autoprefixer-loader"
             },
             {
-                test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?limit=1000&name=font/[hash].[ext]'
+                test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, 
+                loader: 'url-loader?limit=1000&name=font/[hash].[ext]'
             },
             {
 　　　　　　    test: /\.(png|jpg)$/,

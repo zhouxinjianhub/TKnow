@@ -7,19 +7,19 @@ import Comment from "../common/comment";//评论回复模块
 class ContainerCarousel extends React.Component {
 	constructor(props) {
 		super(props);
+		this.id = this.props.parent.location.query.id ?  this.props.parent.location.query.id : '' ;
 	}
 	state = {
 		data: []
 	};
 	componentDidMount() {
-		let id = this.props.parent.location.query.id ?  this.props.parent.location.query.id : 0 ;
-		this._getdetailData(id);
+		this._getdetailData();
 	}
 	_getdetailData(id){
 		const that = this;
         let setData = {
             dataType:'json',
-            id:id,
+            id:this.id,
         };
         $.GetAjax('/v1/information/detail', setData, 'GET', true, function(data , state) {
         // $.GetAjax('http://192.168.1.101:8090/view/info/data/getCategory.json', setData,'GET', true, function(data ,state) {
@@ -33,33 +33,35 @@ class ContainerCarousel extends React.Component {
         });
 	}
 	getTime(time){
-		// 将时间戳(以s为单位)换成时间格式字符串
-		let timestamp = time;
-		let newDate = new Date();
-		newDate.setTime(timestamp * 1000);
-
-		Date.prototype.format = function(format) {
-	       let date = {
-	              "M+": this.getMonth() + 1,
-	              "d+": this.getDate(),
-	              "h+": this.getHours(),
-	              "m+": this.getMinutes(),
-	              "s+": this.getSeconds(),
-	              "q+": Math.floor((this.getMonth() + 3) / 3),
-	              "S+": this.getMilliseconds()
-	       };
-	       if (/(y+)/i.test(format)) {
-	              format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-	       }
-	       for (let k in date) {
-	              if (new RegExp("(" + k + ")").test(format)) {
-	                     format = format.replace(RegExp.$1, RegExp.$1.length == 1
-	                            ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-	              }
-	       }
-	       return format;
-		}
-		return newDate.format('yyyy-MM-dd');
+		// 将时间戳(以毫秒为单位)换成时间格式字符串
+	    Date.prototype.Format = function (fmt) { //author: meizz 
+	        let o = {
+	            "M+": this.getMonth() + 1, //月份 
+	            "d+": this.getDate(), //日 
+	            "H+": this.getHours(), //小时 
+	            "m+": this.getMinutes(), //分 
+	            "s+": this.getSeconds(), //秒 
+	            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+	            "S": this.getMilliseconds() //毫秒 
+	        };
+	        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	        for (let k in o)
+	        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	        return fmt;
+	    }
+	
+		let dateTimeJsonStr = time; // C# DateTime类型转换的Json格式
+	    dateTimeJsonStr = Date.now();
+	    let msecStr = dateTimeJsonStr.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
+	    let msesInt = Number.parseInt(msecStr); // 毫秒字符串转换成数值
+	    let dt = new Date(msesInt); // 初始化Date对象
+		return dt.Format('yyyy-MM-dd');
+	}
+	//分享功能
+	geterCode() {
+		let params = encodeURIComponent(location.href );
+		let result = $.httpxhr + "/v1/system/qrCode?url=" + params;
+		return result;
 	}
 	render() {
 		let detailData = this.state.data ? this.state.data : '';
@@ -71,7 +73,10 @@ class ContainerCarousel extends React.Component {
 					</div>
 					<div className = "viceText">
 						<div className= "vice" >
-							<img src="../../../images/info/share.png" alt=""/>
+							<div className="share-module">
+						  		<i className="iconfont icon-share"></i>
+						  		<img src={ this.geterCode() }/>
+						    </div>
 							<p>
 								<span>上传时间：</span><span>{detailData ? this.getTime(detailData.created) : ""}</span>
 								<span>&nbsp;&nbsp;&nbsp;查看：</span><span>{detailData ? detailData.viewCount : ""}</span>
@@ -85,14 +90,14 @@ class ContainerCarousel extends React.Component {
 
 					</div>
 					<div className="content">
-						<div>
-							{detailData.content}
+						<div dangerouslySetInnerHTML={{__html: detailData.content}}>
 						</div>
 						
 					</div>
 				</div>
-			
-				<Comment module="info" option={{'page': 1,'pageSize': 10,'informationId': 1}}/>
+
+				<Comment module="info" option={{'page': 1,'pageSize': 10,'informationId':this.id,}}/>
+				
 			</div>
 		)
 	}

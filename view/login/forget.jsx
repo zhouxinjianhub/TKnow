@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link ,hashHistory} from 'react-router';
 import "./forget.less";
+import "./loginCommon.less";
 
 class Containerforget extends React.Component {
     constructor(props) {
@@ -377,7 +378,9 @@ class Containerforget extends React.Component {
     render() {
         return (
         <div className="container-forget">  
-            <div className="img_head"></div>          
+            <Link  to="/index">
+                <div className="img_head"></div>
+            </Link>          
             <div id="wrapper" className="forget-page">                
                 <div className="forget_form_head">
                     <Link to="/login"><a className="login">马上登录</a></Link>

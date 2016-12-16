@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link ,hashHistory} from 'react-router';
 import "./register.less";
+import "./loginCommon.less";
 
 class ContainerLogin extends React.Component {
     constructor(props) {
@@ -27,14 +28,11 @@ class ContainerLogin extends React.Component {
     {
 
         var name=event.target.value;   
-        console.log(name);
         var regExp1=new RegExp("(^[\\u4e00-\\u9fa5A-Za-z0-9])([\\u4e00-\\u9fa5A-Za-z0-9_]{3,11})");
         var regExp2=new RegExp("^\\d+$");
         var regExp3=new RegExp("^(.)\\1+$");
 
         if(regExp1.test(name)&&!regExp2.test(name)&&!regExp3.test(name)) {
-
-            console.log('用户名格式通过');
 
             this.checkNameExisted(name);
 
@@ -58,7 +56,6 @@ class ContainerLogin extends React.Component {
         };
         $.GetAjax('/v1/personal/check', datas, 'POST', true, function(data , state) {                  
             if (state && data.code == 1) {
-                console.log('用户名未被注册');
                 self.nameOk=true;              
             } else {
                 self.error_msg('name','用户名已存在，请重新输入',true);
@@ -73,14 +70,11 @@ class ContainerLogin extends React.Component {
     {
 
         var pass=event.target.value;
-        console.log(pass);
-
         var regExp1=new RegExp("[\\w]{6,16}");
 
         if(regExp1.test(pass)) {
 
           this.passOk=true;
-          console.log('密码通过');   
 
         }else {
 
@@ -105,7 +99,6 @@ class ContainerLogin extends React.Component {
 
         if(pass==passr) {
             this.passrOk=true;
-            console.log('重复通过');
         }else {
             this.error_msg('passr','密码输入不一致',true);   
         }
@@ -164,7 +157,6 @@ class ContainerLogin extends React.Component {
     checkPhone() {  
 
         var phone=this.refs.phonenum.value;
-        console.log(phone);
         if(!phone) {
             this.error_msg('phone','请输入手机号码',true);  
             return false;
@@ -194,11 +186,9 @@ class ContainerLogin extends React.Component {
         };
         $.GetAjax('/v1/personal/check', datas, 'POST', true, function(data , state) {                  
             if (state && data.code == 1) {
-                console.log('手机未被注册');
                 self.phoneOk=true;
                 self.sendNum();              
             } else {
-                console.log('用户名被注册');
                 self.error_msg('phone','您输入的手机号码已经注册，请直接登录',true);
             }
         }); 
@@ -257,7 +247,7 @@ class ContainerLogin extends React.Component {
             password:pass,
             passwordRepeat:passr,
             mobile:phone,
-            validCode:num,
+            validCode:num
         };
 
         $.GetAjax('/v1/personal/register', datas, 'GET', true, function(data , state) {                  
@@ -271,12 +261,18 @@ class ContainerLogin extends React.Component {
     }
 
     registerSucess(data) {
-        alert('注册成功');
-        hashHistory.push('/login');
+        layer.open({
+                    icon: 1,
+                    title: '注册成功',
+                    content: '<div>成功</div>',
+                    yes: function(layero, index){
+                        layer.close(layero);
+                        location.href = '/login';
+                    }
+                });
     }
 
     registerFailed(data) {
-        console.log(data); 
         if(data.code==13) {
             this.error_msg('num','您输入的手机验证码有误',true);
         }else {
@@ -363,7 +359,9 @@ class ContainerLogin extends React.Component {
         return (
             <div className="container-register">  
                 <div id="wrapper" className="login-page">
-                    <div className="img_head"></div>               
+                    <Link  to="/index">
+                        <div className="img_head"></div>
+                    </Link>               
                     <div className="login_form_head">
                         <Link to="/login"><a className="login">马上登录</a></Link> 
                         <p className="login_head_msg">注 册</p>                 

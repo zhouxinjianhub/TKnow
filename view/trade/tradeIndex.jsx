@@ -20,6 +20,7 @@ class TradeHotLabel extends React.Component{
 
 	getHotTags() {
 		const self = this;
+
 		let setData = {
 		};
 		$.GetAjax('/v1/category/hotCategoryList', setData, 'GET', true, function(data , state) {
@@ -80,7 +81,7 @@ class TradeContent extends React.Component{
 		$.GetAjax('/v1/category/treeCategoryList', setData, 'GET', true, function(data , state) {
 			if (state && data.code == 1) {
 				self.setState({
-					categorys:data.data,
+					categorys:data.data
 				});
 			} else {
 				self.setState({
@@ -141,7 +142,6 @@ class TradeContent extends React.Component{
 						let childHtml= [];
 						
 						let category=categorys[this.state.index];	
-						console.log(categorys);						
 						if(category){
 							let firstChild=category.chilren[0];
 							if(firstChild){

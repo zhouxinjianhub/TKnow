@@ -1,44 +1,8 @@
 
 import React from 'react';
 import { Link ,hashHistory} from 'react-router';
-import "./report.less";
-
-class TabComponent extends React.Component{
-	constructor(props) {
-		super(props);
-	}
-	componentDidMount() {
-
-	}
-	render() {
-		return (
-			<div className="wrap" id="wrap">
-			    <ul className="tabClick">
-			        <li className="active">月报</li>
-			        <li>季度报</li>
-			        <li>半年报</li>
-			        <li>年报</li>
-			    </ul>
-			    <div className="lineBorder">
-			        <div className="lineDiv"></div>
-			    </div>
-			    <div className="tabCon">
-			        <div className="tabBox">
-			            <div className="tabList">
-			            1</div>
-			            <div className="tabList">
-			            2</div>
-			            <div className="tabList">
-			            3</div>
-			            <div className="tabList">
-			            4</div>
-			        </div>
-			    </div>
-			</div>
-		)
-	}
-
-}
+import ReportIndex from './reportIndex';
+import ReportDetail from './report/reportDetail';
 
 class ContainerReport extends React.Component {
 	constructor(props) {
@@ -48,9 +12,18 @@ class ContainerReport extends React.Component {
 
 	}
 	render() {
+		// let name = this.props.parent.location.query.name;
+		let pageName = this.props.parent.params.splat;
+		let pageRender = pageName && pageName.split('/')[1];
 		return (
 			<div className="pay-section">
-			   <TabComponent/>
+				{(()=>{
+					switch( pageRender ){
+						case "reportIndex"   : return <ReportIndex/>
+						case "reportDetail"  : return <ReportDetail parent={ this.props.parent } page={ pageName }/>
+						default : return ""
+					}
+				})()}
 			</div>
 		)
 	}

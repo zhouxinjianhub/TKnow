@@ -1,6 +1,6 @@
 /*动态加载*/
 $.extend({
-	includePath: './js/static/',
+	includePath: '/',
 	include: function(file) {
 		var files = typeof file == "string" ? [file] : file;
 		for (var i = 0; i < files.length; i++) {
@@ -14,6 +14,7 @@ $.extend({
 			if ($(tag + "[" + link + "]").length == 0) document.write("<" + tag + attr + link + "></" + tag + ">");
 		}
 	},
+	// 异步加载js
 	onloadJavascript: function(url, async, cache,callback) {
 		$.ajax({
 			url: url,
@@ -103,6 +104,7 @@ $.extend({
 			}
 		});
 	},
+	// 手机端样式修改
 	isMobile: function () {
 		var windowWidth = $(window).width();
 		var scales = windowWidth/1100;
@@ -116,7 +118,8 @@ $.extend({
 			});
 		}
 	},
-	wechartShare(config) {
+	// 微信分享获取配置参数
+	wechartShare: function(config) {
 		if ( $('body').hasClass('mobileBody') ) {
 			$.onloadJavascript('http://res.wx.qq.com/open/js/jweixin-1.0.0.js',true,false,()=>{
 				$.GetAjax('/v1/wx/getToken', {url: location.href}, 'Get', true, (data,state)=>{
@@ -146,6 +149,7 @@ $.extend({
 			})
 		}
 	},
+	// 微信分享接口
 	wechartReady: function (config) {
 		wx.ready(function () {
 			wx.onMenuShareAppMessage({
@@ -186,6 +190,7 @@ $.extend({
 			});
 		});
 	},
+	// 判断是否为手机
 	isPhone: function () {
 		if ( $('body').hasClass('mobileBody') ) {
 			return true;
@@ -204,6 +209,7 @@ $.extend({
 		let result = config.sig ? config : false;
 		return result;
 	},
+	// 退出登录
 	laoutLogin: function (callback) {
 		$.cookie('token','');
 		$.cookie('account','');
@@ -212,12 +218,18 @@ $.extend({
 			callback();
 		}
 	},
+	// 判断是不是VIP用户
+	isVipUser: function () {
+		let isVIP = $.cookie('token');
+		return isVIP ? true : false;
+	},
 	// 图片懒加载
 	lazyloadImg: function (url,callback) {
 		var img = new Image();
     	img.src = url;
     	img.onload = callback(img);
 	},
+	// 生成随机数
 	MathRand: function (sum=5) {
 		var Num=""; 
 		for ( var i = 0; i < sum ; i++ ) { 
@@ -225,6 +237,7 @@ $.extend({
 		}
 		return Num;
 	},
+	// 时间插件
 	formatMsgTime: function(timespan) {
 		var dateTime = new Date(timespan),
 			year = dateTime.getFullYear(),
@@ -258,6 +271,7 @@ $.extend({
 
 		return timeSpanStr;
 	},
+	// 正则判断
 	regTest: function( type, str ) {
 		var reg = null;
 		if ( type == "phone" ) {
@@ -268,9 +282,16 @@ $.extend({
 			reg = /^[u4e00-u9fa5],{0,}$/
 		} else if ( type == "null" ) {
 			reg = /^\S+$/
+		} else if ( type == "password" ) {
+			reg = /^[a-zA-Z_0-9]{6,16}$/
+		} else if ( type == "user" ) {
+			reg = /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/
+		} else if ( type == "num" ) {
+			reg = /^[0-9]+$/
 		}
 		return reg.test(str);
 	},
+	// url参数拼接
 	urlEncode: function(param, key){
 		var paramStr="";
 		if(param instanceof String||param instanceof Number||param instanceof Boolean){
@@ -283,16 +304,6 @@ $.extend({
 		}
 		return paramStr.substr(1);
 	}
-
-	//线上路径
-	// getCtx: function() {
-	// 	var webroot=document.location.href;
-	// 	webroot=webroot.substring(webroot.indexOf('//')+2,webroot.length);
-	// 	webroot=webroot.substring(webroot.indexOf('/')+1,webroot.length);
-	// 	webroot=webroot.substring(0,webroot.indexOf('/'));
-	// 	var rootpath="/"+webroot;
-	// 	return rootpath;
-	// }
 });
 
 $.onloadJavascript('./config.js');

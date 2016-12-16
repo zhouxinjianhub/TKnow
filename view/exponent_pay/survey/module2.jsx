@@ -9,8 +9,11 @@ class ContainerSurveyModule2 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.viewMoudle = false;
+		this.nodatasum = 0;
+		this.accumulationodata = this.accumulationodata.bind(this);
 	}
 	componentDidMount() {
+		this.nodatasum = 0;
 		this.viewMoudle = true;
 		this.setState({
 			status: true,
@@ -19,6 +22,7 @@ class ContainerSurveyModule2 extends React.Component {
 		});
 	}
 	componentWillReceiveProps(nextProps){
+		this.nodatasum = 0;
 		this.props = nextProps;
 		this.viewMoudle = true;
 		this.setState({
@@ -26,6 +30,16 @@ class ContainerSurveyModule2 extends React.Component {
 			timeId: this.props.timeId,
 			areaId: this.props.areaId
 		});
+	}
+	accumulationodata() {
+		this.nodatasum++;
+		if ( this.nodatasum == 4 ) {
+			this.viewMoudle = false;
+			this.setState({
+				status: false
+			})
+		}
+		
 	}
 	render() {
 		if ( !this.viewMoudle ) {
@@ -35,10 +49,10 @@ class ContainerSurveyModule2 extends React.Component {
 			<div className="survey-module">
 			   <div className="survey-module-title">电子商务整体交易及走势</div>
 			   <div className="survey-module-content">
-			   		<Module2_1 timeId={this.state.timeId} areaId={this.state.areaId}/>
-			   		<Module2_2 timeId={this.state.timeId} areaId={this.state.areaId}/>
-			   		<Module2_3 timeId={this.state.timeId} areaId={this.state.areaId}/>
-			   		<Module2_4 timeId={this.state.timeId} areaId={this.state.areaId}/>
+			   		<Module2_1 timeId={ this.state.timeId } areaId={ this.state.areaId } addError={ this.accumulationodata }/>
+			   		<Module2_2 timeId={ this.state.timeId } areaId={ this.state.areaId } addError={ this.accumulationodata }/>
+			   		<Module2_3 timeId={ this.state.timeId } areaId={ this.state.areaId } addError={ this.accumulationodata }/>
+			   		<Module2_4 timeId={ this.state.timeId } areaId={ this.state.areaId } addError={ this.accumulationodata }/>
 			   </div>
 			</div>
 		)

@@ -39,6 +39,13 @@ render(
 			},'forget')
 		}}/>
 
+		{/*第三方注册用户信息*/}
+		<Route path="/third" getComponent={(nextState, callback)=>{
+			require.ensure([], function (require) {
+				callback(null, require('../../view/common/thirdLogin'))
+			},'third')
+		}}/>
+
 		{/*地域*/}
 		<Route path="/regional" getComponent={(nextState, callback)=>{
 			require.ensure([], function (require) {
@@ -68,7 +75,7 @@ render(
 		}}/>
 
 		{/*付费版映潮指数*/}
-		<Route path="/exponent_pay/:name" getComponent={(nextState, callback)=>{
+		<Route path="/exponent_pay/*" getComponent={(nextState, callback)=>{
 			require.ensure([], function (require) {
 				callback(null, require('../../routes/exponent_pay'))
 			},'pay')
@@ -96,8 +103,7 @@ render(
 		}}/>
 
 		<Route path="/exponent" onEnter={(nextState, replaceState)=>{
-			let user = $.cookie('token');
-			if ( user ) {
+			if ( $.isVipUser() ) {
 				replaceState('/exponent_pay');
 			}else{
 				replaceState('/exponent_free');

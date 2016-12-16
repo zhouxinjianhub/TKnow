@@ -14,14 +14,18 @@ class ContainerSurveyModule2_1 extends React.Component {
         this.childName = "";
 	}
 	componentDidMount() {
-		this.echart = echarts.init(this.refs.chart);
-		this.echart.showLoading();
 		this._getDatas();
 	}
 	componentWillReceiveProps(nextProps){
-		this.echart.showLoading();
         this.props = nextProps;
         this._getDatas();
+	}
+	start(){
+		// 基于准备好的dom，初始化echarts实例
+        this.echart = echarts.init(this.refs.chart);
+        this.echart.showLoading('default',{
+			text: ''
+		});
 	}
 	_getDatas() {
 		let option = {
@@ -35,15 +39,19 @@ class ContainerSurveyModule2_1 extends React.Component {
                 this.childData = data.data && data.data['child'];
                 this.parentName = data.data && data.data['parentAreaName'];
                 this.childName = data.data && data.data['childAreaName'];
-                PubSub.publish('JBsub',data.data.indexReport);
-
-                this.showChart( this.btnState == "p" ? this.parentData : this.childData );
+                
                 this.setState({
                 	status: true
+                },()=>{
+                	this.start();
+                	PubSub.publish('JBsub',data.data.indexReport);
+                	this.showChart( this.btnState == "p" ? this.parentData : this.childData );
                 });
 
              } else {
+             	PubSub.publish('JBsub', false);
                 this.viewMoudle = false;
+                this.props.addError();
                 this.setState({
                 	status: false
                 });
@@ -228,6 +236,9 @@ class ContainerSurveyModule2_1 extends React.Component {
 		}
 	}
 	render() {
+		if ( !this.viewMoudle ) {
+			return false;
+		};
 		return (
 			<div className="survey-module-list" >
 			   <div className="title">

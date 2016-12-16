@@ -96,8 +96,11 @@
 				}
 				.user-list-cont{
 					width: 250px;
-					padding-left: 20px;
+					padding:0 20px;
 					color: #222;
+					white-space:nowrap;
+					overflow:hidden;
+					text-overflow:ellipsis;
 					&.no-bind{
 						color: #d2d2d2;
 					}
@@ -129,7 +132,6 @@
 					.font-s(16px);
 					.border-radius(6px);
 					.b-sizing();
-					.c-point();
 					&:hover{
 						border: 1px solid #ada9a9;
 					}

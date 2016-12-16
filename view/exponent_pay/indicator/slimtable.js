@@ -25,7 +25,8 @@
 			dataUrl: null,
 
 			itemsPerPage: 10,
-			ippList: [5,10,20],
+			// ippList: [5,10,20],
+			ippList: [10,10,10],
 			pagingStart: 0,
 
 			keepAttrs: [],
@@ -402,7 +403,7 @@
 				}
 
 				$(this).
-					prepend(tObj).
+					append(tObj).
 					css({ cursor: "pointer" }).
 					on("click",{ self: self},self.handleHeaderClick);
 			} else {

@@ -5,9 +5,9 @@ import Nav from 'nav';
 import Footer from 'footer';
 
 class RegionalComponent extends React.Component {
-    componentDidMount() {
-      	return false;
-    }
+    shouldComponentUpdate(nextProps,nextState) {
+		return false;
+	}
 	render() {
 		return (
 			<div className="content">

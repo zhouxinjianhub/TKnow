@@ -86,7 +86,7 @@ class SurveyController extends React.Component {
 			});
 			return false;
 		}
-		this.props.callback(75,51);
+		this.props.callback(this.dataAreaId,this.datatimeId);
 	}
 	closehoverarea(e){
 		this.refs.regionModule.style.display = 'none';

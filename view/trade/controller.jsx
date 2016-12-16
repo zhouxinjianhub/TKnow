@@ -342,6 +342,17 @@ class RegionalController extends React.Component {
 		    this.chart.hideLoading();
 		});
 	}
+	//分享功能
+	geterCode() {
+		let configer = {
+			timeId: this.datatimeId,
+			areaId: this.datatimeAreaId,
+		};
+
+		let params = encodeURIComponent(location.href + "?" +$.param(configer));
+		let result = $.httpxhr + "/v1/system/qrCode?url=" + params;
+		return result;
+	}
 	render() {
 		return (
 			<div className="tradeDetail-nav">
@@ -365,7 +376,10 @@ class RegionalController extends React.Component {
 			   <div className="map-module" id="maps"></div>
 			   <div className="category-module" id="">{this.props.parent.location.query.categoryName ? this.props.parent.location.query.categoryName : ''}</div>
 			   <div className="button-module"><input type="button" value="查询数据" onClick={this.selectData.bind(this)}/></div>
-			   <div className="share-module"><i className="iconfont icon-share"></i></div>
+			   <div className="share-module">
+			  		<i className="iconfont icon-share"></i>
+			  		<img src={ this.geterCode() }/>
+			   </div>
 			</div>
 		)
 	}

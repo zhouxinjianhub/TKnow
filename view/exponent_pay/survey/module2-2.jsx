@@ -10,14 +10,17 @@ class ContainerSurveyModule2_2 extends React.Component {
 		this.childData = [];
 	}
 	componentDidMount() {
-		this.echart = echarts.init(this.refs.chart);
-		this.echart.showLoading();
 		this._getDatas();
 	}
 	componentWillReceiveProps(nextProps){
-		this.echart.showLoading();
         this.props = nextProps;
         this._getDatas();
+	}
+	start() {
+		this.echart = echarts.init(this.refs.chart);
+		this.echart.showLoading('default',{
+			text: ''
+		});
 	}
 	_getDatas() {
 		let option = {
@@ -31,15 +34,18 @@ class ContainerSurveyModule2_2 extends React.Component {
                 this.childData = data.data && data.data['child'];
                 this.commonData = data.data;
 
-                this.showChart();
+                
                 this.setState({
                 	status: true
                 },()=>{
+                	this.start();
+                	this.showChart();
                 	this.showPie();
                 });
 
              } else {
                 this.viewMoudle = false;
+                this.props.addError();
                 this.setState({
                 	status: false
                 });

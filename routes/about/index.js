@@ -5,6 +5,9 @@ import Nav from 'nav';
 import Footer from 'footer';
 
 class AboutComponent extends React.Component {
+	shouldComponentUpdate(nextProps,nextState) {
+		return false;
+	}
 	render() {
 		return (
 			<div className="content">

@@ -11,6 +11,9 @@ class Footer extends React.Component {
 	componentDidMount() {
 		$.isMobile();
 	}
+	gotoWb(){
+		location.href = "http://weibo.com/sunsharp";
+	}
 	render() {
 		return (
 			<div className="footer">
@@ -24,8 +27,8 @@ class Footer extends React.Component {
 							<Link to={{ pathname: "/aboutme/problem"}} >常见问题</Link>
 						</li>
 						<div className="third-href">
-							<i className="wechart"></i>
-							<i className="weibo"></i>
+							<i className="wechart" onClick={ this.gotoWb.bind(this) }></i>
+							<i className="weibo" onClick={ this.gotoWb.bind(this) }></i>
 						</div>
 					</ul>
 

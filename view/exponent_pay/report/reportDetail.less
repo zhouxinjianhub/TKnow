@@ -1,0 +1,85 @@
+@charset "utf-8";
+@import "../../../common/style/z";
+@import "../../../common/style/css3";
+@import "../../../common/style/color";
+
+@borderShadow: 0 5px 20px rgba(0,0,0,.05);
+.reportdetailcon {
+    .maxBody(100%, auto);
+    .pos (r);
+    .b-sizing();
+    .con {
+        background: #fff;
+        border-radius: 6px;
+        .title {
+            .maxBody(100%, auto);
+            p {
+                .font-s(26px);
+                color: #4b4b4b;
+                .tc();
+                padding: 30px;
+            }
+        }
+        .viceText {
+            .maxBody(100%, auto);
+            display: inline-block;
+            .vice {
+                .maxBody(50%, auto);
+                float: right;
+                display: inline-block;
+                p {
+                    text-align: right;
+                    .font-s(14px);
+                }
+                // img{
+                //     .fr();
+                // }
+                .share-module {
+                    @Width: 40px;
+                    @Height: 40px;
+                    .fr();
+                    .maxBody(@Width, @Height);
+                    margin: 5px 15px;
+                    .l-h(40px);
+                    .text-c();
+                    .rel();
+                    .iconfont {
+                        .font-s(30px);
+                        .c-point();
+                        .green-gradient();
+                        .background-clip(text);
+                        -webkit-text-fill-color: transparent;
+                        text-transform: uppercase;
+                    }
+                    img {
+                        .abs();
+                        .maxBody(117px, 117px);
+                        left: -120px;
+                        top: -40px;
+                        .box-shadow(@borderShadow);
+                        .z-index(9);
+                        .d-n();
+                    }
+                    &:hover img {
+                        .d-b();
+                    }
+                }
+            }
+        }
+        .content {
+            .maxBody(100%, auto);
+            .b-sizing();
+            iframe {
+                .maxBody(100%, auto);
+                .b-sizing();
+                width: 870px;
+			    height: 740px;
+			    -moz-box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    box-sizing: border-box;
+			    background: #fff;
+			    border: 1px solid #e5e5e5;
+            }
+        }
+    }
+}

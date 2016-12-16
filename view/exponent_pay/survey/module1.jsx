@@ -13,11 +13,19 @@ class ContainerSurveyModule1 extends React.Component {
 	};
 	componentDidMount() {
 		PubSub.subscribe('JBsub', (topic, data) => {
-			this.JBView = true;
-			this.setState({
-				statue: true,
-				content: data
-			});
+			if ( data ) {
+				this.JBView = true;
+				this.setState({
+					statue: true,
+					content: data
+				});
+			} else {
+				this.JBView = false;
+				this.setState({
+					statue: false
+				});
+			}
+			
 		});
 	}
 	render() {

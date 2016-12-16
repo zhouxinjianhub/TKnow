@@ -77,11 +77,10 @@
 			.fl();
 			.b-sizing();
 			padding: 0 30px 0 25px;
-			border: 1px solid @borderColor;
 			margin-right: 30px;
-			.border-radius(6px);
 			.c-point();
 			.rel();
+			background: #fff;
 			.titles{
 				.rel();
 				.d-ib();
@@ -91,11 +90,14 @@
 				color: #4b4b4b;
 				.font-s(16px);
 				width: 100%;
+				border: 1px solid @borderColor;
+				.border-radius(6px);
+				
 			}
 			.iconfont{
 				.font-s(20px);
 				.abs();
-				right: 21px;
+				right: 15px;
 				top: 5px;
 				color: #ccc;
 			}
@@ -271,9 +273,9 @@
 			}
 			.nav-list-datatime{
 				.abs();
-				.z-index(99);
-				margin-left: -20px;
-				top: 31px;
+				.z-index(9);
+				margin-left: -19px;
+				top: 30px;
 				.clearfix();
 				.b-sizing();
 				.box-shadow(@borderShadow);
@@ -288,7 +290,7 @@
 					.rel();
 					&.check-1{
 						border: 0;
-						width: 201px;
+						width: 203px;
 						p{
 							span{
 								padding: 0 66px 0 25px;
@@ -297,7 +299,7 @@
 					}
 					&.check-2{
 						.abs();
-						left: 201px;
+						left: 203px;
 						top: 0;
 						width: 100px;
 						p{
@@ -308,7 +310,7 @@
 					}
 					&.check-3{
 						.abs();
-						left: 301px;
+						left: 303px;
 						top: 0;
 						width: 400px;
 						span{
@@ -679,40 +681,42 @@
 		// Indicator less begin 2016.12.7
 		.Indicator-nav{
 			.clearfix();
-			width: 100%;
-			height: 32px;
+			.maxBody(100%,32px);
 		}
 		.Indicator-module{
 			.Indic-header{
 				margin-top: 30px;
-			    display: inline-block;
-			    width: 100%;
+			    .d-ib();
+			    .maxBody(100%,auto);
 				.Indic-header-choose{
-					width:60%;
-					float:left;
+					.maxBody(60%,auto);
+					.fl();
 					clear:both;
 					form{
 						label{
+							.pos (r);
 							.choose-input{
-								width:20px;height:20px;border:1px solid #ccc;background-color:#fff;
-								vertical-align:middle; margin-top:0;
+								.z-index(100);
+								.maxBody(20px,20px);
+								.opa(0);
+								border:1px solid #ccc;
+								background-color:#fff;
+								vertical-align:middle; 
+								margin-top:0;
+							}
+							.choose-box{
+								.pos (a);
+						        top: 0;
+						        left: 0;
+						        .maxBody(20px,20px);
+						        img {
+							        .pos (a);
+							        .maxBody(20px,20px);
+							    }
 							}
 							.choose-input:checked{
-								// border:1px solid #49bffc;
-								// -webkit-appearance:none;
-								// background-color: #49bffc;
-								// color:#fff;
-								// border-radius: 3px;
 								background: url(../../images/exponent-pay/check.png) no-repeat;
 							}
-							
-							// .choose-input:checked:after{
-							// 	content:" √ ";
-							// 	color:#fff;
-							// 	text-align: center;
-							// 	font-size: 16px;
-							// 	font-weight: bold; 
-							// }
 							label{
 								margin-left: 15px;
     							margin-right: 40px;
@@ -721,54 +725,65 @@
 					}
 				}
 				.Indic-header-expl{
-					width:40%;
-					float:right;
+					.maxBody(40%,auto);
+					.fr();
 					img{
-						float:right;
-						cursor:pointer;
+						.fr();
+						.c-point();
 					}
 				}
 			}
 			.indicatorTable{
 				margin-top:40px;
-				width: 100%;
-				position: relative;
-				width: 100%;
-			    height: 450px;
-			    border-top-left-radius: 6px;
-			    border-top-right-radius: 6px;
-			    position: relative;
+				.maxBody(100%,520px);
+				.pos (r);
+				.border-top-left-radius(6px);
+				.border-top-right-radius(6px);
 				.indicator-content{
-					width: 100%;
-					position: relative;
-					width: 100%;
-				    height: 450px;
-				    border-top-left-radius: 6px;
-				    border-top-right-radius: 6px;
-				    position: relative;
+					.maxBody(100%,520px);
+					.pos (r);
+				    .border-top-left-radius(6px);
+					.border-top-right-radius(6px);
 				    .b-sizing();
+				    /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+				    ::-webkit-scrollbar{  
+				    	.maxBody(16px,20px);
+					    background-color: #edeff5;  
+					}  
+					/*定义滚动条轨道 内阴影+圆角*/  
+					::-webkit-scrollbar-track{  
+						.box-shadow(none);
+					    background-color: #edeff5;  
+					}
+					/*定义滑块 内阴影+圆角*/  
+					::-webkit-scrollbar-thumb{  
+					    .maxBody(6px,6px); 
+					    .border-radius(10px);
+					    .box-shadow(none);
+					    background-color: #949090;  
+					}  
 				   	.slimtable-container-div{
-			   		    overflow-x: scroll;
+			   		    overflow-x: scroll; 
+			   		    overflow-y: hidden;
+			   		    .maxBody(auto,520px); 
+			   		    border: 1px solid #ddd;
 				   	}
 			   		.indicTable{
 			    		border-collapse: collapse;
-						border: 1px solid #ddd;
 				    	thead{
 
 				    		th{
+				    			.tr();
+				    			.pos (r);
+				    			.font-s(16px);
+							    .font-wn();
+								.user-select(none);
+								.text-l();
 				    			word-break: keep-all;/*必须*/
-				    			position: relative;
 				    			background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#46d2fb), to(#49befc));
-								border: 1px solid #ddd;
+								border-right: 1px solid #fff;
 								color: #fff;
-								text-align: left;
 							    padding: 10px 20px;
-							    font-size: 16px;
-							    font-weight: normal;
-								-ms-user-select: none;
-								-moz-user-select: none;
-								-webkit-user-select: none;
-								user-select: none;
 								white-space: nowrap;
 								.slimtable-activeth {
 									background-color: #2a487f;
@@ -776,40 +791,33 @@
 								/* Sprites */
 
 								.slimtable-sprites {
+									.maxBody(7px,10px); 
+									.d-ib();
 									margin-left: 2px;
 									margin-right: 5px;
 									vertical-align: middle;
-
-									display: inline-block;
-									background: url(../../images/exponent-pay/sort.png) -16px 0 no-repeat;
-									width: 7px;
-									height: 9px;
+									background: url(../../images/exponent-pay/sort.png) 0px 0 no-repeat;
 								}
-
 								.slimtable-sortboth {
-									background-position: -1px -1px;
+									.bgp(0px,0px);
 								}
-
-								.slimtable-sortnone {
-									background-position: -19px -19px;
-								}
-
 								.slimtable-sortasc {
-									background-position: -1px -19px;
+									.bgp(-7px,0px);
 								}
-
 								.slimtable-sortdesc {
-									background-position: -19px -1px;
+									.bgp(-14px,0px);
 								}
 				    		}
 				    		.td0{
-				    			display: inline-block;
-								width: 200px;
-    							position: absolute;
+				    			.d-ib();
+				    			.maxBody(200px,auto); 
+    							.pos (a);
+    							.z-index(100);
+    							.text-l();
     							background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#46d2fb), to(#49befc));
-    							z-index: 100;
     							padding: 10px 20px;
-    							border-right: 1px solid #cacece;
+							    border-right: 1px solid #ddd;
+    							border-left: 0;
 				    		}
 				    		.td1{
 				    			padding-left:250px;
@@ -818,188 +826,61 @@
 				    	tbody{
 				    		tr{
 				    			td{
+				    				.font-s(16px);
+				    				.text-r();
 				    				border-bottom: 1px solid #ddd;
 								    color: #4b4b4b;
 								    padding: 10px 20px;
-								    font-size: 16px;
 				    			}
 				    			.td0{
-					    			display: inline-block;
-									width: 200px;
-	    							position: absolute;
+					    			.d-ib();
+					    			.maxBody(200px,auto); 
+	    							.pos (a);
+	    							.z-index(100);
+	    							.text-l();
 	    							background: #fff;
-	    							z-index: 100;
 	    							padding: 10px 20px;
-	    							border: 1px solid #cacece;
+    							    border: 1px solid #ddd;
+    								border-left: 0;
 					    		}
 					    		.td1{
 					    			padding-left:250px;
-					    		}
-				    		}
+					    		}				    		}
 				    	}
 				    	.slimtable-container-div {
-							display: inline-block;
+							.d-ib();
 						}
 				    }
 
-				}
-				.indicator_column{
-					width: 100%;
-					position: relative;
-				    height: 434px;
-				    overflow-x: scroll;
-				    border: 1px solid #b9b1b1;
-				    border-top-left-radius: 6px;
-				    border-top-right-radius: 6px;
-				    position: absolute;
-				    top: 0;
-				    left: 0;
-				    width: 184px;
-				    overflow: hidden;
-				    z-index: 1000;
-				    background: #fff;
-					.indicTable_column{
-						overflow: hidden;
-					    position: absolute;
-					    z-index: 40;
-					    top: 0px;
-					    left: 0px;
-					    border-collapse: collapse;
-						border: 1px solid #ddd;
-						border-collapse: collapse;
-						border: 1px solid #ddd;
-				    	thead{
-				    		.td0{
-				    			width:184px;
-				    			position: absolute;
-				    		}
-				    		th{
-				    			background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#46d2fb), to(#49befc));
-								border: 1px solid #ddd;
-								color: #fff;
-								text-align: left;
-							    padding: 10px 20px;
-							    font-size: 16px;
-							    font-weight: normal;
-								-ms-user-select: none;
-								-moz-user-select: none;
-								-webkit-user-select: none;
-								user-select: none;
-								white-space: nowrap;
-								.slimtable-activeth {
-									background-color: #2a487f;
-								}
-								/* Sprites */
-
-								.slimtable-sprites {
-									margin-left: 2px;
-									margin-right: 5px;
-									vertical-align: middle;
-
-									display: inline-block;
-									background: url(../../images/exponent-pay/sort.png) -16px 0 no-repeat;
-									width: 7px;
-									height: 9px;
-								}
-
-								.slimtable-sortboth {
-									background-position: -1px -1px;
-								}
-
-								.slimtable-sortnone {
-									background-position: -19px -19px;
-								}
-
-								.slimtable-sortasc {
-									background-position: -1px -19px;
-								}
-
-								.slimtable-sortdesc {
-									background-position: -19px -1px;
-								}
-				    		}
-				    	}
-				    	tbody{
-				    		tr{
-				    			td{
-				    				border: 1px solid #ddd;
-								    color: #4b4b4b;
-								    padding: 10px 20px;
-								    font-size: 16px;
-				    			}
-				    		}
-				    	}
-				    	.slimtable-container-div {
-							display: inline-block;
-						}
-				    }
-				    /* Paging */
-					.slimtable-paging-div {
-						margin-top: 5px;
-						display: inline-block;
-						width: 100%;
-						.slimtable-paging-seldiv {
-							display: inline;
-							float: right;
-						}
-
-						.slimtable-paging-select {
-							margin-right: 10px;
-							border-radius: 5px;
-							border: 1px solid #ccc;
-							padding: 3px;
-						}
-
-						.slimtable-paging-btnsdiv {
-							display: inline-block;
-						}
-
-						.slimtable-page-btn {
-							display: inline-block;
-							width: 25px;
-							height: 25px;
-							line-height: 25px;
-							border-radius: 5px;
-							border: 1px solid #ccc;
-							text-align: center;
-							font-weight: bold;
-							margin-right: 5px;
-							cursor: pointer;
-						}
-
-						.slimtable-page-btn.active {
-							background-color: #ccc;
-						}
-					}
 				}
 				.comment-split{
+					.fr();
 					margin-left: 60px;
 					margin-top: 20px;
-    				float: right;
 					.disabled{
-						display: none;
+						.d-n();
 					}
 					.current{
 						.maxBody(24px,24px);
-						border: 1px solid #49befc;
-						background: #49befc;
-						color: #fff;
 						.font-s(14px);
 						.d-ib();
 						.text-c();
 						.l-h(24px);
-						border-radius: 50%;
+						.border-radius(50%);
+						border: 1px solid #49befc;
+						background: #49befc;
+						color: #fff;
 						margin: 0 5px;
 					}
 					.pageNumber{
 						.maxBody(24px,24px);
-						border: 1px solid #49befc;
-						color: #49befc;
 						.font-s(14px);
 						.d-ib();
 						.text-c();
 						.l-h(24px);
-						border-radius: 50%;
+						.border-radius(50%);
+						border: 1px solid #49befc;
+						color: #49befc;
 						margin: 0 5px;
 						&:hover{
 							background: #49befc;
@@ -1011,13 +892,13 @@
 						color: #49befc;
 					}
 					.buttons{
-						padding: 2px 15px;
 						.border-radius(15px);
-						border: 1px solid #49befc;
-						color: #49befc;
 						.font-s(14px);
 						.font-fm();
 						.c-point();
+						padding: 2px 15px;
+						border: 1px solid #49befc;
+						color: #49befc;
 						margin: 0 5px;
 						&:hover{
 							background: #49befc;
