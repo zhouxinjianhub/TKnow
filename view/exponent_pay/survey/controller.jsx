@@ -69,7 +69,6 @@ class SurveyController extends React.Component {
 		});
 	}
 	showChart() {
-		console.log(this.dataAreaId,this.datatimeId);
 		if ( this.dataAreaId == null ) {
 			layer.open({
 				title: '映潮指数',
@@ -111,7 +110,7 @@ class SurveyController extends React.Component {
 		},()=>{
 			$(".one_hover").removeClass('current');
 			$('.nav-list-datatime').css({
-				width: '201px'
+				width: '215px'
 			});
 		})
 		
@@ -139,7 +138,7 @@ class SurveyController extends React.Component {
 			$('.one_hover').eq(key).addClass('current');
 			$(".two_hover").removeClass('current');
 			$('.nav-list-datatime').css({
-				width: '301px'
+				width: '315px'
 			});
 		})
 		
@@ -160,7 +159,7 @@ class SurveyController extends React.Component {
 			$('.two_hover').eq(config.key).addClass('current');
 			$(".three_hover").removeClass('current');
 			$('.nav-list-datatime').css({
-				width: '701px'
+				width: '715px'
 			});
 		})
 

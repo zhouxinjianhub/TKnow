@@ -51,6 +51,15 @@ class RegionalController extends React.Component {
 					PubSub.unsubscribe(this.pubsub_token);
 				});
 			});
+			
+		}else{
+			let config = {
+				title: '映潮科技',
+				desc: '猛戳打开查看地域的数据',
+				link: location.href,
+				imgUrl: './images/logo-white.png'
+			};
+			$.wechartShare(config);
 		}
 	}
 	getData(){
@@ -376,7 +385,7 @@ class RegionalController extends React.Component {
 			   		</div>
 			   	</div>
 			   <div className="map-module" id="maps"></div>
-			   <div className="button-module"><input type="button" value="查询数据详情" onClick={this.selectData.bind(this)}/></div>
+			   <div className="button-module"><input type="button" value="查询数据" onClick={this.selectData.bind(this)}/></div>
 			   <div className="share-module">
 			   		<i className="iconfont icon-share"></i>
 			   		<img src={ this.geterCode() }/>

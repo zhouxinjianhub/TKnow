@@ -14,7 +14,6 @@ import "./regional.less";
 class ContainerRegional extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isTopRoute = false;
 	}
 	state = {
 		timeId: '',
@@ -30,7 +29,6 @@ class ContainerRegional extends React.Component {
 		PubSub.subscribe('getNavYearId', (topic, data) => {
 			this.state.timeId = data;
 		});
-		$.wechartShare();
 	}
 	render() {
 		return (

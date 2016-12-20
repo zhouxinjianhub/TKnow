@@ -260,7 +260,12 @@ class TradeMap extends React.Component {
 			    <div className="Detail-place" id="">
 				{
 					result.map((data,k) => {
-						return  <span >{data+'.'}</span>
+						if(data<11){
+							return  <span >{data+'.'}</span>
+						}else{
+							return  null;
+						}
+						
 				        		
 		        	})
 				}

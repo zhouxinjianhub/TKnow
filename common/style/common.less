@@ -1,13 +1,15 @@
 @charset "utf-8";
 @import "../../common/style/z";
+@import "../../common/style/css3";
 @import "../../font/iconfont.css";
 .reset();
 
 html,
 body{
-	width: 100%;
+	.maxBody();
 	background: #efeff5;
 	.font-fm();
+	.rel();
 	&.mobileBody{
 		overflow-x: hidden;
 		.nav,.footer{
@@ -19,6 +21,17 @@ body{
 		.comment-container{
 			display: none;
 		}
+		.container-info{
+			margin: 0;
+		}
+		&:after{
+			content: '';
+			.maxBody();
+			.abs();
+			top: 0;
+			left: 0;
+			background: none;
+		}
 	}
 }
 
@@ -26,6 +39,57 @@ body{
 	width: 100%;
 	.content{
 		.bc();
+	}
+}
+
+.layer-box{
+	.input-large{
+		.maxBody(96%,30px);
+		.border-radius(6px);
+		.l-h(30px);
+	}
+	.input-middle{
+		.maxBody(40%,30px);
+		.border-radius(6px);
+		.l-h(30px);
+	}
+	.input-btn{
+		.maxBody(44%,30px);
+		.border-radius(6px);
+		.l-h(30px);
+	}
+	.centerp{
+		.text-c();
+		.font-wb();
+	}
+	.mtop30{
+		margin-top:30px;
+	}
+	.mleft10b{
+		margin-left:10%;
+	}
+	.mleft5b{
+		margin-left:5%;
+	}
+	.pleft10{
+		padding-left: 10px;
+	}
+	.borderblue{
+		border: 1px solid #4DC3FF;
+		color: #4DC3FF;
+		.c-point();
+		&:hover{
+			border: none;
+			color: #fff;
+			background: #4DC3FF;
+		}
+	}
+	.borderhui{
+		border: 1px solid #E6E6E6;
+		color: #666;
+		&:hover{
+			border: 1px solid #999;
+		}
 	}
 }
 

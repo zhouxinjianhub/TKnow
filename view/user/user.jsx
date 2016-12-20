@@ -39,12 +39,12 @@ class ContainerUser extends React.Component {
 		let newpasscopy = $.trim($(this.refs.newpasscopy).val());
 		
 		if ( !$.regTest('password',pass) ) {
-			layer.tips('密码格式不正确，请输入6-16位', this.refs.pass);
+			layer.tips('密码格式不正确', this.refs.pass);
 			return false;
 		}
 
 		if ( !$.regTest('password',newpass) ) {
-			layer.tips('密码格式不正确，请输入6-16位', this.refs.newpass);
+			layer.tips('密码格式不正确', this.refs.newpass);
 			return false;
 		}
 
@@ -86,13 +86,15 @@ class ContainerUser extends React.Component {
 	bindThirdUser(type, bind, e){
 		if ( type == 'qq' ) {
 			bind == 'bind' ? this.bindthird(type) : this.clearthird(type);
+		}else{
+			bind == 'bind' ? this.bindthird(type) : this.clearthird(type);
 		}
 	}
 	bindthird(type) {
 		if ( type == 'qq' ) {
 			location.href = $.thirdxhr;
 		} else {
-			alert('wx');
+			location.href = $.thirdxhrwx;
 		}
 		
 	}
@@ -116,16 +118,174 @@ class ContainerUser extends React.Component {
 		});
 		
 	}
-	render() {
-		if ( !this.userToken ) { 
-			if ( history.go ) {
-				history.go(-1);
-				return false;
-			}else{
-				hashHistory.push('/');
+	payEx(e){
+		layer.open({
+			title: '权限购买',
+			content: '<div>您好，欢迎您拨打电话：028-83117030 进行咨询续费。</div>',
+			scrollbar: false
+		});
+	}
+	// 绑定手机
+	bindNewphone(){
+		const that = this;
+		layer.open({
+			title: '绑定新手机',
+			area: ['600px', '270px'],
+			content:'<div class="layer-box" style="padding: 10px 120px;">'+
+						'<input type="text" placeholder="请输入绑定的手机号码" class="input-large pleft10 borderhui" id="bindPhone" />'+
+						'<input type="text" placeholder="请输入短信验证码" class="input-middle mtop30 pleft10 borderhui" id="bindyzm"/>'+
+						'<input type="button" value="获取验证码" class="input-middle mtop30 mleft10b borderblue" id="getyzm-bind"/>'+
+						'<input type="button" value="确定" class="input-btn mtop30 borderblue" id="layer-bind-yes"/>'+
+						'<input type="button" value="取消" class="input-btn mtop30 borderblue mleft10b" id="layer-bind-no"/>'+
+					'</div>',
+			btn: []
+		});
+		$('#layer-bind-yes').off().on('click',function(){
+			let phone = $.trim($('#bindPhone').val());
+			let yzm = $.trim($('#bindyzm').val());
+			if ( !$.regTest('phone',phone) ) {
+				layer.tips('密码格式不正确', '#bindPhone');
 				return false;
 			}
-		};
+			if ( !$.regTest('null',yzm) ) {
+				layer.tips('请输入短信验证码', '#bindyzm');
+				return false;
+			}
+			let config = {
+				type: 1, // 1是绑定
+				code: yzm,
+				mobile: phone
+			};
+			$.GetAjax('/v1/personal/inner/operationPhone',config,'GET',false,(data,state)=>{
+				if ( state && data.code == 1 ) {
+					layer.msg('绑定成功！');
+					that.getUser(that.userToken);
+				}else{
+					layer.msg(data.message);
+				}
+			});
+		});
+		$('#layer-bind-no').off().on('click',function(){
+			layer.closeAll();
+		});
+		$('#getyzm-bind').off().on('click',function(){
+			let phone = $.trim($('#bindPhone').val());
+			if ( !$.regTest('phone',phone) ) {
+				layer.tips('密码格式不正确', '#bindPhone');
+				return false;
+			}
+			let config = {
+				mobile: phone,
+				type: 3 // 3是绑定手机
+			}
+			that.getCode(config);
+		});
+	}
+	// 解除绑定
+	unbindPhone(hasphone=""){
+		const that = this;
+		layer.open({
+			title: '解除绑定',
+			area: ['600px', '270px'],
+			content:'<div class="layer-box" style="padding: 10px 120px;">'+
+						'<input type="text" placeholder="请输入绑定的旧手机号码" class="input-large pleft10 borderhui" id="bindPhone" value='+hasphone+' '+(hasphone ? 'disabled' : "")+' >'+
+						'<input type="text" placeholder="请输入短信验证码" class="input-middle mtop30 pleft10 borderhui" id="bindyzm">'+
+						'<input type="button" value="获取验证码" class="input-middle mtop30 mleft10b borderblue" id="getyzm">'+
+						'<input type="button" value="确定" class="input-btn mtop30 borderblue" id="layer-yes">'+
+						'<input type="button" value="取消" class="input-btn mtop30 borderblue mleft10b" id="layer-no">'+
+					'</div>',
+			btn: []
+		});
+		$('#layer-yes').off().on('click',function(){
+			let phone = $.trim($('#bindPhone').val());
+			let yzm = $.trim($('#bindyzm').val());
+			if ( !$.regTest('phone',phone) ) {
+				layer.tips('密码格式不正确', '#bindPhone');
+				return false;
+			}
+			if ( !$.regTest('null',yzm) ) {
+				layer.tips('请输入短信验证码', '#bindyzm');
+				return false;
+			}
+			let config = {
+				type: 0, // 0是解绑
+				code: yzm,
+				mobile: phone
+			};
+			$.GetAjax('/v1/personal/inner/operationPhone',config,'GET',false,(data,state)=>{
+				if ( state && data.code == 1 ) {
+					layer.closeAll();
+					if ( !hasphone ) {
+						that.getUser(that.userToken);
+						layer.msg('解绑成功！');
+					}else{
+						that.bindNewphone();
+					}
+					
+				}else{
+					layer.msg(data.message);
+				}
+			});
+		});
+		$('#layer-no').off().on('click',function(){
+			layer.closeAll();
+		});
+		$('#getyzm').off().on('click',function(){
+			let phone = $.trim($('#bindPhone').val());
+			if ( !$.regTest('phone',phone) ) {
+				layer.tips('密码格式不正确', '#bindPhone');
+				return false;
+			}
+			let config = {
+				mobile: $.trim($('#bindPhone').val()),
+				type: 2 // 2是解绑手机
+			}
+			that.getCode(config);
+		});
+	}
+	// 绑定手机判断是否为更改
+	bindUserPhone(type,e){
+		
+		if ( type == 'add' ) {
+			this.bindNewphone();
+		} else if ( type == 'update' ) {
+			let userPhone = $(this.refs.userphone).html() || '';
+			this.unbindPhone(userPhone);
+		}
+	}
+	// 获取短信验证码
+	getCode(config){
+		$.GetAjax('/v1/system/sendCode',config,'GET',false,(data,state)=>{
+			if ( state && data.code == 1 ) {
+				alert('您的验证码是:'+data.data);
+			}else{
+				alert(data.message);
+			}
+		});
+	}
+	// 询问解除绑定
+	unbindUserPhone(){
+		const that = this;
+		layer.open({
+			title: '解除绑定',
+			area: ['600px', '200px'],
+			content:'<div class="layer-box" style="padding: 10px 120px;">'+
+						'<p class="centerp">确定要解除绑定吗？</p>'+
+						'<input type="button" value="解除绑定" class="input-middle mtop30 borderblue mleft10b" id="layer-unbind-yes"/>'+
+						'<input type="button" value="取消" class="input-middle mtop30 borderhui mleft5b" id="layer-unbind-no"/>'+
+					'</div>',
+			btn: []
+		});
+		$('#layer-unbind-yes').off().on('click',function(){
+			layer.closeAll();
+			that.unbindPhone();
+		});
+		$('#layer-unbind-no').off().on('click',function(){
+			layer.closeAll();
+		});
+		
+	}
+	render() {
 		return (
 			<div className="container-user">
 			   <div className="user-nav">
@@ -143,18 +303,23 @@ class ContainerUser extends React.Component {
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">手机号码</p>
-			   				<p className={ this.userDatas.mobile && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.mobile || '未绑定' }</p>
-			   				<input type="button" value={ this.userDatas.mobile ? "更改" : "绑定" }/>
+			   				<p className={ this.userDatas.mobile && "user-list-cont" || "user-list-cont no-bind" } ref="userphone">{ this.userDatas.mobile || '未绑定' }</p>
+			   				<input type="button" value={ this.userDatas.mobile ? "更改" : "绑定" } onClick={ this.bindUserPhone.bind(this,this.userDatas.mobile ? "update" : "add") }/>
+			   				{(()=>{
+			   					if ( this.userDatas.mobile ) {
+			   						return <input type="button" value="解绑" onClick={ this.unbindUserPhone.bind(this) }/>
+			   					}
+			   				})()}
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">QQ</p>
-			   				<p className={ this.userDatas.qqOpenid && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.qqOpenid || '未绑定' }</p>
+			   				<p className={ this.userDatas.qqOpenid && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.qqOpenid ? this.userDatas.qqNickName : '未绑定' }</p>
 			   				<input type="button" value={ this.userDatas.qqOpenid ? "解绑" : "绑定" } onClick={ this.bindThirdUser.bind(this,'qq',this.userDatas.qqOpenid ? "unbind" : "bind") }/>
 			   				
 			   			</div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">微信</p>
-			   				<p className={ this.userDatas.weinxinOpenid && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.weinxinOpenid || '未绑定' }</p>
+			   				<p className={ this.userDatas.weinxinOpenid && "user-list-cont" || "user-list-cont no-bind" }>{ this.userDatas.weinxinOpenid ? this.userDatas.weixinNickName : '未绑定' }</p>
 			   				<input type="button" value={ this.userDatas.weinxinOpenid ? "解绑" : "绑定" } onClick={ this.bindThirdUser.bind(this,'wx',this.userDatas.weinxinOpenid ? "unbind" : "bind") }/>
 			   				
 			   			</div>
@@ -163,13 +328,20 @@ class ContainerUser extends React.Component {
 			   			<div className="user-title"><span>权限购买</span></div>
 			   			<div className="user-list">
 			   				<p className="user-list-name">数据权限</p>
-			   				<p className="user-list-cont">普通用户</p>
+			   				<p className="user-list-cont">{this.userDatas.type == 2 ? '高级用户' : '普通用户'}</p>
 			   			</div>
-			   			<div className="user-list">
-			   				<p className="user-list-name">到期时间</p>
-			   				<p className="user-list-cont">2016-11-22</p>
-			   				<input type="button" value="续费"/>
-			   			</div>
+			   			{(()=>{
+			   				let type = this.userDatas.type || 1;
+			   				let parentHTML = [];
+			   				let childHTML = [];
+			   				if ( type == 2 ) {
+			   					childHTML.push(<p className="user-list-name">到期时间</p>);
+			   					childHTML.push(<p className="user-list-cont">{ this.userDatas.payEx && $.getLocalTime(this.userDatas.payEx) || "" }</p>);
+			   					childHTML.push(<input type="button" value="续费" onClick={ this.payEx.bind(this) }/>)
+			   					parentHTML.push(<div className="user-list">{ childHTML }</div>);
+			   				}
+			   				return parentHTML;
+			   			})()}
 			   		</div>
 			   		<div className="user-module">
 			   			<div className="user-title"><span>修改密码</span></div>

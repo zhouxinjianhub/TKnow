@@ -8,20 +8,26 @@ class ContainerReport extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	state={
+		detailData : '',
+	}
 	componentDidMount() {
 
 	}
+	setDetailData(data){
+		this.setState({
+			detailData: data || '',
+		})
+	}
 	render() {
-		// let name = this.props.parent.location.query.name;
 		let pageName = this.props.parent.params.splat;
-		let pageRender = pageName && pageName.split('/')[1];
+		let pageRender = pageName && pageName.split('/')[1]||"reportIndex";
 		return (
 			<div className="pay-section">
 				{(()=>{
 					switch( pageRender ){
-						case "reportIndex"   : return <ReportIndex/>
-						case "reportDetail"  : return <ReportDetail parent={ this.props.parent } page={ pageName }/>
-						default : return ""
+						case "reportDetail"  : return <ReportDetail parent={ this.props.parent } page={ pageName } detailData={this.state.detailData}/>
+						default : return <ReportIndex setDetailData={this.setDetailData.bind(this)} />
 					}
 				})()}
 			</div>

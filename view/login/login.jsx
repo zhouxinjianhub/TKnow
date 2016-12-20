@@ -11,10 +11,23 @@ class ContainerLogin extends React.Component {
             data:""
         };
 	}
+    componentWillMount(){
+        var isLogin=$.cookie('token')?true:false;
+        var isPop=this.props.source?true:false;
+        if(isLogin&&!isPop){
+            hashHistory.push('/index');
+        }
+    }   
 	componentDidMount() {
+        var self=this;
+        $('#password').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                self.checkLogin();
+            }
+        });
         
 	}
-      
+    
     /**
     * 点击登录
     */
@@ -64,17 +77,18 @@ class ContainerLogin extends React.Component {
 
         var account=data.data.account,
             nickname=data.data.nickname,
-            token=data.data.token;
-
-        this.setCookie(account,nickname,token);
+            token=data.data.token,
+            member = data.data.type;
+        this.setCookie(account,nickname,token,member);
     }
 
 
-    setCookie(account,nickname,token){
+    setCookie(account,nickname,token,member){
 
         $.cookie('account', account); 
         $.cookie('nickname', nickname); 
         $.cookie('token', token); 
+        $.cookie('member', $.encodeBase64(member,10));
         this.props.source ? this.props.closeMsk(true) : hashHistory.push('/index');
     }
     /**
@@ -132,7 +146,7 @@ class ContainerLogin extends React.Component {
                             let third = [
                                 <p className="text_login_other">-——————  第三方帐号登录  ——————-</p>,
                                 <a href={$.thirdxhr} className="login_qq"></a>,
-                                <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxb0cf58edd59d5db9&redirect_uri=http%3a%2f%2fwww.tknows.com&response_type=code&scope=snsapi_login#wechat_redirect" className="login_weixin"></a>
+                                <a href={$.thirdxhrwx} className="login_weixin"></a>
                             ];
                             return this.props.source ?  null : third
                         })()}

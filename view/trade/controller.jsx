@@ -23,22 +23,39 @@ class RegionalController extends React.Component {
 		this.datatimeAreaNameTiny = '全国';
 		this.datatimeAreaName = '全国';//地域筛选栏默认显示
 		this.datatimeAreaList = [];
-
+		//判断是手机端
+		if ( $.isPhone() ) {
+			this.datatimeId = this.props.location.query['timeId'];
+			this.datatimeAreaId = this.props.location.query['areaId'];
+		}
 	}
 	componentDidMount() {
-		this.getData();
-		this.chart = echarts.init(document.getElementById('maps'));
-		this.chart.showLoading('default',{
-			text: ''
-		});
-		this.setMaps();
-		PubSub.subscribe('getNavYear', (topic, data) => {
-			this.datatimeName = data.timeName;
-			this.datatimeId = data.timeId;
-			this.setState({
-				hover: true
+		if ( !$.isPhone() ) {
+			this.getData();
+			this.chart = echarts.init(document.getElementById('maps'));
+			this.chart.showLoading('default',{
+				text: ''
 			});
-		});
+			this.setMaps();
+			PubSub.subscribe('getNavYear', (topic, data) => {
+				this.datatimeName = data.timeName;
+				this.datatimeId = data.timeId;
+				this.setState({
+					hover: true
+				},()=>{
+					this.getRegionData(this.datatimeId);
+					PubSub.unsubscribe(this.pubsub_token);
+				});
+			});
+		}else{
+			let config = {
+				title:'映潮科技',//分享标题
+				desc: '猛戳打开查看行业的数据',//分享内容
+				link: location.href,//分享地址
+				imgUrl: './images/logo-white.png'//分享图片
+			};
+			$.wechartShare(config);
+		}
 	}
 	//获取时间
 	getData(){
@@ -141,6 +158,7 @@ class RegionalController extends React.Component {
 			this.getRegionData(this.datatimeId);
 		});
 	}
+	//请求有数据的地域
 	getRegionData(id){
 		let config = {
 			timeId: id
@@ -328,12 +346,12 @@ class RegionalController extends React.Component {
 		            itemStyle:{
 						normal:{
 							borderColor:'#49befc',
-							borderWidth:0,
+							color: '#49befc',
 							areaColor :'#49befc'
 						},
 						emphasis:{
 							borderColor:'#49befc',
-							borderWidth:0,
+							color: '#49befc',
 							areaColor :'#49befc'
 						}
 					},
@@ -348,8 +366,8 @@ class RegionalController extends React.Component {
 			timeId: this.datatimeId,
 			areaId: this.datatimeAreaId,
 		};
-
-		let params = encodeURIComponent(location.href + "?" +$.param(configer));
+		//location.href地址上已有行业Id和行业名称
+		let params = encodeURIComponent(location.href +"&"+$.param(configer));
 		let result = $.httpxhr + "/v1/system/qrCode?url=" + params;
 		return result;
 	}

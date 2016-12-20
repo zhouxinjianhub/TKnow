@@ -27,7 +27,7 @@ class ContainerSurveyModule2_2 extends React.Component {
 			timeId: this.props.timeId,
 			areaId: this.props.areaId
 		};
-		$.GetAjax('/v1/zhishu/monthlyTrade', option, 'Get', true, (data,state)=>{
+		$.GetAjax('/v1/zhishu/inner/monthlyTrade', option, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.viewMoudle = true;
                 this.parentData = data.data && data.data['parent'];
@@ -86,10 +86,15 @@ class ContainerSurveyModule2_2 extends React.Component {
 		        bottom: 20,
 		        containLabel: true
 		    },
-		    xAxis : [{
-	            type : 'category',
-	            boundaryGap : false,
-	            data : xAxis,
+	        xAxis: [{
+		        data: xAxis,
+		        axisLabel: {
+		        	interval: 0,
+		            textStyle: {
+		                color: '#4b4b4b',
+		                fontSize: '14px'
+		            }
+		        },
 				axisLine:{
 					show:false
 				},
@@ -99,7 +104,11 @@ class ContainerSurveyModule2_2 extends React.Component {
 				splitLine: {
 				    show: false
 				}
-	        }],
+		    },{
+		        // 辅助 x 轴
+		        show: false,
+		        data: xAxis
+		    }],
 		    yAxis : [{
 	            show: false
 	        }],

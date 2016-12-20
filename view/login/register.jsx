@@ -37,8 +37,8 @@ class ContainerLogin extends React.Component {
             this.checkNameExisted(name);
 
         }else {       
-
-            this.error_msg('name','请输入有效的用户名',true);
+            console.log(name);
+            this.error_msg('name','请输入有效的用户名！！！！',true);
         }
 
 
@@ -57,8 +57,10 @@ class ContainerLogin extends React.Component {
         $.GetAjax('/v1/personal/check', datas, 'POST', true, function(data , state) {                  
             if (state && data.code == 1) {
                 self.nameOk=true;              
-            } else {
+            } else if(state && data.code == 8) {
                 self.error_msg('name','用户名已存在，请重新输入',true);
+            }else{
+                self.error_msg('name',data.message,true);
             }
         }); 
 
@@ -263,8 +265,8 @@ class ContainerLogin extends React.Component {
     registerSucess(data) {
         layer.open({
                     icon: 1,
-                    title: '注册成功',
-                    content: '<div>成功</div>',
+                    title: '成功',
+                    content: '<div>注册成功!</div>',
                     yes: function(layero, index){
                         layer.close(layero);
                         location.href = '/login';
@@ -288,7 +290,6 @@ class ContainerLogin extends React.Component {
     error_msg(id,msg,show)
     {
         var error;
-        console.log(id);
         switch (id) {
             case 'name':
                 error=this.refs.error_msg_name;               
@@ -351,7 +352,16 @@ class ContainerLogin extends React.Component {
     }
     popService()
     {
-        alert("服务条款");
+        layer.open({
+            type: 2,
+            title: '注册协议',
+            area: ['900px', '600px'],
+            shade: 0.8,
+            closeBtn: 0,
+            shadeClose: true,
+            scrollbar: false,
+            content: '../../routes/login/provision.html'
+        });
     }
 
 
@@ -368,9 +378,9 @@ class ContainerLogin extends React.Component {
 
                         </div>
                         <div id="login_form" className="form">
-                            <input ref="name" className="login_input" type="text" placeholder="用户名4-16位,支持中文、数字、字母" id="user_name" onBlur={this.checkName.bind(this)} onChange={this.clear.bind(this,'name')} onFocus={this.warning.bind(this,'name')}/>
+                            <input ref="name" className="login_input" type="text" placeholder="用户名4-12位,支持中文、数字、字母" id="user_name" onBlur={this.checkName.bind(this)} onChange={this.clear.bind(this,'name')} onFocus={this.warning.bind(this,'name')}/>
                             <p ref="error_msg_name" className="msg_error" >用户名一旦设置成功无法修改</p>
-                            <input ref="password" className="login_input" type="password" placeholder="设置密码:6-16位,支持数字、字母、字符" id="password" onBlur={this.checkPass.bind(this)} onChange={this.clear.bind(this,'pass')}/>
+                            <input ref="password" className="login_input" type="password" placeholder="设置密码6-16位,支持数字、字母、字符" id="password" onBlur={this.checkPass.bind(this)} onChange={this.clear.bind(this,'pass')}/>
                             <p ref="error_msg_pass" className="msg_error" >警告密码规则</p>
                             <input ref="passr" className="login_input" type="password" placeholder="请再次输入您的密码"  onBlur={this.checkPassRepeat.bind(this)} onChange={this.clear.bind(this,'passr')} />
                             <p ref="error_msg_passr" className="msg_error" >警告密码重复</p>

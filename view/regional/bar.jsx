@@ -65,6 +65,7 @@ class RegionalBar extends React.Component {
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
+		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
 		                fontSize: '14px'

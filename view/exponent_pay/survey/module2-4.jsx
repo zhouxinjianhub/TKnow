@@ -27,11 +27,11 @@ class ContainerSurveyModule2_4 extends React.Component {
 	}
 	_getDatas() {
 		let option = {
-			type: 9, // 9实物型， 10服务型
+			type: 10, // 9实物型， 10服务型
 			timeId: this.props.timeId,
 			areaId: this.props.areaId
 		};
-		$.GetAjax('/v1/zhishu/industryAnalysis', option, 'Get', true, (data,state)=>{
+		$.GetAjax('/v1/zhishu/inner/industryAnalysis', option, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.viewMoudle = true;
                 this.parentData = data.data && data.data['parent'];
@@ -55,7 +55,7 @@ class ContainerSurveyModule2_4 extends React.Component {
              }
         });
 	}
-	showChart(chartData){
+	showChart(chartData=[]){
 		let xAxisData = [];
 		let data = chartData;
 		chartData.map((d,k)=>{
@@ -150,6 +150,9 @@ class ContainerSurveyModule2_4 extends React.Component {
 		this.echart.setOption(option);
 	}
 	changeNav(e) {
+		if ( $(e.target).hasClass('disabled') ) {
+			return false;
+		}
 		if ( $(e.target).hasClass('current') ) {
 			return false;
 		}else{
@@ -173,12 +176,12 @@ class ContainerSurveyModule2_4 extends React.Component {
 			   		<div className="nav-list">
 			   			{(()=>{
 			   				if ( this.parentName ) {
-			   					return <span className="current" onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
+			   					return <span className={ this.parentData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
 			   				}
 			   			})()}
 			   			{(()=>{
 			   				if ( this.childName ) {
-			   					return <span className="" onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
+			   					return <span className={ this.childData ? "" : "disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
 			   				}
 			   			})()}
 			   		</div>

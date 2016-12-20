@@ -26,7 +26,7 @@ class ContainerSurveyModule4 extends React.Component {
 			timeId: this.props.timeId,
 			areaId: this.props.areaId
 		};
-		$.GetAjax('/v1/zhishu/electronicAnalysis', option, 'Get', true, (data,state)=>{
+		$.GetAjax('/v1/zhishu/inner/electronicAnalysis', option, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.selected = 0;
             	this.viewMoudle = true;
@@ -88,6 +88,7 @@ class ContainerSurveyModule4 extends React.Component {
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
+		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
 		                fontSize: '14px'

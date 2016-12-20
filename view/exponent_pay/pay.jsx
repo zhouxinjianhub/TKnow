@@ -12,8 +12,6 @@ import "./pay.less";
 class ContainerPay extends React.Component {
 	constructor(props) {
 		super(props);
-	}
-	componentDidMount() {
 		if ( !$.isVipUser() ) {
 			hashHistory.push('/exponent_free');
 			return false;
@@ -30,7 +28,7 @@ class ContainerPay extends React.Component {
 			   {(()=>{
 					switch( pageRender ){
 						case "survey"   : return <Survey/>
-						case "indicator"  : return <Indicator/>
+						case "indicator"  : return <Indicator parent={ this.props.parent }/>
 						case "report"  : return <Report parent={ this.props.parent } page={ pageName }/>
 						default : history.go(-1)
 					}

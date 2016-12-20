@@ -22,7 +22,7 @@ module.exports = {
         filename: "main.min.js",
         // chunkFilename: '[chunkhash:20].js'
         chunkFilename: 'chunk/[name].chunk.js',
-        publicPath: "./build/"
+        publicPath: "../build/"
     },
     module: {
         preLoaders: [

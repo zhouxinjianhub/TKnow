@@ -14,6 +14,12 @@ class Footer extends React.Component {
 	gotoWb(){
 		location.href = "http://weibo.com/sunsharp";
 	}
+	hoverThird() {
+		$('.qryc').show();
+	}
+	removeThird() {
+		$('.qryc').hide();
+	}
 	render() {
 		return (
 			<div className="footer">
@@ -27,8 +33,9 @@ class Footer extends React.Component {
 							<Link to={{ pathname: "/aboutme/problem"}} >常见问题</Link>
 						</li>
 						<div className="third-href">
-							<i className="wechart" onClick={ this.gotoWb.bind(this) }></i>
+							<i className="wechart" onMouseEnter = { this.hoverThird.bind(this) } onMouseLeave = { this.removeThird.bind(this) }></i>
 							<i className="weibo" onClick={ this.gotoWb.bind(this) }></i>
+							<img src="./images/common/qryc.jpg" className="qryc"/>
 						</div>
 					</ul>
 

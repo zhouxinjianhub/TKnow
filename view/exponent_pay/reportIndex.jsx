@@ -10,48 +10,63 @@ import "./reportIndex.less";
 class ListAdapter extends React.Component{
         constructor(props) {
             super(props);
+            
+
         }
         componentDidMount() {
 
         }
-
-        download(url,event){
-
-            alert('下载：'+url)
-
+        jumpToDetil(data,event){
+            this.props.setDetailData(data);
+            hashHistory.push('/exponent_pay/report/reportDetail');
         }
         render() {
             let listData = this.props.data ? this.props.data : [];
 
-            let pdfUrl="../../images/exponent-pay/pdf.png";
-            let docUrl="../../images/exponent-pay/word.png";
-            let excelUrl="../../images/exponent-pay/excel.png";
-            let pptUrl="../../images/exponent-pay/ppt.png";
+            let pdfImg="../../images/exponent-pay/pdf.png";
+            let wordImg="../../images/exponent-pay/word.png";
+            let excelImg="../../images/exponent-pay/excel.png";
+            let pptImg="../../images/exponent-pay/ppt.png";
 
             return (
                 <div > 
                         {
                             listData.map((data,k) => {                            
                                             return  <div className="list-cell">
-                                                        <Link to={{ pathname: "/exponent_pay/report/reportDetail",query:{name:data.name,payUrl:data.payUrl}}}  >
-                                                            <img className="img-main" src={data.picUrl}/>
-                                                        </Link>
+                                                            <img className="img-main" src={data.picUrl} onClick={this.jumpToDetil.bind(this,data)}/>
                                                         <div className="div-content">
-                                                            <Link to={{ pathname: "/exponent_pay/report/reportDetail",query:{name:data.name,payUrl:data.payUrl}}}  >
-                                                                <h1 className="title">{data.name}</h1>
-                                                                <p className="content">{data.summary}</p>
-                                                            </Link>
+                                                            <h1 className="title" onClick={this.jumpToDetil.bind(this,data)}>{data.name}</h1>
+                                                            <p className="content" onClick={this.jumpToDetil.bind(this,data)}>{data.summary}</p>
                                                             <div className="div-download">
-                                                                <b>下载:</b>
-                                                                <img src={pdfUrl} className="img-download" onClick={this.download.bind(this,"url")}/>
-                                                                <img src={docUrl} className="img-download"/>
-                                                                <img src={excelUrl} className="img-download"/>
-                                                                <img src={pptUrl} className="img-download"/>
+                                                            {(()=>{
+                                                                let downloadHtml = [];
+                                                                let downloadUrl= JSON.parse(data.url);
+                                                                
+                                                                downloadHtml.push(<b>下载:</b>);
+                                                                if(downloadUrl){
+                                                                    if(downloadUrl.pdf){
+                                                                        downloadHtml.push(<a href={downloadUrl.pdf} target="view_window"><img src={pdfImg} className="img-download" /></a>);
+                                                                    }
+
+                                                                    if(downloadUrl.word){
+                                                                        downloadHtml.push(<a href={downloadUrl.word} target="view_window"><img src={wordImg} className="img-download" /></a>);
+                                                                    }
+
+                                                                    if(downloadUrl.excel){
+                                                                        downloadHtml.push(<a href={downloadUrl.excel} target="view_window"><img src={excelImg} className="img-download" /></a>);
+                                                                    }
+
+                                                                    if(downloadUrl.ppt){
+                                                                        downloadHtml.push(<a href={downloadUrl.ppt} target="view_window"><img src={pptImg} className="img-download" /></a>);
+                                                                    }
+                                                                }
+                                                                return downloadHtml;
+                                                                
+                                                            })()} 
                                                             </div>
                                                         </div>
                                                     </div> 
-                                        }
-                            )
+                                        })
 
                            // (()=>{
                            //       if(!listData||listData.length==0){
@@ -323,10 +338,11 @@ class TabComponent extends React.Component{
                 pageSize:size,
                 type:type
             };
-        $.GetAjax('/v1/zhishu/payDataReportPage', datas, 'GET', true, function(data , state) {                  
+        layer.load();
+        $.GetAjax('/v1/zhishu/inner/payDataReportPage', datas, 'GET', true, function(data , state) {                  
+            layer.closeAll('loading');
             if (state && data.code == 1) { 
                 let dataValue=data.data;
-
                 if(dataValue){
 
                     if(page>=dataValue.totalPage){
@@ -456,25 +472,25 @@ class TabComponent extends React.Component{
 			    <div className="tabCon">
 			        <div className="tabBox">
                         <div  className="tabList">
-                            <ListAdapter data={dataMonth}/> 
+                            <ListAdapter data={dataMonth} setDetailData={this.props.setDetailData}/> 
                             <div className="div-bottom">
                                 <button ref="btnMonth" className="btn-more" onClick={this.getMoreData.bind(this,this.typeMonth)}>+&nbsp;加载更多</button>
                             </div>
                         </div> 
                         <div  className="tabList">
-                            <ListAdapter data={dataQuarter}/> 
+                            <ListAdapter data={dataQuarter} setDetailData={this.props.setDetailData}/> 
                             <div className="div-bottom">
                                 <button ref="btnQuarter" className="btn-more" onClick={this.getMoreData.bind(this,this.typeQuarter)}>+&nbsp;加载更多</button>
                             </div>
                         </div>  
                         <div  className="tabList">
-                            <ListAdapter data={dataHalfYear}/> 
+                            <ListAdapter data={dataHalfYear} setDetailData={this.props.setDetailData}/> 
                             <div className="div-bottom">
                                 <button ref="btnHalfYear" className="btn-more" onClick={this.getMoreData.bind(this,this.typeHalfYear)}>+&nbsp;加载更多</button>
                             </div>
                         </div>  
                         <div  className="tabList">
-                            <ListAdapter data={dataYear}/> 
+                            <ListAdapter data={dataYear} setDetailData={this.props.setDetailData}/> 
                              <div className="div-bottom">
                                 <button ref="btnYear"  className="btn-more" onClick={this.getMoreData.bind(this,this.typeYear)}>+&nbsp;加载更多</button>
                              </div>
@@ -489,20 +505,21 @@ class TabComponent extends React.Component{
 
 }
 
-class ContainerReport extends React.Component {
+class ContainerReportIndex extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 	componentDidMount() {
 
 	}
+    
 	render() {
 		return (
 			<div className="pay-report">
-			   <TabComponent/>
+			   <TabComponent setDetailData={this.props.setDetailData}/>
 			</div>
 		)
 	}
 }
 
-module.exports = ContainerReport
+module.exports = ContainerReportIndex

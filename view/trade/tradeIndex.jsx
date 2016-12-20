@@ -40,6 +40,9 @@ class TradeHotLabel extends React.Component{
 		let hotlabelMap = Object.keys(hotlabels).map(key=> hotlabels[key]);
 		return (
 			<div className="hot">
+				<div className="hot-title">
+					<p >热门行业</p>
+				</div>
 				{
 					hotlabelMap.map((data,k) => {	
 			    		return  <Link to={{ pathname: "/trade/tradeDetail",query:{categoryId:data.id,categoryName:data.name}}}  >
@@ -144,7 +147,7 @@ class TradeContent extends React.Component{
 						let category=categorys[this.state.index];	
 						if(category){
 							let firstChild=category.chilren[0];
-							if(firstChild){
+							if(firstChild){//拥有三级节点
 								let secondChild=firstChild.chilren;
 								if(secondChild&&secondChild.length>0){
 									for ( let i in category.chilren ){
@@ -168,7 +171,7 @@ class TradeContent extends React.Component{
 										
 									}
 
-								}else{
+								}else{//拥有二级节点
 									
 									    let	thirdChilden=category.chilren;	
 
@@ -184,6 +187,7 @@ class TradeContent extends React.Component{
 																</li>
 															)
 										});
+										bodyHtml.push(<div className="div-padding"></div>);
 										bodyHtml.push(<ul>{ childHtml }</ul>);
 
 

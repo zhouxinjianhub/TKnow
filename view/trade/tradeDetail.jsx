@@ -38,7 +38,7 @@ class ContainerRegional extends React.Component {
 		let categoryId = this.props.parent.location.query.categoryId ?  this.props.parent.location.query.categoryId : '' ;
 		return (
 			<div className="trade-detail">
-			    <Nav callback={this.callbackNav.bind(this)}  parent={this.props.parent}/>
+			    <Nav callback={this.callbackNav.bind(this)}  location={this.props.parent.location} parent={this.props.parent}/>
 			    <Map timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent} />
 
 				<Bar timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent}/>

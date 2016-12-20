@@ -1,4 +1,5 @@
 /*动态加载*/
+import base64 from "base64";
 $.extend({
 	includePath: '/',
 	include: function(file) {
@@ -37,6 +38,17 @@ $.extend({
 	splitString: function (string,start,end) {
 		var result = string.substring(start,end);
 		return result;
+	},
+	//时间戳转换为时间
+	getLocalTime: function(time) {
+		var dateTime = new Date(time),
+			year = dateTime.getFullYear(),
+			month = dateTime.getMonth() + 1,
+			day = dateTime.getDate(),
+			hour = dateTime.getHours(),
+			minute = dateTime.getMinutes(),
+			second = dateTime.getSeconds();
+    	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 	},
 	//将数字转化成 亿万文字分开
 	formatPrice: function (count, isShowEnd) {
@@ -124,7 +136,6 @@ $.extend({
 			$.onloadJavascript('http://res.wx.qq.com/open/js/jweixin-1.0.0.js',true,false,()=>{
 				$.GetAjax('/v1/wx/getToken', {url: location.href}, 'Get', true, (data,state)=>{
 		            if (state && data.code == 1) {
-		                console.log(data.data);
 		                let wechartObj = data.data;
 						wx.config({
 							debug: false,
@@ -137,13 +148,13 @@ $.extend({
 								'onMenuShareAppMessage'
 							]
 						});
-						let config = {
-							title: config.title || '映潮科技',
-							desc: config.desc || '猛戳打开查看该数据',
-							link: location.href,
-							imgUrl: './images/logo-white.png'
+						let option = {
+							title: config.title,
+							desc: config.desc,
+							link: config.link,
+							imgUrl: config.imgUrl
 						};
-						$.wechartReady(config);
+						$.wechartReady(option);
 		            }
 		        });
 			})
@@ -171,10 +182,10 @@ $.extend({
 				}
 			});
 			wx.onMenuShareTimeline({
-				title:  config.title || 'title2',
-				desc:   config.desc || 'desc2',
-				link:   config.link || 'link2',
-				imgUrl: config.imgUrl || 'http://zhouxinjian.top/web/img/share.jpg',
+				title:  config.title,
+				desc:   config.desc,
+				link:   config.link,
+				imgUrl: config.imgUrl,
 				trigger: function (res) {
 					// alert('用户点击分享到朋友圈');
 				},
@@ -214,14 +225,15 @@ $.extend({
 		$.cookie('token','');
 		$.cookie('account','');
 		$.cookie('nickname','');
+        $.cookie('member', ''); 
 		if (callback && typeof(callback) === 'function') {
 			callback();
 		}
 	},
 	// 判断是不是VIP用户
 	isVipUser: function () {
-		let isVIP = $.cookie('token');
-		return isVIP ? true : false;
+		let isVIP = $.decodeBase64($.cookie('member'),10);
+		return isVIP == 2 ? true : false;
 	},
 	// 图片懒加载
 	lazyloadImg: function (url,callback) {
@@ -303,6 +315,49 @@ $.extend({
 			});
 		}
 		return paramStr.substr(1);
+	},
+	//加密可以加密N次，对应解密N次就可以获取明文
+	encodeBase64:function (mingwen,times) {
+		var code="";  
+	    var num=1;  
+	    if(typeof times=='undefined'||times==null||times==""){  
+	       num=1;  
+	    }else{  
+	       var vt=times+"";
+	       num=parseInt(vt);
+	    }  
+	  
+	    if(typeof mingwen=='undefined'||mingwen==null||mingwen==""){  
+	  
+	    }else{  
+	        code=mingwen;  
+	        for(var i=0;i<num;i++){
+	           code=base64.btoa(code);
+	        }  
+	    }  
+	    return code; 
+	}, 
+	//加密可以加密N次，对应解密N次就可以获取明文 
+	decodeBase64:function (mi,times) {
+		var mingwen="";  
+	    var num=1;  
+	    if(typeof times=='undefined'||times==null||times==""){  
+	       num=1;  
+	    }else{  
+	       var vt=times+"";  
+	       num=parseInt(vt);  
+	    }  
+	  
+	  
+	    if(typeof mi=='undefined'||mi==null||mi==""){  
+	  
+	    }else{  
+	       mingwen=mi;  
+	       for(var i=0;i<num;i++){  
+	           mingwen=base64.atob(mingwen);  
+	       }  
+	    }  
+	    return mingwen;  
 	}
 });
 

@@ -9,7 +9,7 @@ class ContainerSurveyModule3 extends React.Component {
 	}
 	state = {
 		t_data: {},
-		type: "networkTradingList"
+		type: 0
 	}
 	componentDidMount() {
 		this._getDatas();
@@ -24,11 +24,11 @@ class ContainerSurveyModule3 extends React.Component {
 			timeId: this.props.timeId,
 			areaId: this.props.areaId
 		};
-		$.GetAjax('/v1/zhishu/electronicAnalysis', option, 'Get', true, (data,state)=>{
+		$.GetAjax('/v1/zhishu/inner/electronicAnalysis', option, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.viewMoudle = true;
                 this.setState({
-                	type: this.ajaxCont[0],
+                	type: 0,
                 	t_data: data.data
                 });
 
@@ -48,7 +48,7 @@ class ContainerSurveyModule3 extends React.Component {
 			$(e.target).addClass('current');
 
 			this.setState({
-            	type: this.ajaxCont[type]
+            	type: type
             });
 		}
 	}
@@ -76,7 +76,7 @@ class ContainerSurveyModule3 extends React.Component {
 		parentHTML.push(<div className="list-type">{ childHTML2 }</div>);
 
 		for ( let k = 0; k < 32; k++ ) {
-			let data = this.state.t_data[this.state.type] || [];
+			let data = this.state.t_data[this.ajaxCont[this.state.type]] || [];
 			if ( tempNums < 16 ) {
 				childHTML.push(
 					<div className="small-list">

@@ -38,7 +38,7 @@
         }
         .tab {
             font-family: 微软雅黑;
-            color: #49befc;
+            color: #4b4b4b;
             background-color: #f8f8f8;
             border-radius: 5px;
             font-size: 16px;
@@ -99,6 +99,9 @@
                 .ba-c(#d1d6e1);
                 margin-left: 15%;               
             }
+        }
+        .div-padding{
+           .maxBody(100%,66px); 
         }
         ul{
             width: 100%;
@@ -161,35 +164,45 @@
         position: relative;
         left: 30px;
         background-color: #ffffff;
+        .hot-title{
+            .linear-gradient(#49befc,#46d2fb);
+            .border-top-radius(6px);
+            height: 25px;
+            p{
+              font-size: 16px; 
+              color: #ffffff;
+              padding-left: 25px;
+              padding-top: 4px; 
+            }
+
+        }
+        
+        .label {
+            font-family: 微软雅黑;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #49befc;
+            background: #ffffff;
+            color: #49befc;
+            border-radius: 15px;
+            font-size: 14px;
+            height: 30px;
+            width: 100px;
+            margin-left: 15px;
+            margin-top: 20px;
+            outline:none
+        }
+
+        .label:hover,
+        .label:active,
+        .label:focus {
+            color: #ffffff;
+            background: #49befc;
+        }
+
     }
 
-    .label {
-        font-family: 微软雅黑;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #49befc;
-        background: #ffffff;
-        color: #49befc;
-        border-radius: 15px;
-        font-size: 14px;
-        height: 30px;
-        width: 100px;
-        margin-left: 15px;
-        margin-top: 20px;
-        outline:none
-    }
-
-    .label:hover,
-    .label:active,
-    .label:focus {
-        color: #ffffff;
-        background: #49befc;
-    }
+    
 }
 
-//  .content {
-//     background: #edeff5;
-//     height: 400px;
-//     width: 400px;
-//     background-color: red;
-// }
+

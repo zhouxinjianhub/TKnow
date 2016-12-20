@@ -13,9 +13,21 @@ class ContainerCarousel extends React.Component {
 		data: []
 	};
 	componentDidMount() {
-		this._getdetailData();
+		if ( !$.isPhone() ) {
+			this._getdetailData();
+		}else{
+			this._getdetailData();
+			let config = {
+				title:'映潮科技',//分享标题
+				desc: '猛戳打开查看资讯详情页',//分享内容
+				link: location.href,//分享地址
+				imgUrl: './images/logo-white.png'//分享图片
+			};
+			$.wechartShare(config);
+		}
 	}
 	_getdetailData(id){
+		console.log("执行了请求数据方法");
 		const that = this;
         let setData = {
             dataType:'json',
@@ -33,29 +45,32 @@ class ContainerCarousel extends React.Component {
         });
 	}
 	getTime(time){
-		// 将时间戳(以毫秒为单位)换成时间格式字符串
-	    Date.prototype.Format = function (fmt) { //author: meizz 
-	        let o = {
-	            "M+": this.getMonth() + 1, //月份 
-	            "d+": this.getDate(), //日 
-	            "H+": this.getHours(), //小时 
-	            "m+": this.getMinutes(), //分 
-	            "s+": this.getSeconds(), //秒 
-	            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-	            "S": this.getMilliseconds() //毫秒 
-	        };
-	        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-	        for (let k in o)
-	        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-	        return fmt;
-	    }
-	
-		let dateTimeJsonStr = time; // C# DateTime类型转换的Json格式
-	    dateTimeJsonStr = Date.now();
-	    let msecStr = dateTimeJsonStr.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
-	    let msesInt = Number.parseInt(msecStr); // 毫秒字符串转换成数值
-	    let dt = new Date(msesInt); // 初始化Date对象
-		return dt.Format('yyyy-MM-dd');
+		if(time){
+			// 将时间戳(以毫秒为单位)换成时间格式字符串
+		    Date.prototype.Format = function (fmt) { //author: meizz 
+		        let o = {
+		            "M+": this.getMonth() + 1, //月份 
+		            "d+": this.getDate(), //日 
+		            "H+": this.getHours(), //小时 
+		            "m+": this.getMinutes(), //分 
+		            "s+": this.getSeconds(), //秒 
+		            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+		            "S": this.getMilliseconds() //毫秒 
+		        };
+		        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		        for (let k in o)
+		        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		        return fmt;
+		    }
+		
+			let dateTimeJsonStr = time; // C# DateTime类型转换的Json格式
+		    let msecStr = dateTimeJsonStr.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
+		    let msesInt = Number.parseInt(msecStr); // 毫秒字符串转换成数值
+		    let dt = new Date(msesInt); // 初始化Date对象
+			return dt.Format('yyyy.MM.dd');
+		}else {
+			return null;
+		}
 	}
 	//分享功能
 	geterCode() {
@@ -78,7 +93,7 @@ class ContainerCarousel extends React.Component {
 						  		<img src={ this.geterCode() }/>
 						    </div>
 							<p>
-								<span>上传时间：</span><span>{detailData ? this.getTime(detailData.created) : ""}</span>
+								<span>上传时间：</span><span>{detailData ? this.getTime(detailData.created ? detailData.created :'' ) : ""}</span>
 								<span>&nbsp;&nbsp;&nbsp;查看：</span><span>{detailData ? detailData.viewCount : ""}</span>
 								<span>&nbsp;&nbsp;&nbsp;分享：</span><span>{detailData ? detailData.shareCount : ""}</span>
 							</p>

@@ -17,6 +17,7 @@ class ContainerthirdLogin extends React.Component {
     }
     componentDidMount() {
         let urlModule = this.props.location.hash;
+
         if ( urlModule ) {
             this.splitUrlToken(urlModule);
         }
@@ -30,9 +31,24 @@ class ContainerthirdLogin extends React.Component {
             var str = string[i].split('=');
             res[str[0]] = str[1];
         }
+
         if ( res['access_token'] ) {
             this.access_token = res['access_token'];
             this.type = 0;
+            let userMess = $.userlogin();
+            // 已登录状态
+            if ( userMess ) {
+                this.hasTokenBand(this.access_token,this.type);
+            }
+            // 未登录状态
+            else{
+                this.reviewTokenBand(this.access_token,this.type);
+            }
+        }
+
+        if ( res['code'] ) {
+            this.access_token = res['code'];
+            this.type = 1;
             let userMess = $.userlogin();
             // 已登录状态
             if ( userMess ) {
@@ -80,29 +96,32 @@ class ContainerthirdLogin extends React.Component {
         
         $.GetAjax('/v1/personal/thirdLogin', config, 'Get', true, (data, state) => {                  
             if (state && data.code == 1) {
+                layer.closeAll('loading');
+                $.cookie('account', data.data.account);
+                $.cookie('nickname', this.type == 0 ? data.data.qqNickName : data.data.weixinNickName);
+                $.cookie('token', data.data.token);
+                $.cookie('member', $.encodeBase64(data.data.type,10));
+                hashHistory.push('/user');
+            } else if ( state && data.code == 19 ) {  // 19是需要绑定
+                this.toloading = false;
+                this.thirdData = data.data;
+                this.nickName = this.type == 0 ? data.data.qqNickName : data.data.weixinNickName;
+                layer.closeAll('loading');
+                this.setState({
+                    loading: false
+                });
+            }else{
                 layer.open({
                     icon: 2,
                     title: '错误',
-                    content: '<div>此qq号已经被其他用户绑定过了</div>',
+                    content: '<div>'+data.message+'</div>',
                     yes: function(layero, index){
                         layer.close(layero);
                         location.href = $.thirdxhr;
                     }
                 });
-            } else {
-                this.toloading = false;
-                this.thirdData = data.data;
-                this.nickName = data.data && data.data.nickname || "";
-                layer.closeAll('loading');
-                this.setState({
-                    loading: false
-                });
             }
         }); 
-    }
-
-    noTokenBand() {
-
     }
 
     // 移除组件
@@ -163,7 +182,6 @@ class ContainerthirdLogin extends React.Component {
 
         if( pass == passr ) {
             this.passrOk = true;
-            console.log('重复通过');
         }else {
             this.error_msg('passr','密码输入不一致',true);
         }
@@ -202,10 +220,10 @@ class ContainerthirdLogin extends React.Component {
 
         if ( this.nameOk && this.passOk && this.passrOk ) {
             let registConfig = {
-                openId: this.thirdData.qqOpenid,
+                openId: this.type == 0 ? this.thirdData.qqOpenid : this.thirdData.weinxinOpenid,
                 type: this.type,
                 account: name,
-                nickname: this.nickname,
+                nickname: this.type == 0 ? this.thirdData.qqNickName : this.thirdData.weixinNickName,
                 avatar: this.thirdData.avatar,
                 password: pass
             }
@@ -223,6 +241,7 @@ class ContainerthirdLogin extends React.Component {
                 $.cookie('account', data.data.account);
                 $.cookie('nickname', data.data.nickname);
                 $.cookie('token', data.data.token);
+                $.cookie('member', $.encodeBase64(data.data.type,10));
                 hashHistory.push('/');
             } else {
                 layer.msg('注册失败');
@@ -284,7 +303,16 @@ class ContainerthirdLogin extends React.Component {
         }
     }
     popService(){
-        alert("服务条款");
+        layer.open({
+            type: 2,
+            title: '注册协议',
+            area: ['900px', '600px'],
+            shade: 0.8,
+            closeBtn: 0,
+            shadeClose: true,
+            scrollbar: false,
+            content: '../../routes/login/provision.html'
+        });
     }
 
     render() {
@@ -295,14 +323,16 @@ class ContainerthirdLogin extends React.Component {
         return (
             <div className="container-thirdLogin">
                 <div id="wrapper" className="login-page">
-                    <div className="img_head"></div>
+                    <Link  to="/index">
+                        <div className="img_head"></div>
+                    </Link>
                     <div className="login_form_head">
                         <p className="login_head_msg">完善信息</p>
                     </div>
                     <div id="login_form" className="form">
                         <p className="welcome">欢迎您，{ this.nickName }</p>
                         <p className="welcome">完善您的信息，以后就也可以通过用户名和密码进行登录了</p>
-                        <input ref="name" className="login_input" type="text" placeholder="用户名4-16位,支持中文、数字、字母" id="user_name" onBlur={this.checkName.bind(this)} onChange={this.clear.bind(this,'name')} onFocus={this.warning.bind(this,'name')}/>
+                        <input ref="name" className="login_input" type="text" placeholder="用户名4-12位,支持中文、数字、字母" id="user_name" onBlur={this.checkName.bind(this)} onChange={this.clear.bind(this,'name')} onFocus={this.warning.bind(this,'name')}/>
                         <p ref="error_msg_name" className="msg_error" >用户名一旦设置成功无法修改</p>
                         <input ref="password" className="login_input" type="password" placeholder="设置密码:6-16位,支持数字、字母、字符" id="password" onBlur={this.checkPass.bind(this)} onChange={this.clear.bind(this,'pass')}/>
                         <p ref="error_msg_pass" className="msg_error" >警告密码规则</p>
