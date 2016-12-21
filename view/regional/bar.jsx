@@ -43,6 +43,9 @@ class RegionalBar extends React.Component {
 			xAxisData.push(d.name);
 		    data.push(d.value);
 		});
+		let getDatasArray = $.getFormatCompany(data);
+		let getData = getDatasArray.value;
+		let company = getDatasArray.company;
 		let colors = this.state.btnCurrent == 's' ? ['#fec630','#ff8f2b'] : ['#95cb5f','#41b371'];
 		let option = {
 			grid: [
@@ -59,7 +62,7 @@ class RegionalBar extends React.Component {
 		            type : 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0].name ? data[0].name+"  "+data[0].value+"万元" : "无数据";
+		        	return data[0].name ? data[0].name+"  "+ (data[0].value + company) : "无数据";
 		        }
 		    },
 		    xAxis: [{
@@ -68,7 +71,7 @@ class RegionalBar extends React.Component {
 		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
-		                fontSize: '14px'
+		                fontSize: '14'
 		            }
 		        },
 				axisLine:{
@@ -94,7 +97,7 @@ class RegionalBar extends React.Component {
 		    series: [{
 		        type: 'bar',
 		        name: '',
-		        data: data,
+		        data: getData,
 		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
@@ -121,9 +124,7 @@ class RegionalBar extends React.Component {
 		if ( key == this.state.btnCurrent ) {
 			return false;
 		};
-		this.myChart.showLoading('default',{
-			text: ''
-		});
+		this.start();
 		this.setState({
 			btnCurrent: key
 		},()=>{

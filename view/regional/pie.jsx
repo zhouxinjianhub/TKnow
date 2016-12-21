@@ -1,11 +1,10 @@
 
 import React from 'react';
-import PubSub from 'pubsub-js';
 
 class RegionalBar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isPie = true;
+		this.isPie = false;
 		this.piedata = [];
 	}
 	componentDidMount() {
@@ -34,16 +33,13 @@ class RegionalBar extends React.Component {
 		$.GetAjax('/v1/area/getTrading', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
             	this.piedata = data.data;
+            	let formatData = $.getFormatCompany([this.piedata.networkTradingSum,this.piedata.stapleAndB2B,this.piedata.networkRetail,this.piedata.entityRetail,this.piedata.serviceRetail]);
+            	this.formatDatas = formatData.value;
+            	this.company = formatData.company;
             	this.isPie = true;
         		this.setState({
             		status: true
             	},()=>{
-            		let navconfig = {
-            			timeName: this.piedata.timeName || "数据获取中",
-            			timeId: this.piedata.timeId || ""
-            		}
-            		PubSub.publish('getNavYear',navconfig);
-            		PubSub.publish('getNavYearId',this.piedata.timeId || "");
             		this.start();
             		this.renderChart1();
         			this.renderChart2();
@@ -60,7 +56,7 @@ class RegionalBar extends React.Component {
 		let option = {
 		    tooltip : {
 		        trigger: 'item',
-		        formatter: "{b} : {c} ({d}%)"
+		        formatter: "{b} : {c}"+this.company+" ({d}%)"
 		    },
 		    series : [{
 	            type: 'pie',
@@ -68,7 +64,7 @@ class RegionalBar extends React.Component {
 	            center: ['33%','50%'],
 	            data:[
 	                {
-	                    value: this.piedata.stapleAndB2B || 0,
+	                    value: this.formatDatas[1] || 0,
 	                    name:'B2B及大宗',
 	                    label: {
 	                        normal: {
@@ -90,11 +86,11 @@ class RegionalBar extends React.Component {
 	                    	}
 	                    }
 	                },{
-	                    value: this.piedata.networkRetail || 0, 
+	                    value: this.formatDatas[2] || 0, 
 	                    name:'网络零售额',
 	                    label: {
 	                        normal: {
-	                            formatter: (this.piedata.networkTradingSum || 0) +"万元",
+	                            formatter: this.formatDatas[0] + this.company,
 	                            position: 'center',
 	                            textStyle: {
 	                            	color: '#4b4b4b',
@@ -144,7 +140,7 @@ class RegionalBar extends React.Component {
 		let option = {
 		    tooltip : {
 		        trigger: 'item',
-		        formatter: "{b} : {c} ({d}%)"
+		        formatter: "{b} : {c}"+this.company+" ({d}%)"
 		    },
 		    series : [{
 	            type: 'pie',
@@ -152,7 +148,7 @@ class RegionalBar extends React.Component {
 	            center: ['33%','50%'],
 	            data:[
 	                {
-	                    value: this.piedata.entityRetail || 0,
+	                    value: this.formatDatas[3],
 	                    name:'实物型',
 	                    label: {
 	                        normal: {
@@ -174,11 +170,11 @@ class RegionalBar extends React.Component {
 	                    	}
 	                    }
 	                },{
-	                    value: this.piedata.serviceRetail || 0, 
+	                    value: this.formatDatas[4],
 	                    name:'服务型',
 	                    label: {
 	                        normal: {
-	                            formatter: (this.piedata.networkRetail || 0) +"万元",
+	                            formatter: this.formatDatas[2] + this.company,
 	                            position: 'center',
 	                            textStyle: {
 	                            	color: '#4b4b4b',
@@ -219,14 +215,14 @@ class RegionalBar extends React.Component {
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>B2B及大宗</p>
-									<p>{ this.piedata.stapleAndB2B || 0 }<span className="fontsmall">万元</span></p>
+									<p>{ this.formatDatas[1] }<span className="fontsmall">{this.company}</span></p>
 								</div>
 							</li>
 							<li className="fee-color">
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>网络零售额</p>
-									<p>{ this.piedata.networkRetail || 0 }<span className="fontsmall">万元</span></p>
+									<p>{ this.formatDatas[2] }<span className="fontsmall">{this.company}</span></p>
 								</div>
 							</li>
 						</ul>
@@ -246,14 +242,14 @@ class RegionalBar extends React.Component {
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>实物型</p>
-									<p>{ this.piedata.entityRetail || 0 }<span className="fontsmall">万元</span></p>
+									<p>{ this.formatDatas[3] }<span className="fontsmall">{this.company}</span></p>
 								</div>
 							</li>
 							<li className="green-color">
 								<div className="legend-left"></div>
 								<div className="legend-right">
 									<p>服务型</p>
-									<p>{ this.piedata.serviceRetail || 0 }<span className="fontsmall">万元</span></p>
+									<p>{ this.formatDatas[4] }<span className="fontsmall">{this.company}</span></p>
 								</div>
 							</li>
 						</ul>

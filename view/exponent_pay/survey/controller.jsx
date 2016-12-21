@@ -85,6 +85,7 @@ class SurveyController extends React.Component {
 			});
 			return false;
 		}
+		$('.pay-section').addClass('nodata');
 		this.props.callback(this.dataAreaId,this.datatimeId);
 	}
 	closehoverarea(e){

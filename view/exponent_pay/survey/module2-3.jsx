@@ -57,9 +57,17 @@ class ContainerSurveyModule2_3 extends React.Component {
 	}
 	showChart(chartData=[]){
 		let xAxisData = [];
-		let data = chartData;
+		let data = $.extend(true,[],chartData);
+		let temp = [];
 		chartData.map((d,k)=>{
 			xAxisData.push(d.name);
+			temp.push(d.value);
+		});
+		let getDatasArray = $.getFormatCompany(temp);
+		let getData = getDatasArray.value;
+		this.company = getDatasArray.company;
+		getData.map((d,k)=>{
+			data[k].value = d;
 		});
 		let colors = this.btnState == "p" ? ['#fec630','#ff8f2b'] : ['#95cb5f','#41b371'];
 		let option = {
@@ -77,15 +85,16 @@ class ContainerSurveyModule2_3 extends React.Component {
 		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+data[0].value+"万元"+"  "+"占比"+(data[0].data['scale']*100)+"%" : "无数据";
+		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+(data[0].value+this.company)+"  "+"占比"+(data[0].data['scale']*100)+"%" : "无数据";
 		        }
 		    },
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
+		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
-		                fontSize: '14px'
+		                fontSize: '14'
 		            }
 		        },
 				axisLine:{
@@ -143,7 +152,7 @@ class ContainerSurveyModule2_3 extends React.Component {
 			$(e.target).addClass('current');
 
 			this.btnState = $(e.target).data('label');
-
+			this.start();
 			this.showChart( this.btnState == "p" ? this.parentData : this.childData );
 		}
 	}

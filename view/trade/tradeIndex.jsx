@@ -43,16 +43,18 @@ class TradeHotLabel extends React.Component{
 				<div className="hot-title">
 					<p >热门行业</p>
 				</div>
-				{
-					hotlabelMap.map((data,k) => {	
-			    		return  <Link to={{ pathname: "/trade/tradeDetail",query:{categoryId:data.id,categoryName:data.name}}}  >
-			    		     		<button  className="label">
-					        			{data.name}
-					        		</button>
-				        		</Link>
-			    	})
-			    	
-				}
+				<div className="hot-content">
+					{
+						hotlabelMap.map((data,k) => {	
+				    		return  <Link to={{ pathname: "/trade/tradeDetail",query:{categoryId:data.id,categoryName:data.name}}}  >
+				    		     		<button  className="label">
+						        			{data.name}
+						        		</button>
+					        		</Link>
+				    	})
+				    	
+					}
+				</div>
 			</div>
 		)
 

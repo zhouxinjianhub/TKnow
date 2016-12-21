@@ -49,9 +49,17 @@ class ContainerSurveyModule4 extends React.Component {
 	}
 	showChart(chartData,type) {
 		let xAxisData = [];
-		let data = chartData;
+		let data = $.extend(true,[],chartData);
+		let temp = [];
 		chartData.map((d,k)=>{
 			xAxisData.push(d.name);
+			temp.push(d.value);
+		});
+		let getDatasArray = $.getFormatCompany(temp);
+		let getData = getDatasArray.value;
+		this.company = getDatasArray.company;
+		getData.map((d,k)=>{
+			data[k].value = d;
 		});
 
 		let colors = [{
@@ -82,7 +90,7 @@ class ContainerSurveyModule4 extends React.Component {
 		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0].name ? data[0].name+"  "+data[0].value+"万元" : "无数据";
+		        	return data[0].name ? data[0].name+"  "+(data[0].value+this.company) : "无数据";
 		        }
 		    },
 		    xAxis: [{
@@ -91,7 +99,7 @@ class ContainerSurveyModule4 extends React.Component {
 		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
-		                fontSize: '14px'
+		                fontSize: '14'
 		            }
 		        },
 				axisLine:{
@@ -146,9 +154,7 @@ class ContainerSurveyModule4 extends React.Component {
 			$(e.target).parent().find('span').removeClass('current');
 			$(e.target).addClass('current');
 			this.selected = type;
-			this.echart.showLoading('default',{
-				text: ''
-			});
+			this.start();
 			this.showChart(this.dataList[ajaxCont[type]] || [],type);
 		}
 	}

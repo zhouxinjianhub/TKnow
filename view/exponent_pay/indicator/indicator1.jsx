@@ -5,18 +5,20 @@ import "../../../dist/page.js";
 class IndicatorTableComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		this.istradeMap = true;
+		this.headData = [];
+		this.tableData = [];
 	}
-	state = {
-		data: []
-	};
+
 	componentDidMount() {
 		this.option = this.props.option;
 		this.renderPager();
 	    this._getDatas(this.option);
-	    require.ensure([], require => {
-			require('./slimtable.js');
-			$(".indictable").slimtable();
-		}, 'indicTable');
+	    
+	}
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+		this._getDatas();
 	}
 	//分页方法
 	renderPager(total,page) {
@@ -32,87 +34,89 @@ class IndicatorTableComponent extends React.Component {
 	        // }
 	    });
 	}
-	_getDatas(config){
-		// const moduleType = this.props.module || false;
-		// let url = void 0;
-		// let option = config || {};
-		// switch (moduleType){
-		// 	case "info":url = "/v1/information/commentList";break;
-		// 	// case "region":url = "/v1/area/commentList";break;
-		// 	default: break;
-		// };
-		// if ( !moduleType ) {return false;};
-		// $.GetAjax(url,option,'GET',false,(data,state)=>{
-		// 	if ( state && data.code == 1 ) {
-		// 		this.renderPager(data['data'].totalPage,data['data'].page);
-		// 		this.setState({
-		// 			data: data
-		// 		});
-		// 	}else{
-		// 		this.setState({
-		// 			data: []
-		// 		});
-		// 	}
-		// });
+	_getDatas(){
+
+		let config = {
+			// timeIds: this.props.timeId ,
+			// areaId: this.props.areaId,
+			// categoryIds: this.props.tradeId,
+			// indexId:this.props.IndicId,
+			timeIds:"50,49,48",
+			areaId: 51,
+			categoryIds: "4,5",
+			indexId:1,
+		}
+		$.GetAjax('/v1/zhishu/inner/getIndex', config, 'Get', true, (data,state)=>{
+            if (state && data.code == 1) {
+            	this.istradeMap = true;
+            	
+            	let tabledata = data.data;
+				this.headData = [];
+				let tharr = [];
+				tharr.push(<th className=""> {tabledata.areaName} </th>);
+				tabledata.times.map((data,k)=>{
+					tharr.push(<th className="indexValue" data-name="indexValue"> {data} </th>);
+					tharr.push(<th className="yearOnYear"> {data+"同比"} </th>);
+					tharr.push(<th className="chainUpAndDow"> {data+"环比"} </th>);
+				});
+				this.headData.push(tharr);
+				
+				this.tableData = [];
+				tabledata.indexCategories.map((data,k)=>{
+					let tbodyarr = [];
+					tbodyarr.push(<td className="">{data.categoryName}</td>);
+					data.data.map((data,y)=>{
+						tbodyarr.push(<td className="indexValue">{data.indexValue}</td>);
+						tbodyarr.push(<td className="yearOnYear">{data.yearOnYear}</td>);
+						tbodyarr.push(<td className="chainUpAndDow">{data.chainUpAndDow}</td>);
+					});
+					
+					this.tableData.push(<tr >{tbodyarr}</tr>);
+				});
+
+            	this.setState({
+            		status: true
+            	},()=>{
+
+            		this.getslimtable();
+            	});
+            } else {
+            	this.istradeMap = false;
+            	this.setState({
+            		status: false
+            	});
+            }
+        });
+	}
+	getslimtable(){
+		require.ensure([], require => {
+			require('./slimtable.js');
+			$(".indictable").slimtable();
+		}, 'indicTable');
 	}
 	render(){
-		let datajson = [
-			[ "成都市", "1月", "1月同比", "1月环比", "2月", "2月同比", "2月环比", "3月","3月同比" ],
-			[ "1", "ex1", "ex_a", "2,5", "2.5", "30%", "19222222222222", "ex_a1","10%" ],
-			[ "2", "ex2", "ex_b", "5,4", "5.4", "28,5%", "33", "ex_b1" ,"101111111111111%"],
-			[ "3", "ex3", "ex_c", "16,7", "16.7", "19,3%", "33", "ex_c1" ,"10%"],
-			[ "4", "ex4", "ex_d", "2,8", "2.8", "1,8%", "28", "ex_b1" ,"10%"],
-			[ "5", "ex6", "ex_e", "2,5", "2.5", "2,85 %", "44", "ex_a1" ,"10%"],
-			[ "6", "ex7", "ex_f", "5,5", "5.5", "16%", "52", "ex_d1","10%" ],
-			[ "7", "ex8", "ex_g", "6,8", "6.8", "-1,9%", "39", "ex_e1" ,"10%"],
-			[ "8", "ex9", "ex_h", "6,8", "6.8", "+1,9 %", "28", "ex_d1","10%" ],
-			[ "9", "ex5", "ex_h", "6,8", "6.8", "1,9 %", "28", "ex_d1","10%" ],
-			[ "10", "ex5", "ex_h", "6,8", "6.8", "1,9 %", "28", "ex_d1","15%" ],
-			[ "2", "ex1", "ex_a", "2,5", "2.5", "30%", "19222222222222", "ex_a1","10%" ],
-			[ "2", "ex2", "ex_b", "5,4", "5.4", "28,5%", "33", "ex_b1" ,"101111111111111%"],
-			[ "3", "ex3", "ex_c", "16,7", "16.7", "19,3%", "33", "ex_c1" ,"10%"],
-			[ "4", "ex4", "ex_d", "2,8", "2.8", "1,8%", "28", "ex_b1" ,"10%"],
-			[ "5", "ex6", "ex_e", "2,5", "2.5", "2,85 %", "44", "ex_a1" ,"10%"],
-			[ "6", "ex7", "ex_f", "5,5", "5.5", "16%", "52", "ex_d1","10%" ],
-			[ "7", "ex8", "ex_g", "6,8", "6.8", "-1,9%", "39", "ex_e1" ,"10%"],
-			[ "8", "ex9", "ex_h", "6,8", "6.8", "+1,9 %", "28", "ex_d1","10%" ],
-			[ "9", "ex5", "ex_h", "6,8", "6.8", "1,9 %", "28", "ex_d1","10%" ],
-			[ "20", "ex5", "ex_h", "6,8", "6.8", "1,9 %", "28", "ex_d1","15%" ]
-		];
-		
+		if ( this.istradeMap == false ) {
+			return null;
+		}
 		return(
 			<div className="indicatorTable">
 				<div className="indicator-content">
 					<table className="indicTable indictable" id="indicTable">
 						{
 							(()=>{
-								let thead = [];
-								let th = [];
-								let data = datajson[0];
-								data.map((data,k)=>{
-									th.push(<th className={"td"+k}>{data}</th>)
-								})
-								return <thead><tr>{th}</tr></thead>
+								return <thead><tr>{this.headData}</tr></thead>;
 							})()
+							
 						}
+						
 						{
 							(()=>{
-								let tbody=[];
-								let data = [];
-								for(let i = 1;i<datajson.length;i++){
-									data.push(datajson[i]);
-								}
-								data.map((data,k)=>{
-									let tr = [];
-									this.datatrlen = data.length;
-									for(let i = 0; i< data.length; i++){
-										tr.push(<td >{data[i]}</td>)
-									}
-									tbody.push(<tr >{tr}</tr>);
-								})
-								return <tbody>{tbody}</tbody>; 
+								return <tbody>{this.tableData}</tbody>;
 							})()
+							
 						}
+				
+						
 					</table>
 				</div>
 				<div className="comment-split"></div>
@@ -129,11 +133,28 @@ class ContainerIndicatorModule1 extends React.Component {
 	componentDidMount() {
         $(".choose-input").click(function() {
             if (this.checked) {
+            	if(this.id == "checkbox_a1"){
+            		$(".indexValue").addClass('thhidden');
+            	}else if(this.id == "checkbox_a2"){
+            		$(".yearOnYear").addClass('thhidden');
+            	}else{
+            		$(".chainUpAndDow").addClass('thhidden');
+            	}
                 $(this).siblings(".choose-box").find("img").attr("src", "../../../images/exponent-pay/check.png");
             } else{
+            	if(this.id == "checkbox_a1"){
+            		$(".indexValue").removeClass('thhidden');
+            	}else if(this.id == "checkbox_a2"){
+            		$(".yearOnYear").removeClass('thhidden');
+            	}else{
+            		$(".chainUpAndDow").removeClass('thhidden');
+            	}
                 $(this).siblings(".choose-box").find("img").attr("src", "../../../images/exponent-pay/uncheck.png");
             }
         })
+	}
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
 	}
 	getExplain(){
 		let explainCon = "指标解释内容指标解释内容指标解释内容指标解释内容指标解释内容指标解释内容指标解释内容指标解释内容指标解释内容指标解释内容";
@@ -160,18 +181,18 @@ class ContainerIndicatorModule1 extends React.Component {
 								<label for="checkbox_a1">显示排名 </label> 
 							</label> 
 							<label>
-								<input className=" choose-input"  name="" type="checkbox" value="" />
+								<input className=" choose-input"  id="checkbox_a2" name="" type="checkbox" value="" />
 								<div className="choose-box" >
 						            <img src="../../../images/exponent-pay/uncheck.png"/>
 						        </div>
-								<label >显示同比 </label>
+								<label for="checkbox_a2">显示同比 </label>
 							</label> 
 							<label>
-								<input className=" choose-input"  name="" type="checkbox" value="" />
+								<input className=" choose-input"  id="checkbox_a3" name="" type="checkbox" value="" />
 								<div className="choose-box" >
 						            <img src="../../../images/exponent-pay/uncheck.png"/>
 						        </div>
-								<label >显示环比 </label>
+								<label for="checkbox_a3">显示环比 </label>
 							</label> 
 						</form> 
 					</div>
@@ -179,7 +200,7 @@ class ContainerIndicatorModule1 extends React.Component {
 						<img onClick={this.getExplain} src="../../../images/exponent-pay/expl.jpg" alt=""/>
 					</div>
 				</div>
-				<IndicatorTableComponent/>
+				<IndicatorTableComponent timeId={this.props.timeId} areaId={this.props.areaId} tradeId={this.props.tradeId} IndicId={this.props.IndicId}/>
 			</div>
 		)
 	}

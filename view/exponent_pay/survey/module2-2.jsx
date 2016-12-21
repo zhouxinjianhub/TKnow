@@ -34,7 +34,6 @@ class ContainerSurveyModule2_2 extends React.Component {
                 this.childData = data.data && data.data['child'];
                 this.commonData = data.data;
 
-                
                 this.setState({
                 	status: true
                 },()=>{
@@ -55,22 +54,31 @@ class ContainerSurveyModule2_2 extends React.Component {
 	showChart() {
 		let legendData = [this.commonData.parentAreaName,this.commonData.childAreaName];
 		let xAxis = [];
-		let parentData = [];
-		let childData = [];
+		let parentDataModule = [];
+		let childDataModule = [];
 		this.parentData.map((datas,k)=>{
 			xAxis.push(datas.month < 10 ? "0"+datas.month+"月" : datas.month+"月");
-			parentData.push(datas.indexValue);
+			parentDataModule.push(datas.indexValue);
 		});
 		this.childData.map((datas,k)=>{
 			xAxis.push(datas.month < 10 ? "0"+datas.month+"月" : datas.month+"月");
-			childData.push(datas.indexValue);
+			childDataModule.push(datas.indexValue);
 		});
+
+		let getDatasParent = $.getFormatCompany(parentDataModule);
+		let getDatasChild = $.getFormatCompany(childDataModule);
+		let parentData = getDatasParent.value;
+		let childData = getDatasChild.value;
+		this.company = getDatasParent.company;
+		this.setState({
+			status:true
+		})
 		var option = {
 		    tooltip : {
 		        trigger: 'axis',
 		        formatter: (data)=>{
-		        	let result = data[0].name ? data[0].name+"网络零售额<br/>"+data[0].seriesName+" "+data[0].value+"万元 "+"环比+"+data[0].value+"<br/>"+
-		        				data[1].seriesName+" "+data[1].value+"万元 "+"环比+"+data[1].value : "无数据";
+		        	let result = data[0].name ? data[0].name+"网络零售额<br/>"+data[0].seriesName+" "+(data[0].value+this.company)+"  环比+"+data[0].value+"<br/>"+
+		        				data[1].seriesName+" "+(data[1].value+this.company)+"  环比+"+data[1].value : "无数据";
 		        	return result;
 		        }
 		    },
@@ -92,7 +100,7 @@ class ContainerSurveyModule2_2 extends React.Component {
 		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
-		                fontSize: '14px'
+		                fontSize: '14'
 		            }
 		        },
 				axisLine:{
@@ -222,11 +230,11 @@ class ContainerSurveyModule2_2 extends React.Component {
 			   				let option = [{
 				   				title: this.commonData.parentAreaName,
 				   				type: '网络零售额',
-				   				total: this.commonData.parentSum+'<span>万元</span>'
+				   				total: this.commonData.parentSum+'<span>'+this.company+'</span>'
 				   			},{
 				   				title: this.commonData.childAreaName,
 				   				type: '网络零售额',
-				   				total: this.commonData.childSum+'<span>万元</span>'
+				   				total: this.commonData.childSum+'<span>'+this.company+'</span>'
 				   			},{
 				   				title: this.commonData.childAreaName+"在"+this.commonData.parentAreaName,
 				   				type: '占比',

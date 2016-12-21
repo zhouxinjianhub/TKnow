@@ -56,10 +56,11 @@ class ContainerRegionalList extends React.Component {
 				<p className="regional-list-header">热门榜单</p>
 				<div className="swiper-wrapper">
 					{(() => {
-						let topdata = this.topdata || {}
+						let topdata = this.topdata || false
 						let topListHTML = [];
 						let k_ls = 0;
 						this.topdatalen = 0;
+						if ( !topdata ) {return false;}
 						for (let i in topdata) {
 							this.topdatalen ++;
 							k_ls >= 4 ? k_ls = 1 : k_ls++;
@@ -67,11 +68,20 @@ class ContainerRegionalList extends React.Component {
 							topListHTML.push(<div className="swiper-slide">
 									        	<p className={ classNamed }>{ i } TOP5</p>
 									        	<ul>
-									        		{
-									        			topdata[i].map((data,k)=>{
-									        				return <li><i>{ k+1 }</i>{ data.name }</li>
-									        			})
-									        		}
+									        		{(()=>{
+									        			let RESULT = [];
+									        			if ( topdata[i] ) {
+										        			topdata[i].map((data,k)=>{
+										        				RESULT.push(<li>
+														        				<i>{ k+1 }</i>
+														        				<span>{ data.name }</span>
+														        				<p>58.88</p>
+														        			</li>);
+										        				  
+										        			})
+										        		}
+										        		return RESULT;
+										        	})()}
 									        	</ul>
 									        </div>)
 						}

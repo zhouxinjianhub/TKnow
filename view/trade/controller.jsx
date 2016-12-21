@@ -27,6 +27,8 @@ class RegionalController extends React.Component {
 		if ( $.isPhone() ) {
 			this.datatimeId = this.props.location.query['timeId'];
 			this.datatimeAreaId = this.props.location.query['areaId'];
+			this.datatimeAreaName = this.props.location.query['datatimeAreaName'];
+			// console.log(this.props.location);
 		}
 	}
 	componentDidMount() {
@@ -37,7 +39,8 @@ class RegionalController extends React.Component {
 				text: ''
 			});
 			this.setMaps();
-			PubSub.subscribe('getNavYear', (topic, data) => {
+			//订阅
+			this.pubsub_token = PubSub.subscribe('getNavYear', (topic, data) => {
 				this.datatimeName = data.timeName;
 				this.datatimeId = data.timeId;
 				this.setState({
@@ -47,7 +50,9 @@ class RegionalController extends React.Component {
 					PubSub.unsubscribe(this.pubsub_token);
 				});
 			});
+
 		}else{
+			$(".tradeDetail-nav").css('display', 'none');
 			let config = {
 				title:'映潮科技',//分享标题
 				desc: '猛戳打开查看行业的数据',//分享内容
@@ -161,9 +166,9 @@ class RegionalController extends React.Component {
 	//请求有数据的地域
 	getRegionData(id){
 		let config = {
-			timeId: id
+			timeId: id,
+			categoryId:this.props.parent.location.query.categoryId ? this.props.parent.location.query.categoryId : ''
 		};
-
 		$.GetAjax('/v1/system/datatimeAreaList', config, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
                 this.datatimeAreaList = data.data;
@@ -323,11 +328,12 @@ class RegionalController extends React.Component {
 			this.setMaps();
 		});
 	}
+	//关闭地域选择下拉
 	closeHoverRegion(e){
 		ReactDOM.findDOMNode(this.refs.regionModule).style.display = 'none';
 	}
 	selectData(e){
-		this.props.callback(this.datatimeId,this.datatimeAreaId);
+		this.props.callback(this.datatimeId,this.datatimeAreaId,this.datatimeAreaName);
 	}
 	//加载地图轮廓
 	setMaps(){
@@ -365,6 +371,7 @@ class RegionalController extends React.Component {
 		let configer = {
 			timeId: this.datatimeId,
 			areaId: this.datatimeAreaId,
+			datatimeAreaName:this.datatimeAreaName,
 		};
 		//location.href地址上已有行业Id和行业名称
 		let params = encodeURIComponent(location.href +"&"+$.param(configer));

@@ -118,11 +118,13 @@ class CommentComponent extends React.Component {
 			if ( state && data.code == 1 ) {
 				this.renderPager(data['data'].totalPage,data['data'].page);
 				this.setState({
-					data: data
+					data: data,
+					list: data['data']['data']
 				});
 			}else{
+				$(".comment-split").html('');
 				this.setState({
-					data: []
+					list: false
 				});
 			}
 		});
@@ -140,6 +142,27 @@ class CommentComponent extends React.Component {
 	openMsk(e) {
 		this.refs.openmsk.style.display = "block";
 	}
+	moreNumber(number,page) {
+		let lengthd = number.length;
+		let HTMLDOMS = [];
+		if ( lengthd > 240 ) {
+			HTMLDOMS.push(<p>{number.substr(0,240)+"..."}</p>);
+			HTMLDOMS.push(<span onClick={this.showMorethan.bind(this,number)}>查看更多</span>);
+		} else {
+			HTMLDOMS.push(number);
+		}
+		return HTMLDOMS;
+	}
+	showMorethan(number,e){
+		if ( $(e.target).text() == '查看更多' ) {
+			$(e.target).prev().html(number);
+			$(e.target).html('收起');
+		}else{
+			$(e.target).prev().html(number.substr(0,240)+"...");
+			$(e.target).html('查看更多');
+		}
+		
+	}
 	render() {
 		return (
 			<div className="comment-container">
@@ -151,13 +174,13 @@ class CommentComponent extends React.Component {
 				</div>
 				<ul className="comment-list">
 					{(() => {
-						let result = this.state.data['data'] && this.state.data['data'].total > 0 ? true : false || false;
+						let result = this.state.list ? true : false;
 						let htmlDom = [];
 						switch ( result ) {
 							case true: (()=>{
 								let lou = this.state.data['data'].total;
 								let page = this.state.data['data'].page-1;
-								this.state.data['data'].data.map((d,k)=>{
+								this.state.list.map((d,k)=>{
 									htmlDom.push(<li>
 													<div className="left">
 														<img src={d.avatar || "./images/user.jpg"}/>
@@ -165,15 +188,16 @@ class CommentComponent extends React.Component {
 													<div className="right">
 														<p className="userName">{d.account}<span className="lou">#{lou-this.props.option.pageSize*page}</span></p>
 														<p className="sendTimes">{$.formatMsgTime(d.created)}</p>
-														<p className="userContent">{d.content}</p>
+														<p className="userContent">{this.moreNumber(d.content,lou)}</p>
 													</div>
 												</li>);
 									lou--;
-								})
-							})()
+								});
+								
+							})();break;
 							default: (()=>{
 								htmlDom.push('');
-							})();
+							})();break;
 						}
 						return htmlDom;
 					})()}

@@ -61,14 +61,14 @@ class ContainerSurveyModule3 extends React.Component {
 			<div className="bold-list">
 				<span>排名</span>
 				<span>省市</span>
-				<span>网络零售额(万元)</span>
+				<span>网络零售额(亿元)</span>
 				<span>占比</span>
 			</div>);
 		childHTML2.push(
 			<div className="bold-list">
 				<span>排名</span>
 				<span>省市</span>
-				<span>网络零售额(万元)</span>
+				<span>网络零售额(亿元)</span>
 				<span>占比</span>
 			</div>)
 
@@ -82,7 +82,7 @@ class ContainerSurveyModule3 extends React.Component {
 					<div className="small-list">
 						<span>{ data[k] && (k < 10 ? "0"+(k+1) : k+1) || "-" }</span>
 						<span>{ data[k] && data[k].name || "-" }</span>
-						<span>{ data[k] && data[k].value || "-" }</span>
+						<span>{ data[k] && (Number(data[k].value).toFixed(2)) || "-" }</span>
 						<span>{ data[k] && (data[k].scale*100).toFixed(2) + "%" || "-" }</span>
 					</div>
 				)
@@ -91,7 +91,7 @@ class ContainerSurveyModule3 extends React.Component {
 					<div className="small-list">
 						<span>{ data[k] && (k < 10 ? "0"+(k+1) : k+1) || "-" }</span>
 						<span>{ data[k] && data[k].name || "-"}</span>
-						<span>{ data[k] && data[k].value || "-"}</span>
+						<span>{ data[k] && (Number(data[k].value).toFixed(2)) || "-"}</span>
 						<span>{ data[k] && (data[k].scale*100).toFixed(2) + "%" || "-" }</span>
 					</div>
 				)

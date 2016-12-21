@@ -41,16 +41,6 @@ class RegionalController extends React.Component {
 				text: ''
 			});
 			this.setMaps();
-			this.pubsub_token = PubSub.subscribe('getNavYear', (topic, data) => {
-				this.datatimeName = data.timeName;
-				this.datatimeId = data.timeId;
-				this.setState({
-					hover: true
-				},()=>{
-					this.getRegionData(this.datatimeId);
-					PubSub.unsubscribe(this.pubsub_token);
-				});
-			});
 			
 		}else{
 			let config = {
@@ -66,6 +56,15 @@ class RegionalController extends React.Component {
 		$.GetAjax('/v1/system/datatimeList', null, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
                 this.datatimeList = data.data;
+                this.datatimeName = data.timeName;
+				this.datatimeId = data.timeId;
+				this.setState({
+					status: true
+				},()=>{
+					this.getRegionData(this.datatimeId);
+					PubSub.publish('getNavYearId',data.data.timeId || 0);
+				});
+				
              } else {
                 this.datatimeList = [];
              }
@@ -213,6 +212,8 @@ class RegionalController extends React.Component {
 		if ( hasClassDis ) {
 			return false;
 		}
+		this.HTMLDOMREGION2 = [];
+		this.HTMLDOMREGION3 = [];
 		$('#provinceul').data('open',false);
 		$('#provinceul').hide();
 		$('#provinceP').html(e.target.innerHTML);
@@ -257,6 +258,7 @@ class RegionalController extends React.Component {
 		if ( hasClassDis ) {
 			return false;
 		}
+		this.HTMLDOMREGION3 = [];
 		$('#cityul').data('open',false);
 		$('#cityul').hide();
 		$('#cityP').html(e.target.innerHTML);

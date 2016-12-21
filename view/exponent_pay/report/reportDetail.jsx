@@ -44,7 +44,6 @@ class ReportDetailComponent extends React.Component{
 		window.open(url);
 	}
 	render() {
-		console.log(this.data.created);
 		return (
 			<div  className="reportdetail">
 				<div className="con">
@@ -67,7 +66,6 @@ class ReportDetailComponent extends React.Component{
 										let result = [];
 										let data = this.data.url ? this.data.url : '';
 										if(data){
-											console.log(data);
 											let dataurl = JSON.parse(data);
 											for(let i in dataurl){
 												result.push( <span><img onClick = {this.loadFile.bind(this,dataurl[i]) } src = {"../../../images/exponent-pay/"+i+".png"}/></span> );
@@ -96,13 +94,13 @@ class ReportDetailComponent extends React.Component{
 class ReportDetail extends React.Component {
 	constructor(props) {
 		super(props);
-		this.data = this.props.detailData ? this.props.detailData : [];
+		this.data = this.props.detailData ? this.props.detailData : '';
 	}
 	componentDidMount() {
 
 	} 
 	render() {
-		console.log(this.data);
+		// console.log(this.data);
 		return (
 			<div className="reportdetailcon"> 
 			   <ReportDetailComponent data = {this.data} />

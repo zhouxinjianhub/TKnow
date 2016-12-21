@@ -99,13 +99,13 @@ class SwitherComponent extends React.Component{
     	var url='';
     	switch (id) {
     		case 0:
-    			url="url(../../images/about/tianji7.jpg)";
+    			url="../../images/about/tianji7.jpg";
     			break;
     		default:
-    			url="url(../../images/about/tianji6.jpg)";
+    			url="../../images/about/tianji6.jpg";
     			break;
     	}
-    	imgDom.style.background=url;
+    	imgDom.setAttribute('src',url);
 
 	}
 
@@ -114,7 +114,7 @@ class SwitherComponent extends React.Component{
 		return (
 			<div className="swither-container">
 				<p className="tips">多种展现形式</p>
-				<img ref="switcher_imge" className="switcher_imge"></img>
+				<img src="../../images/about/tianji7.jpg" ref="switcher_imge" className="switcher_imge"></img>
 				<div className="switch">
 				  <a id="o0" className="active" onClick={this.switch.bind(this,0) } >单屏</a>
 				  <a id="o1" onClick={this.switch.bind(this,1) } >多屏</a>
@@ -188,12 +188,15 @@ class CarouselComponent extends React.Component{
 	render(){
 		return (
 			<div className="swiper">
-				<p>典型客户</p>
+				<p className="swiper-name">典型客户</p>
 				<div className="swiper-container">
 			        <div className="swiper-wrapper">
 			        	 {
 			        	 	this.state.data.map((data,k) => {                            
-                                            return   <div className="swiper-slide">{data.name}</div>                                                        
+                                            return  <div className="swiper-slide">
+                                            			<img  src={data.picUrl}/>
+                                            			<p>{data.name}</p> 
+                                            		</div>                                                        
                                         }
                             ) 
                              
@@ -217,10 +220,10 @@ class ContainerAbout extends React.Component {
 		super(props);
 	}
 	componentDidMount() {		
-		$(".container>.content>.nav").addClass("nav-free");		
+		$(".container>.content>.nav").addClass("nav-about");		
 	}
 	componentWillUnmount(){  		
-		$(".container>.content>.nav").removeClass("nav-free");		
+		$(".container>.content>.nav").removeClass("nav-about");		
 	}
 	render() {
 		return (

@@ -8,7 +8,7 @@ class TradeMap extends React.Component {
 		super(props);
 		this.istradeMap = true;
 		this.bardatalen = 0;
-		this.datatimeAreaName = '全国';
+		// this.datatimeAreaName = '全国';
 	}
 	componentDidMount() {
 		this.getMapDatas();
@@ -42,6 +42,13 @@ class TradeMap extends React.Component {
             	this.setState({
             		status: true
             	},()=>{
+            		let navconfig = {
+            			timeName: this.bardata.timeName || "数据获取中",
+            			timeId: this.bardata.timeId || ""
+            		}
+            		//发布
+            		PubSub.publish('getNavYear',navconfig);
+            		PubSub.publish('getNavYearId',this.bardata.timeId || "");
             		this.renderMap();
             		this.renderBar();
             		this.getRef();
@@ -68,8 +75,8 @@ class TradeMap extends React.Component {
 		    	mapData.push({name:name , value:value},);
 			}
 		}
-		let mapName = this.datatimeAreaName;
-		if ( this.datatimeAreaName == "全国" ) {
+		let mapName = this.props.datatimeAreaName;
+		if ( this.props.datatimeAreaName == "全国" ) {
 			mapName = "中国";
 		};
 		let series = [];

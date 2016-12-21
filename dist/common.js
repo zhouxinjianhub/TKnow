@@ -50,30 +50,50 @@ $.extend({
 			second = dateTime.getSeconds();
     	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 	},
-	//将数字转化成 亿万文字分开
-	formatPrice: function (count, isShowEnd) {
-		if (!count) {
-			return false;
-		}
-		count = parseInt(count);
-		var result = "";
-		if (count < 10000) {
-			result = $.addZero(count);
-		} else if (count > 10000 && count < 100000000) {
-			var end = count % 10000;
-			var wan = parseInt(count / 10000);
-			result = "" + wan + "<span class='short-size-span'>万</span>" + $.addZero(end);
-		} else if (count > 100000000) {
-			var yi = parseInt(count / 100000000);
-			var yiEnd = count % 100000000;
-			var end = yiEnd % 10000;
-			var wan = parseInt(yiEnd / 10000);
-			result = "" + yi + "<span class='short-size-span'>亿</span>" + $.addZero(wan) + "<span class='short-size-span'>万</span>" + $.addZero(end);
-		} else {
-			result = count;
-		}
+	// 传一个数组来获取应该用什么单位，并返回转后的数组给你
+	getFormatCompany:function(arrays){
+		let numLength = arrays.length;
+		let result = 0;
+		let company = '元';
+		let count = 0;
+		if ( numLength % 2 == 0 ) {
+			let tt = Number(arrays[parseInt(numLength/2)-1]) || 0;
+			let tt2 = Number(arrays[parseInt(numLength/2)]) || 0;
+			count = (tt+tt2)/2;
+		}else{
+			let tt = Number(arrays[parseInt(numLength/2)]) || 0;
+			count = tt;
+		};
 
-		return result;
+		if (count < 0.0001) {
+			result = count*100000000;
+			company = "元";
+		} else if (count >= 0.0001 && count < 1) {
+			result = count*10000;
+			company = "万元";
+		} else {
+			result = count*1;
+			company = "亿元";
+		}
+		let newArray = $.formatPrice(arrays,company);
+		return {value:newArray,company:company};
+	},
+	//新生成一个数组
+	formatPrice: function (countArray,company) {
+		let newArray = countArray;
+		let temp = 1;
+		if ( company == '元' ) {
+			temp = 100000000;
+		} else if ( company == '万元' ) {
+			temp = 10000;
+		} else {
+			temp = 1;
+		};
+
+		countArray.map((d,k)=>{
+			newArray[k] = (countArray[k]*temp).toFixed(2);
+		});
+		return newArray;
 	},
 	// 位数不够补0
 	addZero:function (number) {
@@ -287,7 +307,7 @@ $.extend({
 	regTest: function( type, str ) {
 		var reg = null;
 		if ( type == "phone" ) {
-			reg = /^0*(13|14|15|17|18|19)\d{9}$/
+			reg = /^0*(13|14|15|16|17|18|19)\d{9}$/
 		} else if ( type == "email" ) {
 			reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
 		} else if ( type == "chinese" ) {
@@ -300,6 +320,12 @@ $.extend({
 			reg = /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/
 		} else if ( type == "num" ) {
 			reg = /^[0-9]+$/
+		}else if(type=="allnum"){
+			reg = /^\d+$/
+		}else if(type=="allsame"){
+			reg = /^(.)\1+$/
+		}else if(type=="username"){
+			reg = /(^[\u4e00-\u9fa5A-Za-z0-9])([\u4e00-\u9fa5A-Za-z0-9_]{3,15}$)/
 		}
 		return reg.test(str);
 	},

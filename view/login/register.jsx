@@ -14,6 +14,8 @@ class ContainerLogin extends React.Component {
         this.passOk=false;
         this.passrOk=false;
         this.phoneOk=false;
+
+        this.firstWarnName=true;
     }
     componentDidMount() {
 
@@ -26,19 +28,13 @@ class ContainerLogin extends React.Component {
     */
     checkName(event)
     {
-
-        var name=event.target.value;   
-        var regExp1=new RegExp("(^[\\u4e00-\\u9fa5A-Za-z0-9])([\\u4e00-\\u9fa5A-Za-z0-9_]{3,11})");
-        var regExp2=new RegExp("^\\d+$");
-        var regExp3=new RegExp("^(.)\\1+$");
-
-        if(regExp1.test(name)&&!regExp2.test(name)&&!regExp3.test(name)) {
-
+        var name=event.target.value;
+        if($.regTest('username',name)&&!$.regTest('allnum',name)&&!$.regTest('allsame',name)) {
+            
             this.checkNameExisted(name);
 
         }else {       
-            console.log(name);
-            this.error_msg('name','请输入有效的用户名！！！！',true);
+            this.error_msg('name','请输入有效的用户名',true);
         }
 
 
@@ -59,7 +55,9 @@ class ContainerLogin extends React.Component {
                 self.nameOk=true;              
             } else if(state && data.code == 8) {
                 self.error_msg('name','用户名已存在，请重新输入',true);
-            }else{
+            }else if(state && data.code == 16){
+                self.error_msg('name','请输入有效的用户名',true);
+            }else {
                 self.error_msg('name',data.message,true);
             }
         }); 
@@ -72,9 +70,8 @@ class ContainerLogin extends React.Component {
     {
 
         var pass=event.target.value;
-        var regExp1=new RegExp("[\\w]{6,16}");
 
-        if(regExp1.test(pass)) {
+        if($.regTest('password',pass)) {
 
           this.passOk=true;
 
@@ -163,10 +160,7 @@ class ContainerLogin extends React.Component {
             this.error_msg('phone','请输入手机号码',true);  
             return false;
         }
-
-        var regExp1=new RegExp("^1(3[0-9]|4[57]|5[0-35-9]|7[01678]|8[0-9])\\d{8}$");   
-
-        if(regExp1.test(phone)) {        
+        if($.regTest('phone',phone)) {        
             this.checkPhoneExisted(phone);      
             return true;
         }else {
@@ -199,40 +193,48 @@ class ContainerLogin extends React.Component {
     * 点击注册
     */
     checkRegister() {   
-        var needback=false;
-        var name=this.refs.name.value; 
+        let name=this.refs.name.value.trim(); 
+        let pass=this.refs.password.value.trim();
+        let passr=this.refs.passr.value.trim();
+        let phone=this.refs.phonenum.value.trim();
+        let num=this.refs.num.value.trim();
 
-        if(!name) {
-            this.error_msg('name','请输入用户名',true);
-            needback=true;
+        if($.regTest('username',name)&&!$.regTest('allnum',name)&&!$.regTest('allsame',name)) {
+            
+            this.nameOk=true;
+
+        }else{
+            
+            this.error_msg('name','请输入正确的用户名',true);
+            this.nameOk=false;
         }
-
-        var pass=this.refs.password.value;
-        if(!pass) {
-            this.error_msg('pass','请设置您的密码',true);
-            needback=true;
+        
+        if($.regTest('password',pass)) {
+            this.passOk=true;
+        }else{
+            this.error_msg('pass','请设置正确的密码',true);
+            this.passOk=false;
         }
-
-        var passr=this.refs.passr.value;
-        if(!passr) {
+       
+        if(pass==passr) {
+            this.passrOk=true;
+        }else{
             this.error_msg('passr','请再次输入您的密码',true);
-            needback=true;
+            this.passrOk=false;
         }
-
-        var phone=this.refs.phonenum.value;
-        if(!phone) {
-            this.error_msg('phone','请输入手机号码',true);
-            needback=true;
+        
+        if($.regTest('phone',phone)) {
+            this.phoneOk=true;
+        }else{
+            this.error_msg('phone','请输入正确的手机号码',true);
+            this.phoneOk=false;
         }
-
-        var num=this.refs.num.value;
+        
         if(!num)  {
             this.error_msg('num','请输入您的手机验证码',true);
-            needback=true;
-        }
-        if(needback) {
             return false;
         }
+
         if(this.nameOk&&this.passOk&&this.passrOk&&this.phoneOk) {   
             this.register(name,pass,passr,phone,num);
         }
@@ -269,7 +271,7 @@ class ContainerLogin extends React.Component {
                     content: '<div>注册成功!</div>',
                     yes: function(layero, index){
                         layer.close(layero);
-                        location.href = '/login';
+                        location.href = '/#/login';
                     }
                 });
     }
@@ -336,18 +338,19 @@ class ContainerLogin extends React.Component {
     */
     warning(id,event)
     {
+        if(!this.firstWarnName){
+            return;
+        }
         var warning;
         switch (id) {
             case 'name':
-            warning=this.refs.error_msg_name;               
+            warning=this.refs.error_msg_name;
             break;                  
 
         }
-
         if(warning) {
-
-            warning.style.opacity=1; 
-
+             warning.style.opacity=1; 
+             this.firstWarnName=false;
         }
     }
     popService()
@@ -362,6 +365,11 @@ class ContainerLogin extends React.Component {
             scrollbar: false,
             content: '../../routes/login/provision.html'
         });
+    }
+    replaceSpace(){
+        var value=this.target.value;
+        console.log(value);
+        this.target.value=value.replace(/^ +| +$/g,'')
     }
 
 
@@ -378,7 +386,7 @@ class ContainerLogin extends React.Component {
 
                         </div>
                         <div id="login_form" className="form">
-                            <input ref="name" className="login_input" type="text" placeholder="用户名4-12位,支持中文、数字、字母" id="user_name" onBlur={this.checkName.bind(this)} onChange={this.clear.bind(this,'name')} onFocus={this.warning.bind(this,'name')}/>
+                            <input ref="name" className="login_input" type="text" placeholder="用户名4-16位,支持中文、数字、字母" id="user_name" onBlur={this.checkName.bind(this)} onChange={this.clear.bind(this,'name')} onFocus={this.warning.bind(this,'name')}/>
                             <p ref="error_msg_name" className="msg_error" >用户名一旦设置成功无法修改</p>
                             <input ref="password" className="login_input" type="password" placeholder="设置密码6-16位,支持数字、字母、字符" id="password" onBlur={this.checkPass.bind(this)} onChange={this.clear.bind(this,'pass')}/>
                             <p ref="error_msg_pass" className="msg_error" >警告密码规则</p>

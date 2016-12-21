@@ -418,6 +418,10 @@
 					color: #fff;
 					.yellow-gradient-x();
 				}
+				&:last-child.current{
+					color: #fff;
+					.green-gradient-x();
+				}
 			}
 		}
 		.bar{
@@ -452,9 +456,12 @@
 				.maxBody(100%,380px);
 				li{
 					.l-h(76px);
-					.text-c();
+					padding: 0 20px;
 					color: #4b4b4b;
 					.font-s(16px);
+					.d-flex-h();
+					.flex-hc();
+					.flex-vc();
 					i{
 						.d-ib();
 						.maxBody(30px,30px);
@@ -464,6 +471,15 @@
 						.l-h(30px);
 						margin-right: 10px;
 						font-style:normal;
+					}
+					span{
+						.d-ib();
+						.flex();
+						.txt-overflowed();
+					}
+					p{
+						.d-ib();
+						.text-r();
 					}
 				}
 			}

@@ -82,12 +82,12 @@ class Containerforget extends React.Component {
 
         var pass=event.target.value;
         console.log(pass);
-        var regExp1=new RegExp("[\\w]{6,16}");
-        if(regExp1.test(pass)) {
+        if($.regTest('password',pass)) {
             this.passOk=true;
             console.log('密码通过');        
         }else {
-            this.error_msg('pass','请输入有效的密码',true);    
+            this.error_msg('pass','请输入有效的密码',true); 
+            this.passrOk=fasle;   
         }
 
     } 
@@ -218,10 +218,7 @@ class Containerforget extends React.Component {
             this.error_msg('phone','手机不能为空',true);  
             return false;
         }
-
-        var regExp1=new RegExp("^1(3[0-9]|4[57]|5[0-35-9]|7[01678]|8[0-9])\\d{8}$");  
-
-        if(regExp1.test(phone)) {        
+        if($.regTest('phone',phone)) {        
             this.sendNum(phone);     
             return true;
          }else {
@@ -413,8 +410,10 @@ class Containerforget extends React.Component {
                     <p className="reset">密码重置</p>
                     <h1>成功!</h1>
                     <div className="reset_success"></div>
-                    <p ref="jump" className="jump">3秒后跳转到登录页面。</p>
-                    <Link to="/login"><a className="jumpnow">立即跳转</a></Link>                        
+                    <div className="div-success">
+                        <p ref="jump" className="jump">3秒后跳转到登录页面。</p>
+                        <Link to="/login"><a className="jumpnow">立即跳转</a></Link>
+                    </div>                        
                 </div>
         </div>
         )

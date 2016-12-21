@@ -51,7 +51,8 @@
 			pagingStart: parseInt(this.settings.pagingStart),
 			itemsPerPage: parseInt(this.settings.itemsPerPage),
 			tableHeads: $el.find("thead tr th"),
-			tableBody: $el.find("tbody")
+			tableBody: $el.find("tbody"),
+			trClass:$el.find("tbody tr td"),
 		};
 
 		// First we need to find both thead and tbody
@@ -323,10 +324,9 @@
 			pages = Math.ceil( this.state.tblData.length / this.state.itemsPerPage ), 
 			l1, l2, l3;
 
-		//
+		// let thclass;
 		this.state.tableBody.empty();
 		end_pos = end_pos > this.state.tblData.length ? this.state.tblData.length : end_pos;
-
 		//
 		for(l1=this.state.pagingStart; l1<end_pos; l1++)
 		{
@@ -335,22 +335,27 @@
 			// Restore attributes to TR
 			for(l3=0; l3<this.state.tblData[l1].attrs.length; l3++)
 				$(t_obj1).attr(this.state.tblData[l1].attrs[l3].attr, this.state.tblData[l1].attrs[l3].value);
+			
 
 			// Create TD elements
 			for(l2=0; l2<this.state.tblData[l1].data.length; l2++)
 			{
 				t_cobj = this.state.tblData[l1].data[l2];
-
 				// Create TD element
 				t_obj2 = $("<td></td>").html(t_cobj.orig);
+
+				
 				// Restore attributes
-				for(l3=0; l3<t_cobj.attrs.length; l3++)
+				for(l3=0; l3<t_cobj.attrs.length; l3++){
 					$(t_obj2).attr(t_cobj.attrs[l3].attr, t_cobj.attrs[l3].value);
-					$(t_obj2).addClass('td'+l2);
+				}
+
+					$(t_obj2).addClass(this.state.trClass[l2].className);
 				// console.log(this.state.tblData[l1].data.length);
 				// Add extra css classes to td
-				for(l3=0; l3<this.state.colSettings[l2].classes.length; l3++)
+				for(l3=0; l3<this.state.colSettings[l2].classes.length; l3++){
 					$(t_obj2).addClass(this.state.colSettings[l2].classes[l3]);
+				}
 
 				// Add td to tr
 				$(t_obj1).append(t_obj2);

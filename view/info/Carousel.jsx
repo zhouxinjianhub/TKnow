@@ -13,11 +13,14 @@ class CarouselComponent extends React.Component{
 		this.data = [];
 	}
 	componentDidMount() {
+		
+	}
+	startAddSwiper(){
 		new Swiper('.swiper-container', {
 	        pagination: '.swiper-pagination',
 	        paginationClickable: true,
 	        spaceBetween: 30,
-	        autoplay : 100000,//自动切换的时间间隔（单位ms）
+	        autoplay : 100000,
 	        grabCursor : true,
 	        direction: 'vertical',
 	        mousewheelControl: true
@@ -27,6 +30,11 @@ class CarouselComponent extends React.Component{
 		let list = nextProps ? nextProps : [];
 		let listdata = list.data.data ? list.data.data : [];
 		this.data = listdata.data ? listdata.data : [];
+		this.setState({
+			status: true
+		},()=>{
+			this.startAddSwiper();
+		})
     }
 	render(){
 		return (
@@ -35,10 +43,10 @@ class CarouselComponent extends React.Component{
 
 		        	{
 		        		this.data.map((data,k) => {
-			    		return  <Link className="swiper-slide" >
+			    		return  <div className="swiper-slide" >
 				        			<img src={data.picUrl}/>
 				        			<span>{data.title}</span>
-				        		</Link>
+				        		</div>
 			        	})
 			        }
 

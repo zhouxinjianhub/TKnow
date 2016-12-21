@@ -11,11 +11,15 @@ class ContainerIndicator extends React.Component {
 	state = {
 		timeId: '',
 		areaId: 0,
+		tradeId:'',
+		IndicId:'',
 	}
-	callbackNav(timeId,areaId){
+	callbackNav(timeId,areaId,tradeId,IndicId){
 		this.setState({
 			timeId: timeId || '',
 			areaId: areaId || 0 ,
+			tradeId:tradeId || '',
+			IndicId:IndicId || '',
 		})
 	}
 	componentDidMount() {
@@ -27,7 +31,7 @@ class ContainerIndicator extends React.Component {
 		return (
 			<div className="pay-section">
 				<Nav callback={this.callbackNav.bind(this)}  location={this.props.parent.location} parent={this.props.parent}/>
-			   	<Indicator1 />
+			   	<Indicator1 timeId={this.state.timeId} areaId={this.state.areaId} tradeId={this.state.tradeId} IndicId={this.state.IndicId}/>
 			</div>
 		)
 	}

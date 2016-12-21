@@ -14,24 +14,23 @@ class ContainerRegional extends React.Component {
 	constructor(props) {
 		super(props);
 		this.isTopRoute = true;
-		// this.categoryId = '';
-		// this.categoryName = '';
 	}
 	state = {
 		timeId: '',
 		areaId: 0,
+		datatimeAreaName:'全国'
 	}
-	callbackNav(timeId,areaId){
+	callbackNav(timeId,areaId,datatimeAreaName){
 		this.setState({
 			timeId: timeId || '',
 			areaId: areaId || 0 ,
+			datatimeAreaName : datatimeAreaName || '全国'
 		})
 	}
 	componentDidMount() {
-		// this.categoryId = this.props.parent.location.query.categoryId ?  this.props.parent.location.query.categoryId : 4 ;
-		// this.categoryName = this.props.parent.location.query.categoryName ?  this.props.parent.location.query.categoryName : '在线旅游' ;
+		//订阅
 		PubSub.subscribe('getNavYearId', (topic, data) => {
-			this.state.timeId = data; 
+			this.state.timeId = data;
 		});
 	}
 	render() {
@@ -39,7 +38,7 @@ class ContainerRegional extends React.Component {
 		return (
 			<div className="trade-detail">
 			    <Nav callback={this.callbackNav.bind(this)}  location={this.props.parent.location} parent={this.props.parent}/>
-			    <Map timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent} />
+			    <Map datatimeAreaName={this.state.datatimeAreaName} timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent} />
 
 				<Bar timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent}/>
 			   	

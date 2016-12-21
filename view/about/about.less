@@ -1,15 +1,15 @@
 @charset "utf-8";
 @import "../../common/style/z";
 @import "../../common/style/css3";
-// body{
-//     .container{
-//         .content{
-//             .nav{
-//                  margin-bottom: 0px;
-//             }
-//         }
-//     }
-// }
+body{
+    .container{
+        .content{
+            .nav-about{
+                 margin-bottom: 0px;
+            }
+        }
+    }
+}
 .container-about {
     .maxBody(100%,auto);
     .font-fm();
@@ -77,6 +77,7 @@
         .b-sizing();
         .font-fm();        
         padding-top: 80px;
+        background-color: #F3F4F8;
         p{
             text-align: center;
             color: #222222;
@@ -99,15 +100,16 @@
             font-weight: bold;
             padding-bottom: 0px;          
         }
-        img{
+        .switcher_imge{
            .maxBody(1050px,533px);
-            background-image: url(../../images/about/tianji7.jpg);
             display: block; 
             margin: 0 auto;         
         }        
         .switch{
-            margin: 0 auto 60px;
+            margin: 0 auto;
+            padding-bottom: 60px;
             width: 130px;
+            background-color: #F3F4F8;
         }
 
     }
@@ -117,11 +119,12 @@
         .font-fm(); 
         background-color: #E7E8EA;       
         padding-top: 80px;
-        p{
+        .swiper-name{
             text-align: center;
             color: #222222;
             font-size: 24px;
             margin-bottom: 60px;
+            font-weight:bold;
         }
         .swiper-container {
             width: 100%;
@@ -147,6 +150,30 @@
             -ms-flex-align: center;
             -webkit-align-items: center;
             align-items: center;
+            img{
+                width: 100%;
+                height: 100%;
+                .border-radius(4px);
+            }
+            p{
+                position: absolute;
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 20px;
+                font-size: 16px;
+                .b-sizing();
+                text-align: left;
+                color: #ffffff;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                background-color:rgba(0,0,0,0.5);
+                opacity: 0;
+                .border-radius(4px);
+            }
+            p:hover{
+                opacity: 1;
+            }
         }        
         .swiper-button-prev{
             .maxBody(55px,110px);

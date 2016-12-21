@@ -134,7 +134,7 @@ class ContainerthirdLogin extends React.Component {
     checkName(event) {
         var name=$.trim(event.target.value);
 
-        if ( !$.regTest('num',name) ) {
+        if ( $.regTest('username',name) && !$.regTest('allnum',name) && !$.regTest('allsame',name) ) {
             this.checkNameExisted(name);
         } else {       
             this.error_msg('name','请输入有效的用户名',true);
@@ -197,7 +197,7 @@ class ContainerthirdLogin extends React.Component {
         let pass = this.refs.password.value;
         let passr = this.refs.passr.value;
 
-        if ( $.regTest('num',name) ) {
+        if ( $.regTest('username',name) && !$.regTest('allnum',name) && !$.regTest('allsame',name) ) {
             this.nameOk = false;
             this.error_msg('name','请输入用户名',true);
         }else{

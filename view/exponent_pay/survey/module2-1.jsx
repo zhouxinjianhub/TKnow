@@ -39,7 +39,6 @@ class ContainerSurveyModule2_1 extends React.Component {
                 this.childData = data.data && data.data['child'];
                 this.parentName = data.data && data.data['parentAreaName'];
                 this.childName = data.data && data.data['childAreaName'];
-                
                 this.setState({
                 	status: true
                 },()=>{
@@ -63,8 +62,21 @@ class ContainerSurveyModule2_1 extends React.Component {
 		let listDataName = ["大宗及B2B","网络零售额","实物型","服务型"];
 		let tradeScale = chartData.tradingSumYearOnYear;
 		let retailScale = chartData.retailYearOnYear;
-		tradeScale = tradeScale >= 0 ? ("+"+tradeScale+"%") : (tradeScale+"%");
-		retailScale = retailScale >= 0 ? ("+"+retailScale+"%") : (retailScale+"%");
+		
+		let formatData = $.getFormatCompany([chartData.networkTradingSum,chartData.stapleAndB2B,chartData.entityRetail,chartData.networkRetail,chartData.serviceRetail]);
+		let company = formatData.company;
+		if ( tradeScale ) {
+			tradeScale = tradeScale >= 0 ? ("+"+tradeScale+"%") : (tradeScale+"%");
+		}else{
+			tradeScale = "-";
+		}
+
+		if ( retailScale ) {
+			retailScale = retailScale >= 0 ? ("+"+retailScale+"%") : (retailScale+"%");
+		}else{
+			retailScale = "-";
+		}
+		
 		var option = {
 		    tooltip : {
 		        trigger: 'axis',
@@ -72,7 +84,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0]['data'].name ? data[0]['data'].name+" "+data[0]['data'].value+"<br/>"+data[1]['data'].name+" "+data[1]['data'].value : "无数据";
+		        	return data[0]['data'].name ? data[0]['data'].name+" "+(data[0]['data'].value+company)+"<br/>"+data[1]['data'].name+" "+(data[1]['data'].value+company) : "无数据";
 		        }
 		    },
 		    grid: [{
@@ -84,9 +96,10 @@ class ContainerSurveyModule2_1 extends React.Component {
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
+		        	interval: 0,
 		            textStyle: {
 		                color: '#4b4b4b',
-		                fontSize: '14px'
+		                fontSize: '14'
 		            }
 		        },
 				axisLine:{
@@ -115,7 +128,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 	            stack: 'A',
 	            barWidth: '50%',
 	            data:[{
-                	value: chartData.stapleAndB2B || 0,
+                	value: formatData.value[1],
                 	name: listDataName[0],
 		            itemStyle: {
 			            normal: {
@@ -134,7 +147,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			        }
                 },
                 {
-                	value: chartData.entityRetail || 0, 
+                	value: formatData.value[2], 
                 	name: listDataName[2],
 		            itemStyle: {
 			            normal: {
@@ -160,7 +173,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 	            stack: 'A',
 	            barWidth: '50%',
 	            data:[{
-                	value: chartData.networkRetail|| 0, 
+                	value: formatData.value[3], 
                 	name: listDataName[1],
                 	label: {
 	                    normal: {
@@ -176,7 +189,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			                label: {
 			                    show: true,
 			                    position: 'top',
-			                    formatter: chartData.networkTradingSum+'万元\n同比'+tradeScale
+			                    formatter: formatData.value[0]+company+'\n同比'+tradeScale
 			                },
 			                barBorderRadius:[10,10,0,0],
 			                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -189,7 +202,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			            }
 			        }
 			    },{
-                	value: chartData.serviceRetail || 0, 
+                	value: formatData.value[4], 
                 	name: listDataName[3],
                 	label: {
 	                    normal: {
@@ -205,7 +218,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			                label: {
 			                    show: false,
 			                    position: 'top',
-			                    formatter: chartData.networkRetail+'万元\n同比'+retailScale
+			                    formatter: formatData.value[3]+company+'\n同比'+retailScale
 			                },
 			                barBorderRadius:[10,10,0,0],
 			                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -255,7 +268,6 @@ class ContainerSurveyModule2_1 extends React.Component {
 			   			})()}
 			   			{(()=>{
 			   				if ( this.childName ) {
-			   					console.log(this.childData);
 			   					return <span className={ this.childData ? "" : "disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
 			   				}
 			   			})()}
