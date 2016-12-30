@@ -57,7 +57,8 @@ class ContainerRegionalList extends React.Component {
 				<p className="tradeDetail-list-header">热门榜单</p>
 				<div className="swiper-wrapper">
 					{(() => {
-						let topdata = this.topdata || {}
+						let topdata = this.topdata || {};
+
 						let topListHTML = [];
 						let k_ls = 0;
 						this.topdatalen = 0;
@@ -70,9 +71,37 @@ class ContainerRegionalList extends React.Component {
 									        	<ul>
 									        		{(() => {
 									        			let topdataResult = [];
+									     
 									        			if(topdata[i] != null){
+															//分类别获取value值，转换成对应数据后，组装成数组填充给下面的值
+															//data.type : 0代表数值 1代表百分比 2代表指数
+									        				let listArr = [];
+									        				let datatype = [];
 									        				topdata[i].map((data,k)=>{
-										        				topdataResult.push( <li><i>{ k+1 }</i>{ data.name }</li> );
+									        					datatype = data.type;
+									        					listArr.push(data.value);
+									        				});
+									        				let result = [];
+									        				if(datatype == 0){//0代表数值 
+										        				result = $.getFormatCompanynull( listArr );
+									        				}
+									        				else if(datatype == 1){//1代表百分比 
+										        				result = $.getPercentageCompany( listArr );
+								        					}else if(datatype == 2){//2代表指数
+
+										        				result = $.getIndicCompany( listArr );
+								        					}else {
+								        						result = $.getIndicCompany( listArr );
+								        					}
+									        				
+
+									        				topdata[i].map((data,k)=>{
+
+										        				topdataResult.push( <li>
+															         					<i>{ k+1 }</i>
+															        					<span>{ data.name }</span>
+															        					<p>{result.value ? result.value[k]+result.company : ''}</p>
+														        					</li> );
 										        			})
 									        			}
 									        			return topdataResult;

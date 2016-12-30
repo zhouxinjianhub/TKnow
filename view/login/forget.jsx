@@ -58,7 +58,7 @@ class Containerforget extends React.Component {
             if (state && data.code == 1) {
                 self.jumpToPass();            
             } else if (state && data.code == 13) {                      
-                self.error_msg('num','验证码错误',true);            
+                self.error_msg('num','您输入的手机验证码有误',true);            
             } else {
                 self.error_msg('num',data.message,true);
             }
@@ -81,10 +81,8 @@ class Containerforget extends React.Component {
     checkPass( event ) {
 
         var pass=event.target.value;
-        console.log(pass);
         if($.regTest('password',pass)) {
             this.passOk=true;
-            console.log('密码通过');        
         }else {
             this.error_msg('pass','请输入有效的密码',true); 
             this.passrOk=fasle;   
@@ -100,7 +98,6 @@ class Containerforget extends React.Component {
         var passr=this.refs.passr.value;
         if( pass==passr ) {
             this.passOk=true;
-            console.log('重复通过');
             return true;
         }else {
             this.error_msg('passr','密码输入不一致',true); 
@@ -122,8 +119,6 @@ class Containerforget extends React.Component {
     }
 
     forget( phone,pass,num ) {
-
-        console.log('验证码'+num);
         var self = this;    
         let datas = {
             mobile:phone,
@@ -145,16 +140,13 @@ class Containerforget extends React.Component {
     */
     forgetSuccess( ) {
 
-    console.log('修改成功');
-    this.jumpToPage(3);
-
+        this.jumpToPage(3);
     }
     /**
     * 忘记密码失败
     */
     forgetFailed( data ) {
 
-        console.log(data);
         if(data.code==13) {
             this.error_msg('num','您输入的手机验证码有误',true);    
             this.jumpToPage(1);
@@ -212,8 +204,6 @@ class Containerforget extends React.Component {
     checkPhone() {     
         var phone=this.refs.phone.value;
 
-        console.log(phone);
-
         if(!phone) {
             this.error_msg('phone','手机不能为空',true);  
             return false;
@@ -245,8 +235,8 @@ class Containerforget extends React.Component {
                 self.startTimer(60);            
             } else if (state && data.code == 11){
                 self.error_msg('phone','您输入的手机号码未注册',true);            
-            } else {
-                self.error_msg('phone',data.message,true);
+            } else if (state && data.code == 9){
+                self.error_msg('phone',"您今天获取验证码的次数已经超过5次，请改天获取",true);
             }
         });
 
@@ -277,8 +267,6 @@ class Containerforget extends React.Component {
 
     startJumpTimer( countdown ) {
         var text=this.refs.jump;
-
-        console.log(text);
 
         if (countdown == 0) { 
             hashHistory.push('/login');
@@ -318,7 +306,6 @@ class Containerforget extends React.Component {
     error_msg(id,msg,show)
     {
         var error;
-        console.log(id);
         switch (id) {
             case 'phone':
                 error=this.refs.error_msg_phone;               

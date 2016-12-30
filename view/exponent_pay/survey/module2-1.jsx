@@ -6,7 +6,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.viewMoudle = true;
-		this.btnState = "p";
+		this.btnState = "c";
 
 		this.parentData = false;
         this.childData = false;
@@ -60,11 +60,12 @@ class ContainerSurveyModule2_1 extends React.Component {
 	showChart(chartData=[]) {
 		let xAxisData = ['网络交易额','网络零售额'];
 		let listDataName = ["大宗及B2B","网络零售额","实物型","服务型"];
-		let tradeScale = chartData.tradingSumYearOnYear;
-		let retailScale = chartData.retailYearOnYear;
-		
+		let tradeScale = (chartData.tradingSumYearOnYear*100).toFixed(2);
+		let retailScale = (chartData.retailYearOnYear*100).toFixed(2);
+
 		let formatData = $.getFormatCompany([chartData.networkTradingSum,chartData.stapleAndB2B,chartData.entityRetail,chartData.networkRetail,chartData.serviceRetail]);
 		let company = formatData.company;
+		let barMinHeight = 5;
 		if ( tradeScale ) {
 			tradeScale = tradeScale >= 0 ? ("+"+tradeScale+"%") : (tradeScale+"%");
 		}else{
@@ -76,7 +77,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 		}else{
 			retailScale = "-";
 		}
-		
+
 		var option = {
 		    tooltip : {
 		        trigger: 'axis',
@@ -90,7 +91,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 		    grid: [{
 	        	x: '3%',
 	        	y: '20%',
-	        	width: '94%',
+	        	width: '97%',
 	        	height: '70%'
 	        }],
 		    xAxis: [{
@@ -127,6 +128,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 	            type:'bar',
 	            stack: 'A',
 	            barWidth: '50%',
+	            // barMinHeight: barMinHeight,
 	            data:[{
                 	value: formatData.value[1],
                 	name: listDataName[0],
@@ -147,7 +149,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			        }
                 },
                 {
-                	value: formatData.value[2], 
+                	value: formatData.value[2],
                 	name: listDataName[2],
 		            itemStyle: {
 			            normal: {
@@ -172,8 +174,9 @@ class ContainerSurveyModule2_1 extends React.Component {
 	            type:'bar',
 	            stack: 'A',
 	            barWidth: '50%',
+	            // barMinHeight: barMinHeight,
 	            data:[{
-                	value: formatData.value[3], 
+                	value: formatData.value[3],
                 	name: listDataName[1],
                 	label: {
 	                    normal: {
@@ -202,7 +205,7 @@ class ContainerSurveyModule2_1 extends React.Component {
 			            }
 			        }
 			    },{
-                	value: formatData.value[4], 
+                	value: formatData.value[4],
                 	name: listDataName[3],
                 	label: {
 	                    normal: {
@@ -263,12 +266,12 @@ class ContainerSurveyModule2_1 extends React.Component {
 			   		<div className="nav-list">
 			   			{(()=>{
 			   				if ( this.parentName ) {
-			   					return <span className={ this.parentData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
+			   					return <span className={ this.parentData ? "" : " disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
 			   				}
 			   			})()}
 			   			{(()=>{
 			   				if ( this.childName ) {
-			   					return <span className={ this.childData ? "" : "disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
+			   					return <span className={ this.childData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
 			   				}
 			   			})()}
 			   		</div>

@@ -17,11 +17,19 @@ class ListAdapter extends React.Component{
 
         }
         jumpToDetil(data,event){
-            this.props.setDetailData(data);
-            hashHistory.push('/exponent_pay/report/reportDetail');
+            // this.props.setDetailData(data);
+            hashHistory.push('/exponent_pay/report/reportDetail?id='+data.id);
         }
         render() {
             let listData = this.props.data ? this.props.data : [];
+
+            if(!listData||listData.length==0) {
+                return (
+                    <div className="report-nodata">
+                        <img src="../../../images/exponent-pay/no-data.png" alt=""/>
+                    </div>
+                )
+            }
 
             let pdfImg="../../images/exponent-pay/pdf.png";
             let wordImg="../../images/exponent-pay/word.png";
@@ -33,48 +41,41 @@ class ListAdapter extends React.Component{
                         {
                             listData.map((data,k) => {                            
                                             return  <div className="list-cell">
-                                                            <img className="img-main" src={data.picUrl} onClick={this.jumpToDetil.bind(this,data)}/>
+                                                        <img className="img-main" src={data.picUrl} onClick={this.jumpToDetil.bind(this,data)}/>
                                                         <div className="div-content">
                                                             <h1 className="title" onClick={this.jumpToDetil.bind(this,data)}>{data.name}</h1>
                                                             <p className="content" onClick={this.jumpToDetil.bind(this,data)}>{data.summary}</p>
                                                             <div className="div-download">
-                                                            {(()=>{
-                                                                let downloadHtml = [];
-                                                                let downloadUrl= JSON.parse(data.url);
-                                                                
-                                                                downloadHtml.push(<b>下载:</b>);
-                                                                if(downloadUrl){
-                                                                    if(downloadUrl.pdf){
-                                                                        downloadHtml.push(<a href={downloadUrl.pdf} target="view_window"><img src={pdfImg} className="img-download" /></a>);
-                                                                    }
+                                                                {(()=>{
+                                                                    let downloadHtml = [];
+                                                                    let downloadUrl= JSON.parse(data.url);
+                                                                    
+                                                                    if(downloadUrl){
+                                                                        downloadHtml.push(<b>下载:</b>);
 
-                                                                    if(downloadUrl.word){
-                                                                        downloadHtml.push(<a href={downloadUrl.word} target="view_window"><img src={wordImg} className="img-download" /></a>);
-                                                                    }
+                                                                        if(downloadUrl.pdf){
+                                                                            downloadHtml.push(<a href={downloadUrl.pdf} target="view_window"><img src={pdfImg} className="img-download" /></a>);
+                                                                        }
 
-                                                                    if(downloadUrl.excel){
-                                                                        downloadHtml.push(<a href={downloadUrl.excel} target="view_window"><img src={excelImg} className="img-download" /></a>);
-                                                                    }
+                                                                        if(downloadUrl.word){
+                                                                            downloadHtml.push(<a href={downloadUrl.word} target="view_window"><img src={wordImg} className="img-download" /></a>);
+                                                                        }
 
-                                                                    if(downloadUrl.ppt){
-                                                                        downloadHtml.push(<a href={downloadUrl.ppt} target="view_window"><img src={pptImg} className="img-download" /></a>);
+                                                                        if(downloadUrl.excel){
+                                                                            downloadHtml.push(<a href={downloadUrl.excel} target="view_window"><img src={excelImg} className="img-download" /></a>);
+                                                                        }
+
+                                                                        if(downloadUrl.ppt){
+                                                                            downloadHtml.push(<a href={downloadUrl.ppt} target="view_window"><img src={pptImg} className="img-download" /></a>);
+                                                                        }
                                                                     }
-                                                                }
-                                                                return downloadHtml;
-                                                                
-                                                            })()} 
+                                                                    return downloadHtml;
+                                                                    
+                                                                })()} 
                                                             </div>
                                                         </div>
                                                     </div> 
                                         })
-
-                           // (()=>{
-                           //       if(!listData||listData.length==0){
-                           //          return  <div className="div-nodata">
-                           //                      <img className="img-nodata"/>
-                           //                  </div>
-                           //  } 
-                           //  })()                           
                         }
                 </div>
             )

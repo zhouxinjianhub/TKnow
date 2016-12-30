@@ -14,15 +14,16 @@ const env = process.env.NODE_ENV;
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: {
+        // main: ['webpack/hot/dev-server','webpack-dev-server/client?http://localhost:8080',"./common/module/"+fileNamed+".js"],
         main: "./common/module/"+fileNamed+".js",
-        common: ["react", "react-dom", 'react-router']
+        common: ["react", "react-dom", 'react-router', 'pubsub-js']
     },
     output: {
         path: path.join(__dirname, ".","build"),
         filename: "main.min.js",
-        // chunkFilename: '[chunkhash:20].js'
-        chunkFilename: 'chunk/[name].chunk.js',
-        publicPath: "../build/"
+        chunkFilename: 'chunk/[chunkhash:20].js',
+        // chunkFilename: 'chunk/[name].chunk.js',
+        publicPath: "./build/"
     },
     module: {
         preLoaders: [
@@ -84,6 +85,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin('common', "common.min.js"), //提取多个页面之间的公共模块
         new webpack.BannerPlugin( TIME.toLocaleString() + ' , zhouxinjian'), // 头部注释
         new ExtractTextPlugin("main.min.css"),
+        // new webpack.HotModuleReplacementPlugin()  // 热更新
         // new HtmlWebpackPlugin({
         //     title: 'App',
         //     filename: 'index.html'

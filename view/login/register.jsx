@@ -34,7 +34,8 @@ class ContainerLogin extends React.Component {
             this.checkNameExisted(name);
 
         }else {       
-            this.error_msg('name','请输入有效的用户名',true);
+             this.showErrorByCode(16);
+
         }
 
 
@@ -54,11 +55,11 @@ class ContainerLogin extends React.Component {
             if (state && data.code == 1) {
                 self.nameOk=true;              
             } else if(state && data.code == 8) {
-                self.error_msg('name','用户名已存在，请重新输入',true);
+                self.showErrorByCode(8);
             }else if(state && data.code == 16){
-                self.error_msg('name','请输入有效的用户名',true);
+                self.showErrorByCode(16);
             }else {
-                self.error_msg('name',data.message,true);
+                // self.error_msg('name',data.message,true);
             }
         }); 
 
@@ -77,7 +78,7 @@ class ContainerLogin extends React.Component {
 
         }else {
 
-          this.error_msg('pass','请输入有效的密码',true);   
+          this.showErrorByCode(17);  
 
         }
 
@@ -99,7 +100,7 @@ class ContainerLogin extends React.Component {
         if(pass==passr) {
             this.passrOk=true;
         }else {
-            this.error_msg('passr','密码输入不一致',true);   
+             this.showErrorByCode(15);
         }
 
     }
@@ -122,8 +123,10 @@ class ContainerLogin extends React.Component {
             if (state && data.code == 1)  {
                 alert('验证码是：'+data.data);    
                 self.startTimer(60);           
-            } else {
-                error_msg('phone','手机已被注册',true);
+            } else if (state && data.code == 9) {
+                self.showErrorByCode(9);
+            }else if (state && data.code == 14) {
+                self.showErrorByCode(14);
             }
         }); 
 
@@ -164,7 +167,7 @@ class ContainerLogin extends React.Component {
             this.checkPhoneExisted(phone);      
             return true;
         }else {
-            this.error_msg('phone','请输入有效的手机号码',true);    
+            this.showErrorByCode(18);  
             return false;   
         }
 
@@ -184,13 +187,15 @@ class ContainerLogin extends React.Component {
             if (state && data.code == 1) {
                 self.phoneOk=true;
                 self.sendNum();              
-            } else {
-                self.error_msg('phone','您输入的手机号码已经注册，请直接登录',true);
+            } else if (state && data.code == 14) {
+                this.showErrorByCode(14);
             }
         }); 
     }
     /**
     * 点击注册
+    *
+    * 
     */
     checkRegister() {   
         let name=this.refs.name.value.trim(); 
@@ -200,33 +205,30 @@ class ContainerLogin extends React.Component {
         let num=this.refs.num.value.trim();
 
         if($.regTest('username',name)&&!$.regTest('allnum',name)&&!$.regTest('allsame',name)) {
-            
             this.nameOk=true;
-
         }else{
-            
-            this.error_msg('name','请输入正确的用户名',true);
+            this.showErrorByCode(16);
             this.nameOk=false;
         }
         
         if($.regTest('password',pass)) {
             this.passOk=true;
         }else{
-            this.error_msg('pass','请设置正确的密码',true);
+            this.showErrorByCode(17);
             this.passOk=false;
         }
        
         if(pass==passr) {
             this.passrOk=true;
         }else{
-            this.error_msg('passr','请再次输入您的密码',true);
+            this.showErrorByCode(15);
             this.passrOk=false;
         }
         
         if($.regTest('phone',phone)) {
             this.phoneOk=true;
         }else{
-            this.error_msg('phone','请输入正确的手机号码',true);
+            this.showErrorByCode(18);
             this.phoneOk=false;
         }
         
@@ -271,23 +273,69 @@ class ContainerLogin extends React.Component {
                     content: '<div>注册成功!</div>',
                     yes: function(layero, index){
                         layer.close(layero);
-                        location.href = '/#/login';
+                        hashHistory.push('/login');
                     }
                 });
     }
 
     registerFailed(data) {
         if(data.code==13) {
-            this.error_msg('num','您输入的手机验证码有误',true);
+            this.showErrorByCode(13);
         }else {
-            this.error_msg('num',data.message,true);
+            this.error_msg(data.code);
         }
 
+    }
+    /**
+     * 根据code码展示错误信息
+     * @param  int code code码
+     * ERROR(0,"请求失败"),
+     */
+    showErrorByCode(code){
+       // self.error_msg('phone','您输入的手机号码已经注册，请直接登录',true);
+        var id,msg;
+        switch (code){
+            case 8:
+                id='name';
+                msg='用户名已存在，请重新输入';
+                break;
+            case 9:
+                id='num';
+                msg='您今天获取验证码的次数已经超过5次，请改天获取';
+                break;
+            case 13:
+                id='num';
+                msg='您输入的手机验证码有误';
+                break;
+            case 14:
+                id='phone';
+                msg='您输入的手机号码已经注册，请直接登录';
+                break;
+            case 15:
+                id='passr';
+                msg='密码输入不一致';
+                break;
+            case 16:
+                id='name';
+                msg='请输入有效的用户名';
+                break;
+            case 17:
+                id='pass';
+                msg='请设置有效的密码';
+                break;
+            case 18:
+                id='phone';
+                msg='请输入有效的手机号码';
+                break;
+
+        }
+        this. error_msg(id,msg,true);
     }
 
 
     /**
     * 显示错误信息
+    * 
     */
     error_msg(id,msg,show)
     {
@@ -360,10 +408,9 @@ class ContainerLogin extends React.Component {
             title: '注册协议',
             area: ['900px', '600px'],
             shade: 0.8,
-            closeBtn: 0,
             shadeClose: true,
             scrollbar: false,
-            content: '../../routes/login/provision.html'
+            content: '../../dist/provision.html'
         });
     }
     replaceSpace(){

@@ -5,6 +5,7 @@ class ContainerSurveyModule3 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.viewMoudle = false;
+		this.currentTableName="网络交易额(亿元)";
 		this.ajaxCont = ["networkTradingList","networkRetailList","entityRetailList","serviceRetailList"];
 	}
 	state = {
@@ -46,7 +47,7 @@ class ContainerSurveyModule3 extends React.Component {
 		}else{
 			$(e.target).parent().find('span').removeClass('current');
 			$(e.target).addClass('current');
-
+			this.currentTableName=e.target.innerHTML+"(亿元)";
 			this.setState({
             	type: type
             });
@@ -57,18 +58,19 @@ class ContainerSurveyModule3 extends React.Component {
 			return false;
 		};
 		let [parentHTML=[],childHTML=[],childHTML2=[],tempNums=0] = [];
+		
 		childHTML.push(
 			<div className="bold-list">
 				<span>排名</span>
 				<span>省市</span>
-				<span>网络零售额(亿元)</span>
+				<span>{this.currentTableName}</span>
 				<span>占比</span>
 			</div>);
 		childHTML2.push(
 			<div className="bold-list">
 				<span>排名</span>
 				<span>省市</span>
-				<span>网络零售额(亿元)</span>
+				<span>{this.currentTableName}</span>
 				<span>占比</span>
 			</div>)
 

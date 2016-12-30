@@ -22,6 +22,7 @@ class RegionalController extends React.Component {
 		this.datatimeAreaId = 0;
 		this.datatimeAreaNameTiny = '全国';
 		this.datatimeAreaName = '全国';//地域筛选栏默认显示
+		this.areaLongName = '全国';
 		this.datatimeAreaList = [];
 		//判断是手机端
 		if ( $.isPhone() ) {
@@ -39,17 +40,6 @@ class RegionalController extends React.Component {
 				text: ''
 			});
 			this.setMaps();
-			//订阅
-			this.pubsub_token = PubSub.subscribe('getNavYear', (topic, data) => {
-				this.datatimeName = data.timeName;
-				this.datatimeId = data.timeId;
-				this.setState({
-					hover: true
-				},()=>{
-					this.getRegionData(this.datatimeId);
-					PubSub.unsubscribe(this.pubsub_token);
-				});
-			});
 
 		}else{
 			$(".tradeDetail-nav").css('display', 'none');
@@ -67,6 +57,14 @@ class RegionalController extends React.Component {
 		$.GetAjax('/v1/system/datatimeList', null, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
                 this.datatimeList = data.data;
+                this.datatimeName = data.timeName;
+                this.datatimeId = data.timeId;
+                this.setState({
+					status: true
+				},()=>{
+					this.getRegionData(this.datatimeId);
+					PubSub.publish('getNavYearId',data.data.timeId || 0);
+				});
              } else {
                 this.datatimeList = [];
              }
@@ -189,11 +187,10 @@ class RegionalController extends React.Component {
 		let data = this.datatimeAreaList[0] && this.datatimeAreaList[0].children || [];
 		let childHtml = [];
 
-		childHtml.push(<li onClick={this.provinceClickChild.bind(this,'全国',quanguo.id,[])} className={quanguo.isHas ? "current" : "current disable"}>全国</li>);
+		childHtml.push(<li onClick={this.provinceClickChild.bind(this,'全国',quanguo.id,'全国',[])} className={quanguo.isHas ? "current" : "current disable"}>全国</li>);
 
         data.map((data,k) => {
-
-	        childHtml.push(<li onClick={this.provinceClickChild.bind(this,k,data.id,data)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
+	        childHtml.push(<li onClick={this.provinceClickChild.bind(this,k,data.id,data.name,data)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
         });
         
 		this.HTMLDOMREGION.push(
@@ -216,11 +213,17 @@ class RegionalController extends React.Component {
 			$('#'+domId).hide();
 		}
 	}
-	provinceClickChild(type,areaid,child,e){
+	provinceClickChild(type,areaid,name,child,e){
+		if(name!=""&&name!=null){
+			this.areaLongName = name;
+		}
+
 		let hasClassDis = $(e.target).hasClass('disable');
 		if ( hasClassDis ) {
 			return false;
 		}
+		this.HTMLDOMREGION2 = [];
+		this.HTMLDOMREGION3 = [];
 		$('#provinceul').data('open',false);
 		$('#provinceul').hide();
 		$('#provinceP').html(e.target.innerHTML);
@@ -241,10 +244,10 @@ class RegionalController extends React.Component {
 
 			let childHtml = [];
 
-			childHtml.push(<li onClick={this.cityClickChild.bind(this,'全省',areaid,[])} className="current">全省</li>);
+			childHtml.push(<li onClick={this.cityClickChild.bind(this,'全省',areaid,[],[])} className="current">全省</li>);
 
 	        childData.map((data,k) => {
-		        childHtml.push(<li onClick={this.cityClickChild.bind(this,k,data.id,data)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
+		        childHtml.push(<li onClick={this.cityClickChild.bind(this,k,data.id,data.name,data)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
 	        });
 	        
 			this.HTMLDOMREGION2.push(
@@ -259,11 +262,16 @@ class RegionalController extends React.Component {
 			hover: true
 		});
 	}
-	cityClickChild(type,areaid,child,e){
+	cityClickChild(type,areaid,name,child,e){
+		if(name!=""&&name!=null){
+			this.areaLongName = name;
+		}
+		
 		let hasClassDis = $(e.target).hasClass('disable');
 		if ( hasClassDis ) {
 			return false;
 		}
+		this.HTMLDOMREGION3 = [];
 		$('#cityul').data('open',false);
 		$('#cityul').hide();
 		$('#cityP').html(e.target.innerHTML);
@@ -285,10 +293,10 @@ class RegionalController extends React.Component {
 
 			let childHtml = [];
 
-			childHtml.push(<li onClick={this.areaClickChild.bind(this,areaid)} className="current">全市</li>);
+			childHtml.push(<li onClick={this.areaClickChild.bind(this,areaid,[])} className="current">全市</li>);
 
 	        childData.map((data,k) => {
-		        childHtml.push(<li onClick={this.areaClickChild.bind(this,data.id)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
+		        childHtml.push(<li onClick={this.areaClickChild.bind(this,data.id,data.name)} className={data.isHas ? "" : "disable"}>{data.abbr}</li>);
 	        });
 	        
 			this.HTMLDOMREGION2.push(
@@ -303,7 +311,10 @@ class RegionalController extends React.Component {
 			hover: true
 		});
 	}
-	areaClickChild(areaid,e){
+	areaClickChild(areaid,name,e){
+		if(name!=""&&name!=null){
+			this.areaLongName = name;
+		}
 		let hasClassDis = $(e.target).hasClass('disable');
 		if ( hasClassDis ) {
 			return false;
@@ -333,16 +344,16 @@ class RegionalController extends React.Component {
 		ReactDOM.findDOMNode(this.refs.regionModule).style.display = 'none';
 	}
 	selectData(e){
-		this.props.callback(this.datatimeId,this.datatimeAreaId,this.datatimeAreaName);
+		this.props.callback(this.datatimeId,this.datatimeAreaId,this.datatimeAreaName,this.areaLongName);
 	}
 	//加载地图轮廓
 	setMaps(){
-		let mapName = this.datatimeAreaName;
+		let mapName = this.areaLongName;
 
 		if ( this.datatimeAreaName == "全国" ) {
 			mapName = "中国";
 		};
-		$.get('../../map/'+mapName+'.json', myJson => {
+		$.get('./map/'+mapName+'.json', myJson => {
 		    echarts.registerMap(mapName, myJson);
 		    this.chart.setOption({
 		        series: [{
@@ -371,7 +382,7 @@ class RegionalController extends React.Component {
 		let configer = {
 			timeId: this.datatimeId,
 			areaId: this.datatimeAreaId,
-			datatimeAreaName:this.datatimeAreaName,
+			datatimeAreaName:this.areaLongName || this.datatimeAreaName,
 		};
 		//location.href地址上已有行业Id和行业名称
 		let params = encodeURIComponent(location.href +"&"+$.param(configer));

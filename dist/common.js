@@ -51,17 +51,19 @@ $.extend({
     	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 	},
 	// 传一个数组来获取应该用什么单位，并返回转后的数组给你
-	getFormatCompany:function(arrays){
-		let numLength = arrays.length;
+	getFormatCompany:function(arrays,state){
+		
+		let arraysNew=$.arraysSortAndRemoveZero(arrays);
+		let numLength = arraysNew.length;
 		let result = 0;
 		let company = '元';
 		let count = 0;
 		if ( numLength % 2 == 0 ) {
-			let tt = Number(arrays[parseInt(numLength/2)-1]) || 0;
-			let tt2 = Number(arrays[parseInt(numLength/2)]) || 0;
+			let tt = Number(arraysNew[parseInt(numLength/2)-1]);
+			let tt2 = Number(arraysNew[parseInt(numLength/2)]);
 			count = (tt+tt2)/2;
 		}else{
-			let tt = Number(arrays[parseInt(numLength/2)]) || 0;
+			let tt = Number(arraysNew[parseInt(numLength/2)]);
 			count = tt;
 		};
 
@@ -75,11 +77,11 @@ $.extend({
 			result = count*1;
 			company = "亿元";
 		}
-		let newArray = $.formatPrice(arrays,company);
+		let newArray = $.formatPrice (arrays,company,state);
 		return {value:newArray,company:company};
 	},
 	//新生成一个数组
-	formatPrice: function (countArray,company) {
+	formatPrice: function (countArray,company,state=false) {
 		let newArray = countArray;
 		let temp = 1;
 		if ( company == '元' ) {
@@ -89,23 +91,62 @@ $.extend({
 		} else {
 			temp = 1;
 		};
-
+		let i = 0;
 		countArray.map((d,k)=>{
-			newArray[k] = (countArray[k]*temp).toFixed(2);
+			if (state) {
+				if ( d != null && d != "" && d != 0 ) {
+					newArray[i] = (d*temp).toFixed(2);
+					i++;
+				}
+			}else{
+				newArray[k] = (d*temp).toFixed(2);
+			}
 		});
 		return newArray;
 	},
-	// 位数不够补0
-	addZero:function (number) {
-		var len = ("" + number).length;
-		if (len == 1) {
-			number = "000" + number;
-		} else if (len == 2) {
-			number = "00" + number;
-		} else if (len == 3) {
-			number = "0" + number;
-		}
-		return number;
+	//为数组排序并除去为0的数
+	arraysSortAndRemoveZero:function(oldArray){
+		let newArray = new Array();
+		let i = 0;
+
+		oldArray.map((d,k)=>{
+			if ( d != null && d != "" && d != 0 ) {
+				newArray[i] = d;
+				i++;
+			}
+		});
+		newArray.sort();
+		return newArray;
+	},
+	//传一个百分比类型的数组过来，剩以100，正数加上“+”号，负数不变，结果保留两位小数
+	getPercentageCompany:function(arr){
+		let company="%";
+		let newArray = arr;
+		arr.map((data,k)=>{
+			if(data == "" || data == null){
+				newArray[k] = '';
+			}else if(data>0){
+				newArray[k] = "+"+(data*100).toFixed(2);
+			}else {
+				newArray[k] = (data*100).toFixed(2);
+			}
+		});
+
+		return  {value:newArray,company:company};
+	},
+	//热门榜单，为了保持和其他几种数据格式一致，传入指数或其他类型的数组过来，返回value和company
+	getIndicCompany:function(arr){
+		let company="";
+		let newArray = arr;
+		arr.map((data,k)=>{
+			if(data == "" || data == null){
+				newArray[k] = '';
+			}else {
+				newArray[k] = data;
+			}
+		});
+
+		return  {value:newArray,company:company};
 	},
 	// 将数字转化成千分符格式
 	toThousands: function (num) {
@@ -384,6 +425,42 @@ $.extend({
 	       }  
 	    }  
 	    return mingwen;  
+	},
+	//判断传入数组中是否包含该元素，有则删除，返回false，没有则添加该元素，返回true
+	addOrremoveValue:function(arr,value){
+		let state;
+		arr.push(value);
+		let count = $.arrCheckCount(arr,value);
+		let resultArr = [];
+		if(count == 2 || count > 2){
+			let newArr = arr; 
+			for(let i=0; i<arr.length; i++) {
+				if(arr[i] == value){
+					newArr[i] = -1;
+				}
+			}
+			for(let i = 0; i< newArr.length; i++){
+				if( newArr[i]!= -1 ){
+					resultArr.push(newArr[i]);
+				}
+			}
+			state = false;
+		}else{
+			resultArr = arr;
+			state = true;
+		}
+		return  {value:resultArr,state:state};
+	},
+	//判断数组里该元素出现的次数
+	arrCheckCount:function(arr,value){
+		let newArr = [];
+		let count=0;
+	    for(let i=0;i<arr.length;i++){
+	        if(arr[i] == value){
+		        count++;
+	        }
+	  }
+	  return count;
 	}
 });
 

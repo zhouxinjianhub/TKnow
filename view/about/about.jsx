@@ -132,11 +132,16 @@ class CarouselComponent extends React.Component{
 	constructor(props) {
 		super(props);
 		this.state = {       
-            data:[]
+            data:[],
+            initSwiper:false
         };
 	}
 	componentDidMount() {
 		this.requestData();
+
+		
+	}
+	initSwiper(){
 		new Swiper('.swiper-container', {
         	nextButton: '.swiper-button-next',
         	prevButton: '.swiper-button-prev',
@@ -163,6 +168,7 @@ class CarouselComponent extends React.Component{
 	        },   
 		    
 	    });
+
 	}
 	requestData(){
 		var self = this;
@@ -177,6 +183,11 @@ class CarouselComponent extends React.Component{
             	self.setState({
 					data:data.data
 				});
+				self.setState({
+					initSwiper:true
+				},()=>{
+					self.initSwiper();
+				})
 
             } else {
 
@@ -187,22 +198,22 @@ class CarouselComponent extends React.Component{
 
 	render(){
 		return (
-			<div className="swiper">
+			<div className="about-swiper">
 				<p className="swiper-name">典型客户</p>
 				<div className="swiper-container">
 			        <div className="swiper-wrapper">
-			        	 {
-			        	 	this.state.data.map((data,k) => {                            
-                                            return  <div className="swiper-slide">
-                                            			<img  src={data.picUrl}/>
-                                            			<p>{data.name}</p> 
-                                            		</div>                                                        
-                                        }
-                            ) 
-                             
-                        }			           
-			        </div>
+			        	{
+								this.state.data.map((data,k) => {                            
+									return  <div className="swiper-slide">
+												<img  src={data.picUrl}/>
+												<p>{data.name}</p> 
+											</div>                                                        
+								}) 
 
+						}			           
+			        </div>
+			        <div className="button-next-back"></div>
+			        <div className="button-prev-back"></div>
 
 			        <div className="swiper-button-next"></div>
 			        <div className="swiper-button-prev"></div>

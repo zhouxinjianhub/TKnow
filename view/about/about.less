@@ -44,8 +44,11 @@ body{
         .visualization{
             .b-sizing();
             .maxBody(100%,auto);
-            // background-image: url(../../images/about/tianji4.jpg);
-            // background-repeat: repeat-x;
+            background-image: url(../../images/about/tianji4.jpg);
+            background-repeat: repeat-x;
+            // background-attachment:fixed;
+            background-position-x: 7%;
+            
              .content{
                  margin: auto;
                 .b-sizing();
@@ -113,7 +116,7 @@ body{
         }
 
     }
-    .swiper{
+    .about-swiper{
         .maxBody(100%,460px);
         .b-sizing();
         .font-fm(); 
@@ -129,14 +132,32 @@ body{
         .swiper-container {
             width: 100%;
             height: 200px;
-            margin: 20px auto;
         }
+               
+        .swiper-button-prev{
+            .maxBody(56px,110px);
+            background: url(../../images/exponent_free/ico.png) no-repeat;
+            top: 45px;
+            margin-top: 0px;
+            left: 0px;
+        }
+        .swiper-button-next{
+            .maxBody(55px,110px);
+            background: url(../../images/exponent_free/ico.png) no-repeat;
+            background-position: -56px 0;
+            top: 45px;
+            margin-top: 0px;
+            right: 0px;
+        } 
+        
         .swiper-slide {
             text-align: center;
-            font-size: 18px;
+            font-size: 39px;
             background: #fff;
-            width: 100px;
-
+            // width: 270px;
+            // margin-right: 15px;
+            // margin-left: 15
+            
             /* Center slide text vertically */
             display: -webkit-box;
             display: -ms-flexbox;
@@ -150,6 +171,7 @@ body{
             -ms-flex-align: center;
             -webkit-align-items: center;
             align-items: center;
+
             img{
                 width: 100%;
                 height: 100%;
@@ -174,23 +196,7 @@ body{
             p:hover{
                 opacity: 1;
             }
-        }        
-        .swiper-button-prev{
-            .maxBody(55px,110px);
-            background: url(../../images/exponent_free/ico.png) no-repeat;
-            top: 45px;
-            margin-top: 0px;
-            left: 0px;
         }
-        .swiper-button-next{
-            .maxBody(55px,110px);
-            background: url(../../images/exponent_free/ico.png) no-repeat;
-            background-position: -56px 0;
-            top: 45px;
-            margin-top: 0px;
-            right: 0px;
-        } 
-       
        
     }
     

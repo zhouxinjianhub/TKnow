@@ -7,6 +7,7 @@ class ContainerIndicator extends React.Component {
 	constructor(props) {
 		super(props);
 		this.isTopRoute = true;
+		this.loadStart = false;
 	}
 	state = {
 		timeId: '',
@@ -15,11 +16,14 @@ class ContainerIndicator extends React.Component {
 		IndicId:'',
 	}
 	callbackNav(timeId,areaId,tradeId,IndicId){
+		this.loadStart = true;
 		this.setState({
 			timeId: timeId || '',
 			areaId: areaId || 0 ,
 			tradeId:tradeId || '',
 			IndicId:IndicId || '',
+		},()=>{
+			this.loadStart = false;
 		})
 	}
 	componentDidMount() {
@@ -28,10 +32,18 @@ class ContainerIndicator extends React.Component {
 		});
 	}
 	render() {
+
 		return (
 			<div className="pay-section">
-				<Nav callback={this.callbackNav.bind(this)}  location={this.props.parent.location} parent={this.props.parent}/>
-			   	<Indicator1 timeId={this.state.timeId} areaId={this.state.areaId} tradeId={this.state.tradeId} IndicId={this.state.IndicId}/>
+				<Nav callback={this.callbackNav.bind(this)}  />
+				{(()=>{
+					let childDom = [];
+					if(this.loadStart){
+						childDom.push( <Indicator1 timeId={this.state.timeId} areaId={this.state.areaId} tradeId={this.state.tradeId} IndicId={this.state.IndicId}/> );
+					}
+					return childDom;
+				})()}
+			   	
 			</div>
 		)
 	}

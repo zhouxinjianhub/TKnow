@@ -79,9 +79,9 @@ class ContainerSurveyModule4 extends React.Component {
 			grid: [
 		        {
 		        	x: '3%',
-		        	y: '3%',
-		        	width: '94%',
-		        	height: '84%'
+		        	y: '1%',
+		        	width: '97%',
+		        	height: '80%'
 		        }
 		    ],
 		    tooltip: {
@@ -97,9 +97,11 @@ class ContainerSurveyModule4 extends React.Component {
 		        data: xAxisData,
 		        axisLabel: {
 		        	interval: 0,
+		        	rotate: 45,
 		            textStyle: {
+		            	fontFamily: "微软雅黑",
 		                color: '#4b4b4b',
-		                fontSize: '14'
+		                fontSize: 14
 		            }
 		        },
 				axisLine:{

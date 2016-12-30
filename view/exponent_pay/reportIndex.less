@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "../../common/style/z";
+@import "../../common/style/css3";
 .pay-report{   
 	ul,li{ list-style: none}
     .tabClick{ 
@@ -12,12 +13,14 @@
     	line-height: 40px; 
     	width: 25%; 
     	float: left; 
-    	text-align: center
+    	text-align: center;
+        cursor:pointer;
     }
     .tabClick li.active{ 
     	color: #000000; 
     	transition: 0.1s; 
-    	font-weight: bold
+    	font-weight: bold;
+
     }
     .tabCon{ 
     	overflow: hidden
@@ -78,6 +81,7 @@
         .img-main{
             .maxBody(240px, 160px);
             float: left;
+            cursor:pointer;
         }
         .div-content{
             margin-left: 270px;
@@ -87,12 +91,14 @@
                 font-weight: bold;
                 font-size: 18px; 
                 color: #222222;
+                cursor:pointer;
                 // margin-top: 10px;
             }
             p{
                 margin-top: 20px;
                 font-size: 16px;
                 color: #4b4b4b;
+                cursor:pointer;
             }
             .div-download{
                 position: absolute;
@@ -132,6 +138,18 @@
         .img-nodata{
             .maxBody(284px, 284px);
             background-image: url(../../images/exponent-pay/no-data.png);
+        }
+    }
+    .report-nodata{
+        margin-top:40px;
+        .maxBody(100%,300px);
+        .pos (r);
+        .border-radius(6px);
+        background:#EDEEF5;     
+        img{
+            .maxBody(284px,284px);
+            display: block;
+            margin: auto auto;
         }
     }
 

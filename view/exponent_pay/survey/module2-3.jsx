@@ -5,7 +5,7 @@ class ContainerSurveyModule2_3 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.viewMoudle = false;
-		this.btnState = "p";
+		this.btnState = "c";
 
 		this.parentData = false;
         this.childData = false;
@@ -74,9 +74,9 @@ class ContainerSurveyModule2_3 extends React.Component {
 			grid: [
 		        {
 		        	x: '3%',
-		        	y: '3%',
-		        	width: '94%',
-		        	height: '84%'
+		        	y: '1%',
+		        	width: '97%',
+		        	height: '80%'
 		        }
 		    ],
 		    tooltip: {
@@ -85,14 +85,17 @@ class ContainerSurveyModule2_3 extends React.Component {
 		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+(data[0].value+this.company)+"  "+"占比"+(data[0].data['scale']*100)+"%" : "无数据";
+		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+(data[0].value+this.company)+"  "+"占比"+(data[0].data['scale']*100).toFixed(2)+"%" : "无数据";
 		        }
 		    },
 		    xAxis: [{
 		        data: xAxisData,
 		        axisLabel: {
 		        	interval: 0,
+		        	rotate: 45,
+		        	margin: 12,
 		            textStyle: {
+		            	fontFamily: "微软雅黑",
 		                color: '#4b4b4b',
 		                fontSize: '14'
 		            }
@@ -168,12 +171,12 @@ class ContainerSurveyModule2_3 extends React.Component {
 			   		<div className="nav-list">
 			   			{(()=>{
 			   				if ( this.parentName ) {
-			   					return <span className={ this.parentData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
+			   					return <span className={ this.parentData ? "" : " disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
 			   				}
 			   			})()}
 			   			{(()=>{
 			   				if ( this.childName ) {
-			   					return <span className={ this.childData ? "" : "disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
+			   					return <span className={ this.childData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
 			   				}
 			   			})()}
 			   		</div>

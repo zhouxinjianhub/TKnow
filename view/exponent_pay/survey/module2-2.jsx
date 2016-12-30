@@ -77,8 +77,19 @@ class ContainerSurveyModule2_2 extends React.Component {
 		    tooltip : {
 		        trigger: 'axis',
 		        formatter: (data)=>{
-		        	let result = data[0].name ? data[0].name+"网络零售额<br/>"+data[0].seriesName+" "+(data[0].value+this.company)+"  环比+"+data[0].value+"<br/>"+
-		        				data[1].seriesName+" "+(data[1].value+this.company)+"  环比+"+data[1].value : "无数据";
+		        	let data1 = data[0] && data[0].value || 0;
+		        	let data2 = data[1] && data[1].value || 0;
+		        	if ( data1 ) {
+						data1 = data1 >= 0 ? ("+"+data1+"%") : (data1+"%");
+					}else{
+						data1 = "-";
+					}
+					if ( data2 ) {
+						data2 = data2 >= 0 ? ("+"+data2+"%") : (data2+"%");
+					}else{
+						data2 = "-";
+					}
+		        	let result = data[0].name ? data[0].name+"网络零售额<br/>"+data[0].seriesName+" "+(data[0].value+this.company)+"  环比"+data1+"<br/>"+data[1].seriesName+" "+(data[1].value+this.company)+"  环比"+data2+"" : "无数据";
 		        	return result;
 		        }
 		    },
@@ -230,11 +241,11 @@ class ContainerSurveyModule2_2 extends React.Component {
 			   				let option = [{
 				   				title: this.commonData.parentAreaName,
 				   				type: '网络零售额',
-				   				total: this.commonData.parentSum+'<span>'+this.company+'</span>'
+				   				total: this.commonData.parentSum.toFixed(2)+'<span>'+this.company+'</span>'
 				   			},{
 				   				title: this.commonData.childAreaName,
 				   				type: '网络零售额',
-				   				total: this.commonData.childSum+'<span>'+this.company+'</span>'
+				   				total: this.commonData.childSum.toFixed(2)+'<span>'+this.company+'</span>'
 				   			},{
 				   				title: this.commonData.childAreaName+"在"+this.commonData.parentAreaName,
 				   				type: '占比',

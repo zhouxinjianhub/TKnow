@@ -11,6 +11,10 @@ class ReportDetailComponent extends React.Component{
 	componentDidMount() {
 
 	}
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+		this.data = this.props.data ? this.props.data : [];
+	}
 	getTime(time){
 		if(time){
 			// 将时间戳(以毫秒为单位)换成时间格式字符串
@@ -68,7 +72,7 @@ class ReportDetailComponent extends React.Component{
 										if(data){
 											let dataurl = JSON.parse(data);
 											for(let i in dataurl){
-												result.push( <span><img onClick = {this.loadFile.bind(this,dataurl[i]) } src = {"../../../images/exponent-pay/"+i+".png"}/></span> );
+												result.push( <span><img onClick = {this.loadFile.bind(this,dataurl[i]) } src = {"../../images/exponent-pay/"+i+".png"}/></span> );
 											}
 											return result;
 										}else{
@@ -94,16 +98,34 @@ class ReportDetailComponent extends React.Component{
 class ReportDetail extends React.Component {
 	constructor(props) {
 		super(props);
-		this.data = this.props.detailData ? this.props.detailData : '';
+		this.id = this.props.parent.location.query.id ?  this.props.parent.location.query.id : '' ;
 	}
+	state = {
+		data: []
+	};
 	componentDidMount() {
-
+		this._getdetailData();
 	} 
+	_getdetailData(){
+		const that = this;
+        let setData = {
+            dataType:'json',
+            id:this.id,
+        };
+        $.GetAjax('/v1/zhishu/inner/dataReportDetail', setData, 'GET', true, function(data , state) {
+           if (state && data.code == 1) {
+                that.setState({
+                    data:data.data
+                });
+            } else {
+            	console.log("请求数据失败");
+            }
+        });
+	}
 	render() {
-		// console.log(this.data);
 		return (
 			<div className="reportdetailcon"> 
-			   <ReportDetailComponent data = {this.data} />
+			   <ReportDetailComponent data = {this.state.data} />
 			</div>
 		)
 	}

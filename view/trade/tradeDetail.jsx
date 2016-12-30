@@ -18,13 +18,15 @@ class ContainerRegional extends React.Component {
 	state = {
 		timeId: '',
 		areaId: 0,
-		datatimeAreaName:'全国'
+		datatimeAreaName:'全国',
+		areaLongName : ''
 	}
-	callbackNav(timeId,areaId,datatimeAreaName){
+	callbackNav(timeId,areaId,datatimeAreaName,areaLongName){
 		this.setState({
 			timeId: timeId || '',
 			areaId: areaId || 0 ,
-			datatimeAreaName : datatimeAreaName || '全国'
+			datatimeAreaName : datatimeAreaName || '全国',
+			areaLongName : areaLongName || datatimeAreaName || '全国'
 		})
 	}
 	componentDidMount() {
@@ -38,7 +40,7 @@ class ContainerRegional extends React.Component {
 		return (
 			<div className="trade-detail">
 			    <Nav callback={this.callbackNav.bind(this)}  location={this.props.parent.location} parent={this.props.parent}/>
-			    <Map datatimeAreaName={this.state.datatimeAreaName} timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent} />
+			    <Map datatimeAreaName={this.state.datatimeAreaName} areaLongName ={this.state.areaLongName} timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent} />
 
 				<Bar timeId={this.state.timeId} areaId={this.state.areaId} parent={this.props.parent}/>
 			   	

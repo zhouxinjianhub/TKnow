@@ -5,7 +5,7 @@ class ContainerSurveyModule2_4 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.viewMoudle = true;
-		this.btnState = "p";
+		this.btnState = "c";
 
 		this.parentData = false;
         this.childData = false;
@@ -69,6 +69,7 @@ class ContainerSurveyModule2_4 extends React.Component {
 		getData.map((d,k)=>{
 			data[k].value = d;
 		});
+		let ii = 0;
 		let option = {
 		    tooltip: {
 		    	trigger: 'axis',
@@ -76,7 +77,7 @@ class ContainerSurveyModule2_4 extends React.Component {
 		            type : 'shadow'
 		        },
 		        formatter: (data)=>{
-		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+(data[0].value+this.company)+"  "+"占比"+(data[0].data['scale']*100)+"%" : "无数据";
+		        	return data[0].name ? "第"+(data[0].dataIndex+1)+"位"+"  "+data[0].name+"<br/>"+(data[0].value+this.company)+"  "+"占比"+(data[0].data['scale']*100).toFixed(2)+"%" : "无数据";
 		        }
 		    },
 		    color: ['#15a45c','#35b055','#68c448','#98d63c','#caea31','#ecf728'],
@@ -89,10 +90,16 @@ class ContainerSurveyModule2_4 extends React.Component {
 		    }],
 		    legend: {
             	orient:'vertical',
-            	top:'20%',
+            	top:'15%',
             	right: 0,
-            	itemGap:30,
+            	itemGap:21,
+            	itemWidth: 16,
+            	itemHeight: 16,
                 data: xAxisData,
+                formatter: function (name) {
+                	ii++;
+				    return name+"\n"+(data[ii-1]['scale']*100).toFixed(2)+"%";
+				}
             },
 		    xAxis: [{
 		        type: 'value',
@@ -191,12 +198,12 @@ class ContainerSurveyModule2_4 extends React.Component {
 			   		<div className="nav-list">
 			   			{(()=>{
 			   				if ( this.parentName ) {
-			   					return <span className={ this.parentData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
+			   					return <span className={ this.parentData ? "" : " disabled" } onClick={this.changeNav.bind(this)} data-label="p">{this.parentName}</span>
 			   				}
 			   			})()}
 			   			{(()=>{
 			   				if ( this.childName ) {
-			   					return <span className={ this.childData ? "" : "disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
+			   					return <span className={ this.childData ? "current" : "current disabled" } onClick={this.changeNav.bind(this)} data-label="c">{this.childName}</span>
 			   				}
 			   			})()}
 			   		</div>

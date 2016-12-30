@@ -27,7 +27,6 @@ class ContainerCarousel extends React.Component {
 		}
 	}
 	_getdetailData(id){
-		console.log("执行了请求数据方法");
 		const that = this;
         let setData = {
             dataType:'json',

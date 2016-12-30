@@ -26,6 +26,14 @@ class SurveyController extends React.Component {
 		$.GetAjax('/v1/zhishu/inner/getUserOpenAreaList', null, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
                 this.dataAreaList = data.data;
+                let defaultData=this.dataAreaList[0];
+                if(defaultData){
+                	this.dataAreaId = defaultData.id;
+					this.areaName = defaultData.abbr;
+                }
+                this.setState({
+					status: true
+				});
              } else {
                 this.dataAreaList = [];
              }
@@ -35,6 +43,11 @@ class SurveyController extends React.Component {
 		$.GetAjax('/v1/system/datatimeList', null, 'Get', true, (data,state)=>{
             if (state && data.code == 1) {
                 this.datatimeList = data.data;
+                this.datatimeId = data.timeId;
+				this.timeName = data.timeName;
+				this.setState({
+					status: true
+				});
              } else {
                 this.datatimeList = [];
              }
@@ -46,7 +59,7 @@ class SurveyController extends React.Component {
 		this.REGIONHTML = [];
 
         this.dataAreaList.map((data,k) => {
-	        this.REGIONHTML.push(<li onClick={this.chooseArea.bind(this,data.id)} className="" data-region={data.name}>{data.name}</li>);
+	        this.REGIONHTML.push(<li onClick={this.chooseArea.bind(this,data.id)} className={ k == 0 ? "current" : "" } data-region={data.abbr}>{data.abbr}</li>);
         });
 
         this.setState({

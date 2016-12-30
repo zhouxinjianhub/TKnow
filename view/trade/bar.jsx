@@ -7,6 +7,7 @@ class RegionalBar extends React.Component {
 		this.isBar = true;
 		this.messagedata = [];
 		this.bardata = [];
+		this.categoryName = this.props.parent.location.query.categoryName ? this.props.parent.location.query.categoryName : ''; 
 	}
 	state = {
 		status: true
@@ -60,6 +61,10 @@ class RegionalBar extends React.Component {
 		    	data.push(this.bardata[i].indexValue);
 			}
 		}
+		let getDatasArray = $.getFormatCompany(data);
+		let getData = getDatasArray.value;
+		let company = getDatasArray.company;
+
 		let colors =  ['#fec630','#ff8f2b'] ;
 		let option = {
 			grid: [
@@ -74,6 +79,9 @@ class RegionalBar extends React.Component {
 		    	trigger: 'axis',
 		        axisPointer: {
 		            type: 'shadow'
+		        },
+		        formatter: (data)=>{
+		        	return data[0].name ? this.categoryName + "网络零售额<br/>"+data[0].name+"  "+ (data[0].value + company) : "无数据";
 		        }
 		    },
 		    xAxis: [{
@@ -107,8 +115,8 @@ class RegionalBar extends React.Component {
 		    },
 		    series: [{
 		        type: 'bar',
-		        name: '网络零售额',
-		        data: data,
+		        name: this.categoryName+'网络零售额',
+		        data: getData,
 		        barWidth: '50%',
 		        barMinHeight: 10,
 		        itemStyle: {
@@ -142,8 +150,22 @@ class RegionalBar extends React.Component {
 			return null;
 		}
 		let time = this.messagedata ? this.messagedata.timeName : ' ';
-		let data = this.messagedata ? this.messagedata.networkRetail : ' ';
+		let data = [];
+		data.push(this.messagedata ? this.messagedata.networkTradingSum : ' ');
+		// let data = this.messagedata ? this.messagedata.networkTradingSum : ' ';
+		let yearOnyear = [];
 		let trading = this.messagedata ? this.messagedata.tradingSumYearOnYear : ' ';
+		if(trading !='' && trading != null){
+			let data = (trading*100).toFixed(2);
+			if(data>0){
+				yearOnyear = "+"+data+"%";
+			}else{
+				yearOnyear =data+"%";
+			}
+		}else{
+			yearOnyear = trading || '';
+		}
+		let resultData = $.getFormatCompany(data);
 		return (
 			<div className="tradeDetail-bar">
 			    <div className="bar-checked">
@@ -151,8 +173,9 @@ class RegionalBar extends React.Component {
 			   	</div>
 			    <div className="bar-bar" ref="bar"></div>
 			    <div className="bar-message">
-			    	<p><span>{time}</span><span>{this.props.categoryName}</span>网络零售额</p>
-					<p><span>{data}</span>元&nbsp;&nbsp;同比上升<span>{trading}</span>%</p>
+			    	<p><span>{time}</span>&nbsp;<span>{this.categoryName}</span>网络零售额</p>
+			    	<p><span>{resultData.value}</span><span>{resultData.company}</span>&nbsp;&nbsp;
+			    	同比<span></span><span>{yearOnyear}</span></p>
 			    </div>
 			</div>
 		)

@@ -152,7 +152,7 @@ class RegionalBar extends React.Component {
 		return (
 			<div className="regional-bar">
 			    <div className="bar-checked">
-			   		<input type="button" className={ this.state.btnCurrent === 's' ? "current" : "" } value="实务型" onClick={this.changeBar.bind(this,'s')}/>
+			   		<input type="button" className={ this.state.btnCurrent === 's' ? "current" : "" } value="实物型" onClick={this.changeBar.bind(this,'s')}/>
 			   		<input type="button" className={ this.state.btnCurrent === 'f' ? "current" : "" } value="服务型" onClick={this.changeBar.bind(this,'f')}/>
 			   	</div>
 			    <div className="bar" ref="bar"></div>

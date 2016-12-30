@@ -46,9 +46,9 @@ class ContainerRegionalList extends React.Component {
 		    nextButton: '.next',
 		    prevButton: '.prev'
 		})        
-	}
+	}	
 	render() {
-		if ( this.isTopRoute == false ) {
+		if ( this.isTopRoute == false) {
 			return null;
 		}
 		return (
@@ -71,11 +71,31 @@ class ContainerRegionalList extends React.Component {
 									        		{(()=>{
 									        			let RESULT = [];
 									        			if ( topdata[i] ) {
+									        				//分类别获取value值，转换成对应数据后，组装成数组填充给下面的值
+															//data.type : 0代表数值 1代表百分比 2代表指数
+									        				let listArr = [];
+									        				let datatype = [];
+									        				topdata[i].map((data,k)=>{
+									        					datatype = data.type;
+									        					listArr.push(data.value);
+									        				});
+									        				let result = [];
+									        				if(datatype == 0){//0代表数值 
+										        				result = $.getFormatCompany( listArr );
+									        				}
+									        				else if(datatype == 1){//1代表百分比 
+										        				result = $.getPercentageCompany( listArr );
+								        					}else if(datatype == 2){//2代表指数
+										        				result = $.getIndicCompany( listArr );
+								        					}else {
+								        						result = $.getIndicCompany( listArr );
+								        					}
+								        					
 										        			topdata[i].map((data,k)=>{
 										        				RESULT.push(<li>
 														        				<i>{ k+1 }</i>
 														        				<span>{ data.name }</span>
-														        				<p>58.88</p>
+														        				<p>{result.value ? result.value[k]+result.company : ''}</p>
 														        			</li>);
 										        				  
 										        			})
