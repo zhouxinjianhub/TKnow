@@ -72,7 +72,7 @@ class ReportDetailComponent extends React.Component{
 										if(data){
 											let dataurl = JSON.parse(data);
 											for(let i in dataurl){
-												result.push( <span><img onClick = {this.loadFile.bind(this,dataurl[i]) } src = {"../../images/exponent-pay/"+i+".png"}/></span> );
+												result.push( <span><img onClick = {this.loadFile.bind(this,dataurl[i]) } src = {"./images/exponent-pay/"+i+".png"}/></span> );
 											}
 											return result;
 										}else{

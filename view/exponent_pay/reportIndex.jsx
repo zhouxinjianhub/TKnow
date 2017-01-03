@@ -26,15 +26,15 @@ class ListAdapter extends React.Component{
             if(!listData||listData.length==0) {
                 return (
                     <div className="report-nodata">
-                        <img src="../../../images/exponent-pay/no-data.png" alt=""/>
+                        <img src="./images/exponent-pay/no-data.png" alt=""/>
                     </div>
                 )
             }
 
-            let pdfImg="../../images/exponent-pay/pdf.png";
-            let wordImg="../../images/exponent-pay/word.png";
-            let excelImg="../../images/exponent-pay/excel.png";
-            let pptImg="../../images/exponent-pay/ppt.png";
+            let pdfImg="./images/exponent-pay/pdf.png";
+            let wordImg="./images/exponent-pay/word.png";
+            let excelImg="./images/exponent-pay/excel.png";
+            let pptImg="./images/exponent-pay/ppt.png";
 
             return (
                 <div > 

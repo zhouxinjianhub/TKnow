@@ -399,7 +399,7 @@ class Containerforget extends React.Component {
                     <div className="reset_success"></div>
                     <div className="div-success">
                         <p ref="jump" className="jump">3秒后跳转到登录页面。</p>
-                        <Link to="/login"><a className="jumpnow">立即跳转</a></Link>
+                        <Link to="/login"><p className="jumpnow">立即跳转</p></Link>
                     </div>                        
                 </div>
         </div>

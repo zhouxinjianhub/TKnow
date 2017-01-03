@@ -107,7 +107,7 @@ class ContainerIndex extends React.Component {
 						let userObj = $.userlogin();
 						let result = userObj ? true : false;
 						switch ( result ) {
-							case true: return <Islogin user={ userObj }/>;
+							case true: return <Islogin user = { userObj } isIndex = "true"/>;
 							default:   return <Nologin />;
 						}
 					})()}

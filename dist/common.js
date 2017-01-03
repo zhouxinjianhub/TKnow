@@ -282,13 +282,14 @@ $.extend({
 		return result;
 	},
 	// 退出登录
-	laoutLogin: function (callback) {
+	laoutLogin: function (callback,type) {
 		$.cookie('token','');
 		$.cookie('account','');
 		$.cookie('nickname','');
-        $.cookie('member', ''); 
+        $.cookie('member', '');
 		if (callback && typeof(callback) === 'function') {
 			callback();
+			type ? history.go(0) : '';
 		}
 	},
 	// 判断是不是VIP用户

@@ -9,9 +9,9 @@ class Feedback extends React.Component {
 		e.target.style.borderColor = '#ccc';
 	}
 	sublimeBtn(e) {
-		let textareaVal = $.trim($(this.refs.feedarea).val());
-		let emailVal = $.trim($(this.refs.feedemail).val());
-		let phoneVal = $.trim($(this.refs.feedphone).val());
+		let textareaVal = this.refs.feedarea.value.trim();
+		let emailVal = this.refs.feedemail.value.trim();
+		let phoneVal = this.refs.feedphone.value.trim();
 		let errorCont = "";
 
 		if ( !$.regTest('null',textareaVal) ) {
@@ -49,14 +49,16 @@ class Feedback extends React.Component {
 			content: textareaVal,
 			email: emailVal,
 			phone: phoneVal
-		});
+		},e.target);
 	}
-	_addFeedback(option) {
+	_addFeedback(option,target) {
 		$.GetAjax('/v1/tianji/addFeedback',option,'GET',false,(data,state)=>{
 			if ( state && data.code == 1 ) {
 				layer.msg('反馈成功，我们会尽快与您联系！', {icon: 6});
+				target.value = "发送";
 			}else{
 				layer.msg('反馈失败');
+				target.value = "重新反馈";
 			}
 		});
 	}

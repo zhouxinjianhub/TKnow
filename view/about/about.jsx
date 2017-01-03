@@ -99,10 +99,10 @@ class SwitherComponent extends React.Component{
     	var url='';
     	switch (id) {
     		case 0:
-    			url="../../images/about/tianji7.jpg";
+    			url="./images/about/tianji7.jpg";
     			break;
     		default:
-    			url="../../images/about/tianji6.jpg";
+    			url="./images/about/tianji6.jpg";
     			break;
     	}
     	imgDom.setAttribute('src',url);
@@ -114,7 +114,7 @@ class SwitherComponent extends React.Component{
 		return (
 			<div className="swither-container">
 				<p className="tips">多种展现形式</p>
-				<img src="../../images/about/tianji7.jpg" ref="switcher_imge" className="switcher_imge"></img>
+				<img src="./images/about/tianji7.jpg" ref="switcher_imge" className="switcher_imge"></img>
 				<div className="switch">
 				  <a id="o0" className="active" onClick={this.switch.bind(this,0) } >单屏</a>
 				  <a id="o1" onClick={this.switch.bind(this,1) } >多屏</a>

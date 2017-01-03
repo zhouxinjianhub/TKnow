@@ -7,15 +7,17 @@ class IndicatorTableComponent extends React.Component {
 		this.istradeMap = true;
 		// this.headData = [];
 		this.tableData = [];
-		$.onloadJavascript('./js/bootstrap-table.min.css');
-		$.onloadJavascript('./js/bootstrap-table.min.js');
-		$.onloadJavascript('./js/bootstrap-table-zh-CN.min.js');
 	}
 
 	componentDidMount() {
-		this.option = this.props.option;
-	    this._getDatas(this.option);
-	    
+		require.ensure([], require => {
+			require('./js/bootstrap-table.min.css');
+			require('./js/bootstrap-table.min.js');
+			require('./js/bootstrap-table-zh-CN.min.js');
+			this.option = this.props.option;
+	    	this._getDatas(this.option);
+		}, 'homeMoudle')
+		
 	}
 	componentWillReceiveProps(nextProps){
 		this.props = nextProps;
@@ -229,7 +231,7 @@ class IndicatorTableComponent extends React.Component {
 		if ( this.istradeMap == false ) {
 			return (
 				<div className="indicator-nodata">
-					<img src="../../images/exponent-pay/no-data.png" alt=""/>
+					<img src="./images/exponent-pay/no-data.png" alt=""/>
 				</div>
 			)
 		}
@@ -263,7 +265,7 @@ class ContainerIndicatorModule1 extends React.Component {
             		this.inputstate.b=true;
             		$(".chainUpAndDow").removeClass('thhidden');
             	}
-                $(e.target).siblings(".choose-box").find("img").attr("src", "../../images/exponent-pay/check.png");
+                $(e.target).siblings(".choose-box").find("img").attr("src", "./images/exponent-pay/check.png");
             } else{
             	if(e.target.id == "checkbox_a2"){
             		this.inputstate.a=false;
@@ -272,7 +274,7 @@ class ContainerIndicatorModule1 extends React.Component {
             		this.inputstate.b=false;
             		$(".chainUpAndDow").addClass('thhidden');
             	}
-                $(e.target).siblings(".choose-box").find("img").attr("src", "../../images/exponent-pay/uncheck.png");
+                $(e.target).siblings(".choose-box").find("img").attr("src", "./images/exponent-pay/uncheck.png");
             }
 	}
 	checkinputState(){
@@ -301,21 +303,21 @@ class ContainerIndicatorModule1 extends React.Component {
 							<label>
 								<input className=" choose-input"  onChange={this.onChangFun.bind(this)} id="checkbox_a2" name="" type="checkbox" value="" />
 								<div className="choose-box" >
-						            <img src="../../images/exponent-pay/uncheck.png"/>
+						            <img src="./images/exponent-pay/uncheck.png"/>
 						        </div>
 								<label for="checkbox_a2">显示同比 </label>
 							</label> 
 							<label>
 								<input className=" choose-input"  onChange={this.onChangFun.bind(this)} id="checkbox_a3" name="" type="checkbox" value="" />
 								<div className="choose-box" >
-						            <img src="../../images/exponent-pay/uncheck.png"/>
+						            <img src="./images/exponent-pay/uncheck.png"/>
 						        </div>
 								<label for="checkbox_a3">显示环比 </label>
 							</label> 
 						</form> 
 					</div>
 					<div className="Indic-header-expl">
-						<img onClick={this.getExplain} src="../../images/exponent-pay/expl.jpg" alt=""/>
+						<img onClick={this.getExplain} src="./images/exponent-pay/expl.jpg" alt=""/>
 					</div>
 				</div>
 				<IndicatorTableComponent checkinputState={this.checkinputState.bind(this)} timeId={this.props.timeId} areaId={this.props.areaId} tradeId={this.props.tradeId} IndicId={this.props.IndicId}/>

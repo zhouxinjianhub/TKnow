@@ -414,7 +414,7 @@ class ContainerList extends React.Component {
 				
 				<div className="top">
 					<div className="topL"></div>
-					<img src="../../images/info/info-topBg.png" alt=""/>
+					<img src="./images/info/info-topBg.png" alt=""/>
 					<div className="topR"></div>
 				</div>
 				<div className="content">
@@ -439,7 +439,7 @@ class ContainerList extends React.Component {
 				</div>
 	      		<div className="bottom">
 					<div className="topL"></div>
-					<img src="../../images/info/info-bottomBg.png" alt=""/>
+					<img src="./images/info/info-bottomBg.png" alt=""/>
 					<div className="topR"></div>
 	      		</div>
 			</div>
